@@ -9,6 +9,7 @@
   "scripts": {
     "prebuild": "rimraf build && ts-prune",
     "build": "tsc",
+    "generate": "npx prisma generate",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "find-deadcode": "ts-prune"
   },
@@ -30,9 +31,11 @@
   "dependencies": {
     "@fastify/static": "^6.5.0",
     "@prisma/client": "^4.6.1",
+    "argon2": "^0.30.2",
     "dotenv": "^16.0.3",
     "envalid": "^7.3.1",
     "fastify": "^4.10.0",
+    "nanoid": "^4.0.0",
     "node-cache": "^5.1.2"
   }
 }
