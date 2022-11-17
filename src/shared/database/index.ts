@@ -1,9 +1,24 @@
-export class Database {
-  connect() {
-    //
+import { PrismaClient } from '@prisma/client';
+
+class Database {
+  private readonly prisma;
+
+  constructor() {
+    this.prisma = new PrismaClient();
   }
 
-  disconnect() {
-    //
+  async connect() {
+    await this.prisma.$connect();
+  }
+
+  instance() {
+    return this.prisma;
+  }
+
+  async disconnect() {
+    await this.prisma.$disconnect();
   }
 }
+
+const database = new Database();
+export default database;
