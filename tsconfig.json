@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "preserve",
     "module": "commonjs",
     "esModuleInterop": true,
     "declaration": false,
@@ -15,7 +16,9 @@
     "allowJs": false,
     "strict": true,
     "noEmit": false,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
@@ -23,12 +26,20 @@
     "isolatedModules": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
-    "lib": ["esnext"],
+    "lib": [
+      "esnext"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": [
+        "src/shared/*"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

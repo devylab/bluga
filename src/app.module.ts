@@ -1,8 +1,10 @@
 import { FastifyInstance } from 'fastify';
 import fastifyView from '@fastify/view';
+import fastifyNext from '@fastify/nextjs';
 import Handlebars from 'handlebars';
 import path from 'path';
 import { UserRoute } from './users/user.route';
+import { Utils } from '@shared/utils';
 
 export class AppModule {
   private readonly userRoutes;
@@ -15,6 +17,18 @@ export class AppModule {
     });
 
     this.userRoutes = new UserRoute(this.app);
+  }
+
+  private loadAdmin() {
+    this.app.register(fastifyNext).after(() => {
+      const { adminRoutes } = Utils.renderAdminRoutes();
+
+      adminRoutes.subscribe((routes) => {
+        routes.forEach((route) => {
+          this.app.next(route.route);
+        });
+      });
+    });
   }
 
   private loadIndex() {
@@ -36,6 +50,7 @@ export class AppModule {
   }
 
   loadRoutes() {
+    this.loadAdmin();
     this.loadIndex();
     this.userRoutes.loadRoutes();
     this.noRoute();
