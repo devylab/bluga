@@ -10,7 +10,7 @@ export const roboto = Roboto({
 });
 
 // Create a theme instance.
-const theme = createTheme({
+const defaultTheme = createTheme({
   palette: {
     primary: {
       main: '#556cd6',
@@ -27,4 +27,10 @@ const theme = createTheme({
   },
 });
 
-export default theme;
+const greenTheme = createTheme({});
+
+export type themeTypes = 'defaultTheme' | 'greenTheme';
+export default {
+  defaultTheme,
+  greenTheme,
+};

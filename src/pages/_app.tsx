@@ -2,14 +2,13 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Toaster } from 'react-hot-toast';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import type { ReactElement, ReactNode } from 'react';
-import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import { ReactElement, ReactNode } from 'react';
+import { StyledEngineProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import type { NextPage } from 'next';
 import '@admin/assets/styles/global.css';
 import createEmotionCache from '@admin/config/createEmotionCache';
-import theme from '@admin/config/theme';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -38,15 +37,13 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
       <Head>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <StyledEngineProvider injectFirst>
-          <CssBaseline />
-          <QueryClientProvider client={queryClient}>
-            <Toaster toastOptions={toasterOptions} />
-            <Component {...pageProps} />
-          </QueryClientProvider>
-        </StyledEngineProvider>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <CssBaseline />
+        <QueryClientProvider client={queryClient}>
+          <Toaster toastOptions={toasterOptions} />
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </StyledEngineProvider>
     </CacheProvider>,
   );
 }
