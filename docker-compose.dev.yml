@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    restart: always
+    ports:
+      - '5431:5432'
+    environment:
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_USER: 'root'
+      POSTGRES_DB: 'contentquery'
+  redis:
+    image: 'redis:latest'
+    restart: always
+    ports:
+      - '6380:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - redis:/data
+volumes:
+  redis:
+    driver: local
