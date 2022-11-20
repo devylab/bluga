@@ -1,4 +1,7 @@
 import fastify from 'fastify';
+import fastifyCompress from '@fastify/compress';
+import fastifyHelmet from '@fastify/helmet';
+import fastifyRateLimit from '@fastify/rate-limit';
 import { env } from '@shared/constants/env';
 import { logger } from '@shared/logger';
 import database from '@shared/database';
@@ -13,11 +16,26 @@ export class AppInstance {
       ignoreTrailingSlash: true,
       ignoreDuplicateSlashes: true,
       logger: env.environment.isDevelopment,
+      pluginTimeout: env.environment.isDevelopment ? 120_000 : undefined,
     });
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async startApp() {
     await database.connect();
+
+    // register fastify plugin
+    await this.server.register(fastifyHelmet, {
+      contentSecurityPolicy: false,
+      // crossOriginResourcePolicy: { policy: 'cross-origin' },
+      // crossOriginEmbedderPolicy: false,
+    });
+    await this.server.register(fastifyRateLimit, {
+      max: 100,
+      timeWindow: '1 minute',
+    });
+    await this.server.register(fastifyCompress);
+
     const appModule = new AppModule(this.server);
     appModule.loadRoutes();
 
