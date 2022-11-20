@@ -27,12 +27,16 @@
     "noUnusedLocals": true,
     "noImplicitAny": true,
     "lib": [
-      "esnext"
+      "esnext",
+      "DOM"
     ],
     "baseUrl": ".",
     "paths": {
       "@shared/*": [
         "src/shared/*"
+      ],
+      "@admin/*": [
+        "src/admin/*"
       ]
     }
   },

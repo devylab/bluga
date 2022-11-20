@@ -21,6 +21,9 @@ export class Utils {
       {
         route: '/admin/login',
       },
+      {
+        route: '/admin/dashboard',
+      },
     ];
     const adminRoutes = new BehaviorSubject<AdminRoute[]>(routes);
 

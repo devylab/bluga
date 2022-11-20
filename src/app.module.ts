@@ -1,14 +1,21 @@
 import { FastifyInstance } from 'fastify';
 import fastifyView from '@fastify/view';
+import fastifyStatic from '@fastify/static';
 import fastifyNext from '@fastify/nextjs';
 import Handlebars from 'handlebars';
 import path from 'path';
 import { UserRoute } from './users/user.route';
 import { Utils } from '@shared/utils';
+import { env } from '@shared/constants/env';
 
 export class AppModule {
   private readonly userRoutes;
+
   constructor(private readonly app: FastifyInstance) {
+    this.app.register(fastifyStatic, {
+      root: path.join(__dirname, 'static'),
+    });
+
     this.app.register(fastifyView, {
       engine: {
         handlebars: Handlebars,
@@ -20,15 +27,19 @@ export class AppModule {
   }
 
   private loadAdmin() {
-    this.app.register(fastifyNext).after(() => {
-      const { adminRoutes } = Utils.renderAdminRoutes();
+    this.app
+      .register(fastifyNext, {
+        dev: env.environment.isDevelopment,
+      })
+      .after(() => {
+        const { adminRoutes } = Utils.renderAdminRoutes();
 
-      adminRoutes.subscribe((routes) => {
-        routes.forEach((route) => {
-          this.app.next(route.route);
+        adminRoutes.subscribe((routes) => {
+          routes.forEach((route) => {
+            this.app.next(route.route);
+          });
         });
       });
-    });
   }
 
   private loadIndex() {
@@ -39,6 +50,10 @@ export class AppModule {
 
       // Note the return statement
       return reply.view(theme, { text: 'text' });
+    });
+
+    this.app.get('/robots.txt', async (req, reply) => {
+      return reply.sendFile('robots.txt');
     });
   }
 
