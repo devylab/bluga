@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material';
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import themes, { themeTypes } from '@admin/config/theme';
 
 type ThemeContext = {
@@ -19,10 +19,12 @@ type ThemeProvider = {
 
 const ThemeProvider = ({ children }: ThemeProvider) => {
   const storageName = 'app-theme';
-  const windowsAvailable = typeof window !== 'undefined';
-  const selectedTheme =
-    (windowsAvailable ? (window.localStorage.getItem(storageName) as themeTypes) : 'defaultTheme') || 'defaultTheme';
-  const [currentTheme, setCurrentTheme] = useState<themeTypes>(selectedTheme);
+  const [currentTheme, setCurrentTheme] = useState<themeTypes>('defaultTheme');
+
+  useEffect(() => {
+    const selectedTheme = (window.localStorage.getItem(storageName) as themeTypes) || 'defaultTheme';
+    setCurrentTheme(selectedTheme);
+  }, []);
 
   const setTheme = (theme: themeTypes) => {
     setCurrentTheme(theme);

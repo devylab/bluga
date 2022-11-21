@@ -2,12 +2,12 @@ import DashboardLayout from '@admin/layout/dashboard';
 import type { ReactElement } from 'react';
 import type { NextPageWithLayout } from '../../_app';
 
-const Index: NextPageWithLayout = () => {
-  return <h1>Hello world!</h1>;
+const CreateContent: NextPageWithLayout = () => {
+  return <h1>Hello CreateContent!</h1>;
 };
 
-Index.getLayout = function getLayout(page: ReactElement) {
+CreateContent.getLayout = function getLayout(page: ReactElement) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
 
-export default Index;
+export default CreateContent;

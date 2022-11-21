@@ -22,7 +22,13 @@ export class Utils {
         route: '/admin/login',
       },
       {
-        route: '/admin/dashboard',
+        route: '/admin',
+      },
+      {
+        route: '/admin/contents/lists',
+      },
+      {
+        route: '/admin/contents/create',
       },
     ];
     const adminRoutes = new BehaviorSubject<AdminRoute[]>(routes);

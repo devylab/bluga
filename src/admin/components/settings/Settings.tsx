@@ -20,7 +20,7 @@ const Settings = () => {
     <>
       <SettingsWrapper>
         <Tooltip title="Settings">
-          <IconButton onClick={openSettings}>
+          <IconButton color="primary" onClick={openSettings}>
             <FiSettings />
           </IconButton>
         </Tooltip>

@@ -8,6 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import type { NextPage } from 'next';
 import '@admin/assets/styles/global.css';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import createEmotionCache from '@admin/config/createEmotionCache';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
