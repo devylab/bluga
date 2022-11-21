@@ -27,7 +27,22 @@ const defaultTheme = createTheme({
   },
 });
 
-const greenTheme = createTheme({});
+const greenTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#8bc34a',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+    error: {
+      main: red.A400,
+    },
+  },
+  typography: {
+    fontFamily: roboto.style.fontFamily,
+  },
+});
 
 export type themeTypes = 'defaultTheme' | 'greenTheme';
 export default {
