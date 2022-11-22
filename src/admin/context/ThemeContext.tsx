@@ -1,46 +1,26 @@
-import { Theme } from '@mui/material';
-import { createContext, ReactNode, useEffect, useState } from 'react';
-import themes, { themeTypes } from '@admin/config/theme';
+import { createContext, useMemo, useState } from 'react';
+import { ThemeMode, themeSettings } from '@admin/config/theme';
 
 type ThemeContext = {
-  theme: Theme;
-  setTheme: (theme: themeTypes) => void;
+  setTheme: (theme: ThemeMode) => void;
 };
 
 export const ThemeContext = createContext<ThemeContext>({
-  theme: themes.defaultTheme,
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   setTheme: (_theme) => {},
 });
 
-type ThemeProvider = {
-  children?: ReactNode;
-};
+export const useMode = () => {
+  const [mode, setMode] = useState<ThemeMode>('dark');
 
-const ThemeProvider = ({ children }: ThemeProvider) => {
-  const storageName = 'app-theme';
-  const [currentTheme, setCurrentTheme] = useState<themeTypes>('defaultTheme');
-
-  useEffect(() => {
-    const selectedTheme = (window.localStorage.getItem(storageName) as themeTypes) || 'defaultTheme';
-    setCurrentTheme(selectedTheme);
-  }, []);
-
-  const setTheme = (theme: themeTypes) => {
-    setCurrentTheme(theme);
-    window.localStorage.setItem(storageName, theme);
-  };
-
-  return (
-    <ThemeContext.Provider
-      value={{
-        theme: themes[currentTheme],
-        setTheme,
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+  const setTheme = useMemo(
+    () => ({
+      setTheme: (theme: ThemeMode) => setMode(theme),
+    }),
+    [],
   );
-};
 
-export default ThemeProvider;
+  const theme = useMemo(() => themeSettings(mode), [mode]);
+
+  return { theme, setTheme };
+};

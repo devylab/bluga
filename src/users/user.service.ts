@@ -1,6 +1,6 @@
 import database from '@shared/database';
 import { logger } from '@shared/logger';
-import { Utils } from '@shared/utils';
+import { ServerUtils } from '@shared/utils/server';
 import { CreateUser } from './entities/create-user.entity';
 
 type returnType = {
@@ -17,9 +17,9 @@ export class UserService {
 
   async createUser({ email, password, username }: CreateUser): Promise<returnType> {
     try {
-      const hash = await Utils.hashPassword(password);
+      const hash = await ServerUtils.hashPassword(password);
       await this.db.user.create({
-        data: { id: Utils.uniqueId(), email, username, password: hash },
+        data: { id: ServerUtils.uniqueId(), email, username, password: hash },
       });
 
       return { data: 'user created', error: null };

@@ -1,9 +1,13 @@
 /* eslint-disable max-lines-per-function */
 import { Collapse, Drawer, List, ListItemButton, ListItemIcon, ListItemText, styled } from '@mui/material';
+import { AdminMenu } from '@shared/constants/adminRoutes';
+import { Utils } from '@shared/utils';
 import { useRouter } from 'next/router';
-import { Fragment, useState } from 'react';
-import { FiBarChart } from 'react-icons/fi';
+import { Fragment, useEffect, useState } from 'react';
+import { FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+
+const { adminRoutes } = Utils.renderAdminRoutes();
 
 type Sidebar = {
   open: boolean;
@@ -25,12 +29,8 @@ const SidebarMenu = styled(List)`
 `;
 
 const SidebarMenuItem = styled(ListItemButton)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
   height: '50px',
   borderRadius: '10px',
-  textDecoration: 'none',
-  padding: '5px 10px',
   marginBottom: '10px',
 
   '&.active': {
@@ -47,60 +47,27 @@ const SidebarMenuItem = styled(ListItemButton)(({ theme }) => ({
   },
 }));
 
-const SidebarMenuItemCollapse = styled(Collapse)(({ theme }) => ({
-  '& .sub-active': {
+const SidebarSubMenuItem = styled(ListItemButton)(({ theme }) => ({
+  height: '50px',
+  borderRadius: '10px',
+
+  '&.sub-active': {
     color: theme.palette.primary.main,
+  },
+
+  '&.sub-active svg': {
+    color: theme.palette.primary.main,
+  },
+
+  '> .MuiListItemIcon-root': {
+    minWidth: '30px',
   },
 }));
 
-type Menu = {
-  id: string;
-  to: string;
-  name: string;
-  children?: {
-    to: string;
-    name: string;
-  }[];
-};
-
-const menus = [
-  {
-    id: '1',
-    to: '/admin',
-    name: 'Dashboard',
-  },
-  {
-    id: '2',
-    to: '/admin/contents',
-    name: 'Contents',
-    children: [
-      {
-        to: '/lists',
-        name: 'Lists',
-      },
-      {
-        to: '/create',
-        name: 'Create',
-      },
-    ],
-  },
-  {
-    id: '3',
-    to: '#',
-    name: 'Fiona',
-    children: [
-      {
-        to: '/admin/dashboard',
-        name: 'Great',
-      },
-    ],
-  },
-];
-
 type SidebarMenuList = {
   exact?: boolean;
-  menu: Menu;
-  handleRoute: (menu: Menu, to: string, currentMenuId?: string) => void;
+  menu: AdminMenu;
+  handleRoute: (menu: AdminMenu, to: string, currentMenuId?: string) => void;
   currentMenu: string;
 };
 
@@ -111,27 +78,26 @@ const SidebarMenuList = ({ exact, handleRoute, menu, currentMenu }: SidebarMenuL
   return (
     <Fragment>
       <SidebarMenuItem className={isActive ? 'active' : ''} onClick={() => handleRoute(menu, menu.to, menu.id)}>
-        <ListItemIcon>
-          <FiBarChart />
-        </ListItemIcon>
+        <ListItemIcon>{menu.icon}</ListItemIcon>
         <ListItemText primary={menu.name} />
-        {menu.children && (currentMenu === menu.id ? 'l' : 'm')}
+        {menu.children && (currentMenu === menu.id ? <FiChevronDown /> : <FiChevronRight />)}
       </SidebarMenuItem>
       {menu.children && (
-        <SidebarMenuItemCollapse in={currentMenu === menu.id} timeout="auto" unmountOnExit>
+        <Collapse in={currentMenu === menu.id} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {menu.children?.map((child) => (
-              <ListItemButton
+              <SidebarSubMenuItem
                 className={pathname === menu.to + child.to ? 'sub-active' : ''}
                 key={child.name}
                 onClick={() => handleRoute(menu, child.to)}
                 sx={{ pl: 4 }}
               >
+                <ListItemIcon>{child.icon}</ListItemIcon>
                 <ListItemText primary={child.name} />
-              </ListItemButton>
+              </SidebarSubMenuItem>
             ))}
           </List>
-        </SidebarMenuItemCollapse>
+        </Collapse>
       )}
     </Fragment>
   );
@@ -140,8 +106,13 @@ const SidebarMenuList = ({ exact, handleRoute, menu, currentMenu }: SidebarMenuL
 const Sidebar = ({ open, drawerWidth }: Sidebar) => {
   const router = useRouter();
   const [currentMenu, setCurrentMenu] = useState('');
+  const [adminMenus, setAdminMenus] = useState<AdminMenu[]>([]);
 
-  const handleClick = (menu: Menu, to: string, menuId?: string) => {
+  useEffect(() => {
+    adminRoutes.subscribe((routes) => setAdminMenus(routes));
+  }, [adminMenus]);
+
+  const handleClick = (menu: AdminMenu, to: string, menuId?: string) => {
     if (!menu.children) {
       router.push(to);
       setCurrentMenu(menuId || '');
@@ -172,7 +143,7 @@ const Sidebar = ({ open, drawerWidth }: Sidebar) => {
         </DrawerHeader>
 
         <SidebarMenu>
-          {menus.map((menu) => (
+          {adminMenus.map((menu) => (
             <SidebarMenuList
               key={menu.id}
               exact={!menu.children}

@@ -2,7 +2,7 @@
 import Document, { Html, Head, Main, NextScript, DocumentInitialProps } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from '@admin/config/createEmotionCache';
-import theme, { roboto } from '@admin/config/theme';
+import { roboto, themeSettings } from '@admin/config/theme';
 
 type Props = DocumentInitialProps & {
   emotionStyleTags: JSX.Element[];
@@ -14,7 +14,7 @@ export default class MyDocument extends Document<Props> {
       <Html lang="en" className={roboto.className}>
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.defaultTheme.palette.primary.main} />
+          <meta name="theme-color" content={themeSettings('dark').palette.primary.main} />
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="emotion-insertion-point" content="" />
           {this.props.emotionStyleTags}

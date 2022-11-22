@@ -1,12 +1,14 @@
+import { useAppTheme } from '@admin/hooks/useAppTheme';
 import {
   AppBar as MuiAppBar,
   AppBarProps as MuiAppBarProps,
+  Box,
   IconButton,
+  InputBase,
   styled,
   Toolbar,
-  Typography,
 } from '@mui/material';
-import { FiAlignLeft } from 'react-icons/fi';
+import { FiAlignLeft, FiBell, FiSearch, FiSettings } from 'react-icons/fi';
 
 type Navbar = {
   open: boolean;
@@ -37,15 +39,28 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const Navbar = ({ open, toggleSidebar, drawerWidth }: Navbar) => {
+  const appTheme = useAppTheme();
+
   return (
-    <AppBar position="fixed" open={open} drawerwidth={drawerWidth}>
+    <AppBar elevation={1} position="fixed" open={open} drawerwidth={drawerWidth}>
       <Toolbar>
         <IconButton color="inherit" aria-label="open drawer" onClick={toggleSidebar} edge="start" sx={{ mr: 2 }}>
           <FiAlignLeft />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Persistent drawer
-        </Typography>
+
+        <Box display="flex" sx={{ backgroundColor: appTheme.primary[400] }} borderRadius="3px">
+          <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+          <IconButton type="button" sx={{ p: 1 }}>
+            <FiSearch />
+          </IconButton>
+        </Box>
+
+        <Box display="flex">
+          <IconButton type="button" sx={{ p: 1 }}>
+            <FiBell />
+            <FiSettings />
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );

@@ -7,6 +7,7 @@ import path from 'path';
 import { UserRoute } from './users/user.route';
 import { Utils } from '@shared/utils';
 import { env } from '@shared/constants/env';
+import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 
 export class AppModule {
   private readonly userRoutes;
@@ -35,8 +36,9 @@ export class AppModule {
         const { adminRoutes } = Utils.renderAdminRoutes();
 
         adminRoutes.subscribe((routes) => {
-          routes.forEach((route) => {
-            this.app.next(route.route);
+          const formattedRoutes = formatAdminRoutes(routes);
+          formattedRoutes.forEach((route) => {
+            this.app.next(route);
           });
         });
       });
