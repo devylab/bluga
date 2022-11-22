@@ -1,9 +1,9 @@
-import { ReactNode, useContext, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import Sidebar from '@admin/components/sidebar/Sidebar';
 import Settings from '@admin/components/settings/Settings';
 import Navbar from '@admin/components/navbar/Navbar';
 import { Box, styled, ThemeProvider as MUIThemeProvider } from '@mui/material';
-import ThemeProvider, { ThemeContext } from '@admin/context/ThemeContext';
+import { ThemeContext, useMode } from '@admin/context/ThemeContext';
 
 type DashboardLayout = {
   children?: ReactNode;
@@ -30,31 +30,24 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   }),
 }));
 
-const ThemeLayout = ({ children }: DashboardLayout) => {
+const DashboardLayout = ({ children }: DashboardLayout) => {
+  const { theme, setTheme } = useMode();
   const [sidebarActive, setSidebarActive] = useState(true);
-
   const toggleSidebar = () => setSidebarActive(!sidebarActive);
 
-  const { theme } = useContext(ThemeContext);
   return (
-    <MUIThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex' }}>
-        <Settings />
-        <Sidebar open={sidebarActive} drawerWidth={drawerWidth} />
-        <Main open={sidebarActive}>
-          <Navbar open={sidebarActive} toggleSidebar={toggleSidebar} drawerWidth={drawerWidth} />
-          <div> hello{children}</div>
-        </Main>
-      </Box>
-    </MUIThemeProvider>
-  );
-};
-
-const DashboardLayout = ({ children }: DashboardLayout) => {
-  return (
-    <ThemeProvider>
-      <ThemeLayout>{children}</ThemeLayout>
-    </ThemeProvider>
+    <ThemeContext.Provider value={setTheme}>
+      <MUIThemeProvider theme={theme}>
+        <Box sx={{ display: 'flex' }}>
+          <Settings />
+          <Sidebar open={sidebarActive} drawerWidth={drawerWidth} />
+          <Main open={sidebarActive}>
+            <Navbar open={sidebarActive} toggleSidebar={toggleSidebar} drawerWidth={drawerWidth} />
+            <div> hello{children}</div>
+          </Main>
+        </Box>
+      </MUIThemeProvider>
+    </ThemeContext.Provider>
   );
 };
 
