@@ -11,7 +11,7 @@ export const ThemeContext = createContext<ThemeContext>({
 });
 
 export const useMode = () => {
-  const [mode, setMode] = useState<ThemeMode>('dark');
+  const [mode, setMode] = useState<ThemeMode>('light');
 
   const setTheme = useMemo(
     () => ({
