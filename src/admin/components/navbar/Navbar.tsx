@@ -1,13 +1,5 @@
 import { useAppTheme } from '@admin/hooks/useAppTheme';
-import {
-  AppBar as MuiAppBar,
-  AppBarProps as MuiAppBarProps,
-  Box,
-  IconButton,
-  InputBase,
-  styled,
-  Toolbar,
-} from '@mui/material';
+import { AppBar as MuiAppBar, AppBarProps as MuiAppBarProps, Box, IconButton, InputBase, styled } from '@mui/material';
 import { FiAlignLeft, FiBell, FiSearch, FiSettings } from 'react-icons/fi';
 
 type Navbar = {
@@ -18,7 +10,7 @@ type Navbar = {
 
 type AppBarProps = MuiAppBarProps & {
   open?: boolean;
-  drawerwidth: number;
+  drawerwidth?: number;
 };
 
 const AppBar = styled(MuiAppBar, {
@@ -28,41 +20,32 @@ const AppBar = styled(MuiAppBar, {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  ...(open && {
-    width: `calc(100% - ${drawerwidth}px)`,
-    marginLeft: `${drawerwidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
+  width: '100%',
 }));
 
 const Navbar = ({ open, toggleSidebar, drawerWidth }: Navbar) => {
   const appTheme = useAppTheme();
 
   return (
-    <AppBar elevation={1} position="fixed" open={open} drawerwidth={drawerWidth}>
-      <Toolbar>
-        <IconButton color="inherit" aria-label="open drawer" onClick={toggleSidebar} edge="start" sx={{ mr: 2 }}>
-          <FiAlignLeft />
+    <Box width="100%" display="flex" alignItems="center" justifyContent="space-between" p={3}>
+      <IconButton color="inherit" aria-label="open drawer" onClick={() => toggleSidebar()} edge="start" sx={{ mr: 2 }}>
+        <FiAlignLeft />
+      </IconButton>
+
+      <Box display="flex" sx={{ backgroundColor: appTheme.primary[400] }} borderRadius="3px">
+        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+        <IconButton type="button" sx={{ p: 1 }}>
+          <FiSearch />
         </IconButton>
+      </Box>
 
-        <Box display="flex" sx={{ backgroundColor: appTheme.primary[400] }} borderRadius="3px">
-          <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-          <IconButton type="button" sx={{ p: 1 }}>
-            <FiSearch />
-          </IconButton>
-        </Box>
-
-        <Box display="flex">
-          <IconButton type="button" sx={{ p: 1 }}>
-            <FiBell />
-            <FiSettings />
-          </IconButton>
-        </Box>
-      </Toolbar>
-    </AppBar>
+      <Box display="flex">
+        <IconButton type="button" sx={{ p: 1 }}>
+          <FiBell />
+          <FiSettings />
+        </IconButton>
+      </Box>
+    </Box>
   );
 };
 

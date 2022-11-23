@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
+import { ProSidebarProvider, useProSidebar } from 'react-pro-sidebar';
 import Sidebar from '@admin/components/sidebar/Sidebar';
 import Settings from '@admin/components/settings/Settings';
 import Navbar from '@admin/components/navbar/Navbar';
@@ -20,7 +21,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
   ...(open && {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -30,25 +30,35 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   }),
 }));
 
-const DashboardLayout = ({ children }: DashboardLayout) => {
+const Layout = ({ children }: DashboardLayout) => {
+  const { collapseSidebar, collapsed } = useProSidebar();
+
+  return (
+    <Box sx={{ display: 'flex', height: '100%' }}>
+      <Settings />
+      <Sidebar />
+      <Box width="100%">
+        <Navbar open={collapsed} toggleSidebar={collapseSidebar} drawerWidth={drawerWidth} />
+        <Main>
+          <div> hello{children}</div>
+        </Main>
+      </Box>
+    </Box>
+  );
+};
+
+const Dashboard = ({ children }: DashboardLayout) => {
   const { theme, setTheme } = useMode();
-  const [sidebarActive, setSidebarActive] = useState(true);
-  const toggleSidebar = () => setSidebarActive(!sidebarActive);
 
   return (
     <ThemeContext.Provider value={setTheme}>
       <MUIThemeProvider theme={theme}>
-        <Box sx={{ display: 'flex' }}>
-          <Settings />
-          <Sidebar open={sidebarActive} drawerWidth={drawerWidth} />
-          <Main open={sidebarActive}>
-            <Navbar open={sidebarActive} toggleSidebar={toggleSidebar} drawerWidth={drawerWidth} />
-            <div> hello{children}</div>
-          </Main>
-        </Box>
+        <ProSidebarProvider>
+          <Layout>{children}</Layout>
+        </ProSidebarProvider>
       </MUIThemeProvider>
     </ThemeContext.Provider>
   );
 };
 
-export default DashboardLayout;
+export default Dashboard;

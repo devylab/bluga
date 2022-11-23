@@ -28,7 +28,7 @@ const Settings = () => {
       <Drawer anchor="right" open={active} onClose={closeSettings}>
         <div>Settings Page</div>
 
-        <Button onClick={() => setTheme('dark')}>Dar</Button>
+        <Button onClick={() => setTheme('dark')}>Dark</Button>
         <Button onClick={() => setTheme('light')}>Light</Button>
       </Drawer>
     </>
