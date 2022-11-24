@@ -16,9 +16,7 @@
     "allowJs": false,
     "strict": true,
     "noEmit": false,
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
@@ -26,24 +24,12 @@
     "isolatedModules": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
+    "lib": ["esnext", "DOM"],
     "baseUrl": ".",
     "paths": {
-      "@shared/*": [
-        "src/shared/*"
-      ],
-      "@admin/*": [
-        "src/admin/*"
-      ]
+      "@shared/*": ["src/shared/*"]
     }
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
