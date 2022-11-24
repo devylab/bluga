@@ -1,13 +1,11 @@
 import { FastifyInstance } from 'fastify';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
-import fastifyNext from '@fastify/nextjs';
 import Handlebars from 'handlebars';
 import path from 'path';
 import { UserRoute } from './users/user.route';
-import { Utils } from '@shared/utils';
-import { env } from '@shared/constants/env';
-import { formatAdminRoutes } from '@shared/constants/adminRoutes';
+// import { Utils } from '@shared/utils';
+// import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 
 export class AppModule {
   private readonly userRoutes;
@@ -21,32 +19,33 @@ export class AppModule {
       engine: {
         handlebars: Handlebars,
       },
-      root: path.join(__dirname, 'contents', 'themes'),
+      root: path.join(__dirname, 'contents'),
     });
 
     this.userRoutes = new UserRoute(this.app);
   }
 
   private loadAdmin() {
-    this.app
-      .register(fastifyNext, {
-        dev: env.environment.isDevelopment,
-      })
-      .after(() => {
-        const { adminRoutes } = Utils.renderAdminRoutes();
+    // const { adminRoutes } = Utils.renderAdminRoutes();
+    // adminRoutes.subscribe((routes) => {
+    //   const formattedRoutes = formatAdminRoutes(routes);
+    //   formattedRoutes.forEach((route) => {
+    //     // this.app.next(route);
+    //   });
+    // });
+    this.app.get('/admin', async (req, reply) => {
+      const theme = '/admin/pages/overview.hbs';
+      // We are awaiting a functioon result
+      // const t = await something();
 
-        adminRoutes.subscribe((routes) => {
-          const formattedRoutes = formatAdminRoutes(routes);
-          formattedRoutes.forEach((route) => {
-            this.app.next(route);
-          });
-        });
-      });
+      // Note the return statement
+      return reply.view(theme, { text: 'text' });
+    });
   }
 
   private loadIndex() {
     this.app.get('/', async (req, reply) => {
-      const theme = '/home-coming' + '/pages/index.hbs';
+      const theme = '/themes/home-coming' + '/pages/index.hbs';
       // We are awaiting a functioon result
       // const t = await something();
 
