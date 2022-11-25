@@ -1,9 +1,11 @@
+/* eslint-disable max-lines-per-function */
 import { FastifyInstance } from 'fastify';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import Handlebars from 'handlebars';
 import path from 'path';
 import { UserRoute } from './users/user.route';
+import { env } from '@shared/constants/env';
 // import { Utils } from '@shared/utils';
 // import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 
@@ -12,16 +14,33 @@ export class AppModule {
 
   constructor(private readonly app: FastifyInstance) {
     this.app.register(fastifyStatic, {
-      root: path.join(__dirname, 'static'),
+      root: [path.join(__dirname, '..', 'public')],
+      prefix: '/public/',
     });
 
     this.app.register(fastifyView, {
-      engine: {
-        handlebars: Handlebars,
-      },
-      root: path.join(__dirname, 'contents'),
+      engine: { handlebars: Handlebars },
+      root: path.join(__dirname, 'contents', 'themes'),
+      propertyName: 'themes',
+      viewExt: 'hbs',
+      production: env.environment.isProduction,
     });
 
+    this.app.register(fastifyView, {
+      engine: { handlebars: Handlebars },
+      root: path.join(__dirname, 'admin'),
+      propertyName: 'admin',
+      viewExt: 'hbs',
+      production: env.environment.isProduction,
+      options: {
+        partials: {
+          footer: '/components/footer.hbs',
+          header: '/components/header.hbs',
+        },
+      },
+    });
+
+    // this.app.use
     this.userRoutes = new UserRoute(this.app);
   }
 
@@ -33,28 +52,31 @@ export class AppModule {
     //     // this.app.next(route);
     //   });
     // });
-    this.app.get('/admin', async (req, reply) => {
-      const theme = '/admin/pages/overview.hbs';
-      // We are awaiting a functioon result
+    // Handlebars.registerPartial('header', () => Handlebars.templates());
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.app.get('/admin', async (req, reply: any) => {
+      const theme = '/pages/overview.hbs';
+      // We are awaiting a function result
       // const t = await something();
 
       // Note the return statement
-      return reply.view(theme, { text: 'text' });
+      return reply.admin(theme, { text: 'text' });
     });
   }
 
   private loadIndex() {
-    this.app.get('/', async (req, reply) => {
-      const theme = '/themes/home-coming' + '/pages/index.hbs';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.app.get('/', async (req, reply: any) => {
+      const theme = '/home-coming' + '/pages/index.hbs';
       // We are awaiting a functioon result
       // const t = await something();
 
       // Note the return statement
-      return reply.view(theme, { text: 'text' });
+      return reply.themes(theme, { text: 'text' });
     });
 
     this.app.get('/robots.txt', async (req, reply) => {
-      return reply.sendFile('robots.txt');
+      return reply.sendFile('/robots.txt');
     });
   }
 
