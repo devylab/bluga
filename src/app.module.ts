@@ -4,10 +4,20 @@ import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import Handlebars from 'handlebars';
 import path from 'path';
+import minifier from 'html-minifier';
 import { UserRoute } from './users/user.route';
 import { env } from '@shared/constants/env';
 // import { Utils } from '@shared/utils';
 // import { formatAdminRoutes } from '@shared/constants/adminRoutes';
+
+const minifierOpts = {
+  removeComments: true,
+  removeCommentsFromCDATA: true,
+  collapseWhitespace: true,
+  collapseBooleanAttributes: true,
+  removeAttributeQuotes: true,
+  removeEmptyAttributes: true,
+};
 
 export class AppModule {
   private readonly userRoutes;
@@ -32,11 +42,16 @@ export class AppModule {
       propertyName: 'admin',
       viewExt: 'hbs',
       production: env.environment.isProduction,
+      layout: '/layouts/dashboard.hbs',
       options: {
         partials: {
           footer: '/components/footer.hbs',
           header: '/components/header.hbs',
+          sidebar: '/components/sidebar.hbs',
+          navbar: '/components/navbar.hbs',
         },
+        useHtmlMinifier: minifier,
+        htmlMinifierOptions: minifierOpts,
       },
     });
 
@@ -52,7 +67,7 @@ export class AppModule {
     //     // this.app.next(route);
     //   });
     // });
-    // Handlebars.registerPartial('header', () => Handlebars.templates());
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.app.get('/admin', async (req, reply: any) => {
       const theme = '/pages/overview.hbs';
@@ -60,7 +75,7 @@ export class AppModule {
       // const t = await something();
 
       // Note the return statement
-      return reply.admin(theme, { text: 'text' });
+      return reply.admin(theme, { page: 'Overview', app: 'ContentQuery' });
     });
   }
 
