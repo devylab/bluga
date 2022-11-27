@@ -1,14 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/admin/**/*.{hbs,js}'],
+  content: ['./src/admin/**/*.{ejs,js}'],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        'main-light': '#fafbfb',
-        'main-dark': '#20232A',
-        'sidebar-dark': '#282C34',
+        'main-light': '#FAFBFB',
+        'main-dark': '#1C1C1C',
+        'sidebar-dark': '#141414',
         'sidebar-light': '#ffffff',
+        green: '#BBF400',
       },
     },
   },

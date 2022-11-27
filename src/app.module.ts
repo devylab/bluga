@@ -1,12 +1,12 @@
-/* eslint-disable max-lines-per-function */
 import { FastifyInstance } from 'fastify';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
-import Handlebars from 'handlebars';
+import EJS from 'ejs';
 import path from 'path';
 import minifier from 'html-minifier';
 import { UserRoute } from './users/user.route';
 import { env } from '@shared/constants/env';
+import { adminMenus } from '@shared/constants/adminRoutes';
 // import { Utils } from '@shared/utils';
 // import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 
@@ -29,27 +29,21 @@ export class AppModule {
     });
 
     this.app.register(fastifyView, {
-      engine: { handlebars: Handlebars },
+      engine: { ejs: EJS },
       root: path.join(__dirname, 'contents', 'themes'),
       propertyName: 'themes',
-      viewExt: 'hbs',
+      viewExt: 'ejs',
       production: env.environment.isProduction,
     });
 
     this.app.register(fastifyView, {
-      engine: { handlebars: Handlebars },
+      engine: { ejs: EJS },
       root: path.join(__dirname, 'admin'),
       propertyName: 'admin',
-      viewExt: 'hbs',
+      viewExt: 'ejs',
       production: env.environment.isProduction,
-      layout: '/layouts/dashboard.hbs',
+      layout: '/layouts/dashboard.ejs',
       options: {
-        partials: {
-          footer: '/components/footer.hbs',
-          header: '/components/header.hbs',
-          sidebar: '/components/sidebar.hbs',
-          navbar: '/components/navbar.hbs',
-        },
         useHtmlMinifier: minifier,
         htmlMinifierOptions: minifierOpts,
       },
@@ -70,12 +64,11 @@ export class AppModule {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.app.get('/admin', async (req, reply: any) => {
-      const theme = '/pages/overview.hbs';
+      const theme = '/pages/overview.ejs';
       // We are awaiting a function result
       // const t = await something();
-
       // Note the return statement
-      return reply.admin(theme, { page: 'Overview', app: 'ContentQuery' });
+      return reply.admin(theme, { page: 'Overview', sidebarLinks: adminMenus, currentPage: req.url });
     });
   }
 

@@ -21,3 +21,12 @@ window.addEventListener('DOMContentLoaded', () => {
     // localStorage.removeItem('theme');
   });
 });
+document.addEventListener('alpine:init', () => {
+  Alpine.store('sidebar', {
+    show: window.innerWidth >= 774,
+
+    toggleSidebar() {
+      this.show = !this.show;
+    },
+  });
+});

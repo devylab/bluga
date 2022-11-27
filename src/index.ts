@@ -27,8 +27,8 @@ export class AppInstance {
     // register fastify plugin
     await this.server.register(fastifyHelmet, {
       contentSecurityPolicy: false,
-      // crossOriginResourcePolicy: { policy: 'cross-origin' },
-      // crossOriginEmbedderPolicy: false,
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+      crossOriginEmbedderPolicy: false,
     });
     await this.server.register(fastifyRateLimit, {
       max: 100,
