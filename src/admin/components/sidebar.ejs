@@ -1,0 +1,81 @@
+<aside
+  x-data
+  :class="$store.sidebar.show ? 'ml-0' : 'ml-[-240px]'"
+  class="sidebar-light w-60 min-w-[240px] p-4 shadow-xl shadow-white transition-all dark:bg-sidebar-dark"
+  aria-label="Sidebar"
+>
+  <ul class="space-y-2">
+    <% sidebarLinks.forEach((sidebarLink) => { %> <% if (sidebarLink.children) { %>
+    <li x-data="{ open: false }">
+      <button
+        @click="open = !open"
+        type="button"
+        class="<%= currentPage.startsWith(sidebarLink.to) ? 'bg-green font-medium': 'font-normal' %> flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-green"
+        aria-controls="dropdown-<%= sidebarLink.name %>"
+        data-collapse-toggle="dropdown-<%= sidebarLink.name %>"
+      >
+        <span class="ml-3 flex-1 whitespace-nowrap text-left"><%= sidebarLink.name %></span>
+        <svg
+          sidebar-toggle-item
+          class="h-6 w-6 transition-transform"
+          :class="open ? 'rotate-0' : '-rotate-90'"
+          x-cloak
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          ></path>
+        </svg>
+      </button>
+      <ul
+        x-cloak
+        id="dropdown-<%= sidebarLink.name %>"
+        :class="open ? 'py-2 h-auto visible opacity-100' : 'py-0 opacity-0 h-0 invisible'"
+        class="space-y-2 transition-all"
+      >
+        <% sidebarLink.children.forEach((childLink) => { %>
+        <li>
+          <a
+            href="<%= sidebarLink.to %><%= childLink.to %>"
+            class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+            ><%= childLink.name %></a
+          >
+        </li>
+        <% }) %>
+      </ul>
+    </li>
+    <% } else { %>
+    <li>
+      <a
+        href="<%= sidebarLink.to %>"
+        class="<%= currentPage === sidebarLink.to ? 'bg-green font-medium': 'font-normal' %> flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-green"
+      >
+        <span class="ml-3"><%= sidebarLink.name %></span>
+      </a>
+    </li>
+    <% } %> <% }) %>
+
+    <li>
+      <a
+        href="#"
+        class="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+      >
+        <svg
+          aria-hidden="true"
+          class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+          fill="currentColor"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+          <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+        </svg>
+        <span class="ml-3">Dashboard</span>
+      </a>
+    </li>
+  </ul>
+</aside>

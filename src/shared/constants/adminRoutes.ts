@@ -15,7 +15,7 @@ export const adminMenus: AdminMenu[] = [
   {
     id: '1',
     to: '/admin',
-    name: 'Dashboard',
+    name: 'Overview',
     icon: '',
   },
   {

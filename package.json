@@ -17,6 +17,7 @@
     "watch:css": "tailwindcss -i ./public/styles/global.css -o ./public/styles/styles.css --watch"
   },
   "devDependencies": {
+    "@types/ejs": "^3.1.1",
     "@types/html-minifier": "^4.0.2",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
@@ -45,9 +46,9 @@
     "@prisma/client": "^4.6.1",
     "argon2": "^0.30.2",
     "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
     "envalid": "^7.3.1",
     "fastify": "^4.10.0",
-    "handlebars": "^4.7.7",
     "html-minifier": "^4.0.0",
     "nanoid": "3.3.4",
     "node-cache": "^5.1.2",
