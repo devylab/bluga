@@ -6,9 +6,8 @@ import path from 'path';
 import minifier from 'html-minifier';
 import { UserRoute } from './users/user.route';
 import { env } from '@shared/constants/env';
-import { adminMenus } from '@shared/constants/adminRoutes';
-// import { Utils } from '@shared/utils';
-// import { formatAdminRoutes } from '@shared/constants/adminRoutes';
+import { Utils } from '@shared/utils';
+import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 
 const minifierOpts = {
   removeComments: true,
@@ -54,21 +53,17 @@ export class AppModule {
   }
 
   private loadAdmin() {
-    // const { adminRoutes } = Utils.renderAdminRoutes();
-    // adminRoutes.subscribe((routes) => {
-    //   const formattedRoutes = formatAdminRoutes(routes);
-    //   formattedRoutes.forEach((route) => {
-    //     // this.app.next(route);
-    //   });
-    // });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.app.get('/admin', async (req, reply: any) => {
-      const theme = '/pages/overview.ejs';
-      // We are awaiting a function result
-      // const t = await something();
-      // Note the return statement
-      return reply.admin(theme, { page: 'Overview', sidebarLinks: adminMenus, currentPage: req.url });
+    const { adminRoutes, adminMenus } = Utils.renderAdminRoutes();
+    adminRoutes.subscribe((routes) => {
+      const formattedRoutes = formatAdminRoutes(routes);
+      formattedRoutes.forEach((route) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this.app.get(route.to, async (req, reply: any) => {
+          // We are awaiting a function result
+          // const t = await something();
+          return reply.admin(route.path, { page: route.name, sidebarLinks: adminMenus, currentPage: req.url });
+        });
+      });
     });
   }
 
