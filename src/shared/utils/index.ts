@@ -19,7 +19,7 @@ export class Utils {
       adminRoutes.next(newRoutes);
     };
 
-    return { addNewAdminRoute, adminRoutes };
+    return { addNewAdminRoute, adminRoutes, adminMenus };
   }
 
   static uniqueId(size = 10) {

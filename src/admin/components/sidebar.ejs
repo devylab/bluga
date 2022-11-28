@@ -4,13 +4,16 @@
   class="sidebar-light w-60 min-w-[240px] p-4 shadow-xl shadow-white transition-all dark:bg-sidebar-dark"
   aria-label="Sidebar"
 >
+  <div class="mb-4 flex items-center py-2.5">
+    <img class="h-auto w-auto max-w-full" src="/public/img/logo.png" alt="" />
+  </div>
   <ul class="space-y-2">
     <% sidebarLinks.forEach((sidebarLink) => { %> <% if (sidebarLink.children) { %>
     <li x-data="{ open: false }">
       <button
         @click="open = !open"
         type="button"
-        class="<%= currentPage.startsWith(sidebarLink.to) ? 'bg-green font-medium': 'font-normal' %> flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-green"
+        class="<%= currentPage.startsWith(sidebarLink.to) ? 'bg-green font-medium': 'font-normal dark:text-sidebar-link-dark' %> flex w-full items-center rounded-lg p-2 text-base text-gray-900 transition duration-75 hover:bg-green hover:font-medium hover:dark:text-gray-900"
         aria-controls="dropdown-<%= sidebarLink.name %>"
         data-collapse-toggle="dropdown-<%= sidebarLink.name %>"
       >
@@ -41,8 +44,10 @@
         <li>
           <a
             href="<%= sidebarLink.to %><%= childLink.to %>"
-            class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-            ><%= childLink.name %></a
+            class="flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-sidebar-link-dark dark:hover:bg-gray-700"
+            ><span class="<%= currentPage === sidebarLink.to + childLink.to && 'border-b-2 border-b-green' %>"
+              ><%= childLink.name %></span
+            ></a
           >
         </li>
         <% }) %>
@@ -52,21 +57,11 @@
     <li>
       <a
         href="<%= sidebarLink.to %>"
-        class="<%= currentPage === sidebarLink.to ? 'bg-green font-medium': 'font-normal' %> flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-green"
-      >
-        <span class="ml-3"><%= sidebarLink.name %></span>
-      </a>
-    </li>
-    <% } %> <% }) %>
-
-    <li>
-      <a
-        href="#"
-        class="flex items-center rounded-lg p-2 text-base font-normal text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+        class="<%= currentPage === sidebarLink.to ? 'bg-green font-medium': 'font-normal dark:text-sidebar-link-dark' %> flex items-center rounded-lg p-2 text-base text-gray-900 hover:bg-green hover:font-medium hover:dark:text-gray-900"
       >
         <svg
           aria-hidden="true"
-          class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+          class="h-6 w-6"
           fill="currentColor"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -74,8 +69,9 @@
           <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
           <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
         </svg>
-        <span class="ml-3">Dashboard</span>
+        <span class="ml-3"><%= sidebarLink.name %></span>
       </a>
     </li>
+    <% } %> <% }) %>
   </ul>
 </aside>

@@ -3,11 +3,13 @@ export type AdminMenu = {
   id: string;
   to: string;
   name: string;
+  path?: string;
   icon: any;
   children?: {
     to: string;
     name: string;
     icon: any;
+    path: string;
   }[];
 };
 
@@ -16,6 +18,7 @@ export const adminMenus: AdminMenu[] = [
     id: '1',
     to: '/admin',
     name: 'Overview',
+    path: '/pages/overview.ejs',
     icon: '',
   },
   {
@@ -28,11 +31,13 @@ export const adminMenus: AdminMenu[] = [
         to: '/lists',
         name: 'Lists',
         icon: '',
+        path: '/pages/content/lists.ejs',
       },
       {
         to: '/create',
         name: 'Create',
         icon: '',
+        path: '/pages/content/create.ejs',
       },
     ],
   },
@@ -46,29 +51,38 @@ export const adminMenus: AdminMenu[] = [
         to: '/general',
         name: 'General',
         icon: '',
+        path: '/pages/settings/general.ejs',
       },
     ],
   },
 ];
 
 export const formatAdminRoutes = (adminMenu: AdminMenu | AdminMenu[]) => {
-  let routes: string[] = [];
+  let routes: { to: string; path?: string; name: string }[] = [];
 
   if (Array.isArray(adminMenu)) {
     for (const menu of adminMenu) {
       if (menu?.children?.length) {
-        const nestedMenus = menu.children.map((nestedMenu) => menu.to + nestedMenu.to);
+        const nestedMenus = menu.children.map((nestedMenu) => ({
+          to: menu.to + nestedMenu.to,
+          path: nestedMenu.path,
+          name: nestedMenu.name,
+        }));
         routes = [...routes, ...nestedMenus];
       } else {
-        routes.push(menu.to);
+        routes.push({ to: menu.to, path: menu.path, name: menu.name });
       }
     }
   } else {
     if (adminMenu?.children?.length) {
-      const nestedMenus = adminMenu.children.map((nestedMenu) => adminMenu.to + nestedMenu.to);
+      const nestedMenus = adminMenu.children.map((nestedMenu) => ({
+        to: adminMenu.to + nestedMenu.to,
+        path: nestedMenu.path,
+        name: nestedMenu.name,
+      }));
       routes = [...routes, ...nestedMenus];
     } else {
-      routes.push(adminMenu.to);
+      routes.push({ to: adminMenu.to, path: adminMenu.path, name: adminMenu.name });
     }
   }
 
