@@ -5,3 +5,9 @@
 [x-cloak] {
   display: none !important;
 }
+
+@media (max-width: 640px) {
+  .sidebar {
+    margin-left: -240px;
+  }
+}
