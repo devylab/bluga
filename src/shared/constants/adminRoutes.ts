@@ -5,11 +5,13 @@ export type AdminMenu = {
   name: string;
   path?: string;
   icon: any;
+  sidebar: boolean;
   children?: {
     to: string;
     name: string;
     icon: any;
     path: string;
+    sidebar: boolean;
   }[];
 };
 
@@ -20,24 +22,35 @@ export const adminMenus: AdminMenu[] = [
     name: 'Overview',
     path: '/pages/overview.ejs',
     icon: '',
+    sidebar: true,
   },
   {
     id: '2',
     to: '/admin/contents',
     name: 'Contents',
     icon: '',
+    sidebar: true,
     children: [
       {
         to: '/lists',
         name: 'Lists',
         icon: '',
         path: '/pages/content/lists.ejs',
+        sidebar: true,
       },
       {
         to: '/create',
         name: 'Create',
         icon: '',
         path: '/pages/content/create.ejs',
+        sidebar: true,
+      },
+      {
+        to: '/edit/:id',
+        name: 'Edit',
+        icon: '',
+        path: '/pages/content/create.ejs',
+        sidebar: false,
       },
     ],
   },
@@ -46,12 +59,14 @@ export const adminMenus: AdminMenu[] = [
     to: '/admin/Settings',
     name: 'Settings',
     icon: '',
+    sidebar: true,
     children: [
       {
         to: '/general',
         name: 'General',
         icon: '',
         path: '/pages/settings/general.ejs',
+        sidebar: true,
       },
     ],
   },
