@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "jsx": "preserve",
     "module": "commonjs",
     "esModuleInterop": true,
     "declaration": false,

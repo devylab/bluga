@@ -8,7 +8,7 @@
     <img class="h-auto w-auto max-w-full" src="/public/img/logo.png" alt="" />
   </div>
   <ul class="space-y-2">
-    <% sidebarLinks.forEach((sidebarLink) => { %> <% if (sidebarLink.children) { %>
+    <% sidebarLinks.forEach((sidebarLink) => { %> <% if (sidebarLink.sidebar) { %> <% if (sidebarLink.children) { %>
     <li x-data="{ open: false }">
       <button
         @click="open = !open"
@@ -40,7 +40,7 @@
         :class="open ? 'py-2 h-auto visible opacity-100' : 'py-0 opacity-0 h-0 invisible'"
         class="space-y-2 transition-all"
       >
-        <% sidebarLink.children.forEach((childLink) => { %>
+        <% sidebarLink.children.forEach((childLink) => { %> <% if (childLink.sidebar) { %>
         <li>
           <a
             href="<%= sidebarLink.to %><%= childLink.to %>"
@@ -50,7 +50,7 @@
             ></a
           >
         </li>
-        <% }) %>
+        <% } %> <% }) %>
       </ul>
     </li>
     <% } else { %>
@@ -72,6 +72,6 @@
         <span class="ml-3"><%= sidebarLink.name %></span>
       </a>
     </li>
-    <% } %> <% }) %>
+    <% } %> <% } %> <% }) %>
   </ul>
 </aside>

@@ -1,6 +1,10 @@
-<nav class="mb-4 flex h-16 items-center px-2 py-2.5 sm:px-4">
+<nav
+  x-data
+  :class="$store.sidebar.show ? 'w-[calc(100%-255px)]' : '!w-[calc(100%-15px)]'"
+  class="nav fixed top-0 z-50 mb-4 flex h-16 w-[calc(100%-255px)] items-center bg-main-light px-2 py-2.5 dark:bg-main-dark sm:px-4"
+>
   <div class="mx-auto flex w-full flex-wrap items-center justify-between">
-    <button x-data @click="$store.sidebar.toggleSidebar()">
+    <button @click="$store.sidebar.toggleSidebar()">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <title>Menu Toggle</title>
         <path

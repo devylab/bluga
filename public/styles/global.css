@@ -14,8 +14,16 @@
   max-width: 86%;
 }
 
-@media (max-width: 640px) {
+.cdx-block {
+  max-width: 1612px;
+}
+
+@media (max-width: 774px) {
   .sidebar {
     margin-left: -240px;
+  }
+
+  .nav {
+    @apply w-[calc(100%-15px)];
   }
 }

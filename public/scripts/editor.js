@@ -22,12 +22,16 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-const editor = new EditorJS({
-  holder: 'editorjs',
-  placeholder: 'Let`s write an awesome story!',
-});
-
-const onSubmit = async () => {
+const saveContent = async () => {
   const outputData = await editor.save();
   console.log('OUTPUT DATA', outputData);
 };
+
+const editor = new EditorJS({
+  holder: 'editorjs',
+  placeholder: 'Let`s write an awesome story!',
+  onChange: (api, event) => {
+    console.log("Now I know that Editor's content changed!", event);
+    console.log('API!', api);
+  },
+});

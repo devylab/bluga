@@ -61,7 +61,12 @@ export class AppModule {
         this.app.get(route.to, async (req, reply: any) => {
           // We are awaiting a function result
           // const t = await something();
-          return reply.admin(route.path, { page: route.name, sidebarLinks: adminMenus, currentPage: req.url });
+          return reply.admin(route.path, {
+            async: true,
+            page: route.name,
+            sidebarLinks: adminMenus,
+            currentPage: req.url,
+          });
         });
       });
     });
@@ -90,10 +95,18 @@ export class AppModule {
     });
   }
 
+  private loadApi() {
+    this.userRoutes.loadRoutes();
+    this.app.post('/api/create-content', async (req, reply) => {
+      console.log('HELLO THERE', req.body);
+      return reply.redirect(307, '/admin/contents/edit/271801818091');
+    });
+  }
+
   loadRoutes() {
+    this.loadApi();
     this.loadAdmin();
     this.loadIndex();
-    this.userRoutes.loadRoutes();
     this.noRoute();
   }
 

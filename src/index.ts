@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import fastifyCompress from '@fastify/compress';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyRateLimit from '@fastify/rate-limit';
+import formBody from '@fastify/formbody';
 import { env } from '@shared/constants/env';
 import { logger } from '@shared/logger';
 import database from '@shared/database';
@@ -35,6 +36,7 @@ export class AppInstance {
       timeWindow: '1 minute',
     });
     await this.server.register(fastifyCompress);
+    await this.server.register(formBody);
 
     const appModule = new AppModule(this.server);
     appModule.loadRoutes();
