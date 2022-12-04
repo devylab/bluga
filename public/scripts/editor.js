@@ -23,15 +23,22 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 const saveContent = async () => {
+  const title = document.getElementById('contentTitle');
   const outputData = await editor.save();
-  console.log('OUTPUT DATA', outputData);
+  const res = await axios.post('/api/create-content', {
+    title: title.value,
+    rawContent: outputData,
+    status: 'DRAFT',
+  });
+  console.log('DATATATATAT', res.data);
+  window.history.pushState('Edit', '', res.data?.data?.to);
 };
 
 const editor = new EditorJS({
   holder: 'editorjs',
   placeholder: 'Let`s write an awesome story!',
   onChange: (api, event) => {
-    console.log("Now I know that Editor's content changed!", event);
-    console.log('API!', api);
+    // console.log("Now I know that Editor's content changed!", event);
+    // console.log('API!', api);
   },
 });

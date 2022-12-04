@@ -1,6 +1,7 @@
-<form>
+<form autocomplete="off">
   <div class="flex items-center justify-center">
     <input
+      id="contentTitle"
       type="text"
       name="contentTitle"
       placeholder="Content Title"
@@ -11,7 +12,7 @@
   <button
     class="fixed right-5 bottom-5 flex h-12 w-12 items-center justify-center rounded-full bg-green hover:scale-105"
     x-data
-    @click="saveContent"
+    @click.prevent="saveContent"
     type="submit"
   >
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

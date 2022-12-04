@@ -3,6 +3,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "declaration": false,
+    "strictNullChecks": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -12,7 +13,7 @@
     "outDir": "./build",
     "incremental": false,
     "skipLibCheck": true,
-    "allowJs": false,
+    "allowJs": true,
     "strict": true,
     "noEmit": false,
     "types": ["node"],
@@ -23,12 +24,13 @@
     "isolatedModules": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
+    "typeRoots": ["./node_modules/@types", "./typings"],
     "lib": ["esnext", "DOM"],
     "baseUrl": ".",
     "paths": {
       "@shared/*": ["src/shared/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "./typings"],
   "exclude": ["node_modules"]
 }

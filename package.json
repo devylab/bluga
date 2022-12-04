@@ -10,8 +10,9 @@
     "prebuild": "rimraf build && ts-prune",
     "build": "tsc",
     "generate": "npx prisma generate",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --files src/index.ts",
     "find-deadcode": "ts-prune",
+    "migrate": "prisma migrate dev --name",
     "prettier": "prettier --write \"**/*.{ts,tsx}\"",
     "build:css": "tailwindcss -i ./public/styles/global.css -o ./public/styles/styles.css --minify",
     "watch:css": "tailwindcss -i ./public/styles/global.css -o ./public/styles/styles.css --watch"
@@ -20,6 +21,7 @@
     "@types/ejs": "^3.1.1",
     "@types/html-minifier": "^4.0.2",
     "@types/node": "^18.11.9",
+    "@types/sanitize-html": "^2.6.2",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "autoprefixer": "^10.4.13",
@@ -29,7 +31,7 @@
     "postcss": "^8.4.19",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.2.0",
-    "prisma": "^4.6.1",
+    "prisma": "^4.7.1",
     "rimraf": "^3.0.2",
     "tailwindcss": "^3.2.4",
     "ts-node-dev": "^2.0.0",
@@ -44,15 +46,17 @@
     "@fastify/rate-limit": "^7.5.0",
     "@fastify/static": "^6.5.0",
     "@fastify/view": "^7.1.2",
-    "@prisma/client": "^4.6.1",
+    "@prisma/client": "^4.7.1",
     "argon2": "^0.30.2",
     "dotenv": "^16.0.3",
+    "editorjs-html": "^3.4.2",
     "ejs": "^3.1.8",
     "envalid": "^7.3.1",
     "fastify": "^4.10.0",
     "html-minifier": "^4.0.0",
     "nanoid": "3.3.4",
     "node-cache": "^5.1.2",
-    "rxjs": "^7.5.7"
+    "rxjs": "^7.5.7",
+    "sanitize-html": "^2.7.3"
   }
 }
