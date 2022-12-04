@@ -8,6 +8,7 @@ import { UserRoute } from './users/user.route';
 import { env } from '@shared/constants/env';
 import { Utils } from '@shared/utils';
 import { formatAdminRoutes } from '@shared/constants/adminRoutes';
+import { ContentRoute } from './content/content.route';
 
 const minifierOpts = {
   removeComments: true,
@@ -20,6 +21,7 @@ const minifierOpts = {
 
 export class AppModule {
   private readonly userRoutes;
+  private readonly contentRoutes;
 
   constructor(private readonly app: FastifyInstance) {
     this.app.register(fastifyStatic, {
@@ -29,7 +31,7 @@ export class AppModule {
 
     this.app.register(fastifyView, {
       engine: { ejs: EJS },
-      root: path.join(__dirname, 'contents', 'themes'),
+      root: path.join(__dirname, 'tools', 'themes'),
       propertyName: 'themes',
       viewExt: 'ejs',
       production: env.environment.isProduction,
@@ -50,6 +52,7 @@ export class AppModule {
 
     // this.app.use
     this.userRoutes = new UserRoute(this.app);
+    this.contentRoutes = new ContentRoute(this.app);
   }
 
   private loadAdmin() {
@@ -97,10 +100,7 @@ export class AppModule {
 
   private loadApi() {
     this.userRoutes.loadRoutes();
-    this.app.post('/api/create-content', async (req, reply) => {
-      console.log('HELLO THERE', req.body);
-      return reply.redirect(307, '/admin/contents/edit/271801818091');
-    });
+    this.contentRoutes.loadRoutes();
   }
 
   loadRoutes() {
