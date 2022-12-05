@@ -49,7 +49,7 @@ export const adminMenus: AdminMenu[] = [
         to: '/edit/:id',
         name: 'Edit',
         icon: '',
-        path: '/pages/content/create.ejs',
+        path: '/pages/content/edit.ejs',
         sidebar: false,
       },
     ],

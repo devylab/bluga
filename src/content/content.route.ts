@@ -8,6 +8,7 @@ export class ContentRoute {
   }
 
   loadRoutes() {
-    this.server.post('/api/create-content', (req, reply) => this.contentController.createContent(req, reply));
+    this.server.post('/api/save-content', (req, reply) => this.contentController.createContent(req, reply));
+    this.server.get('/api/content/:id', (req, reply) => this.contentController.getContentById(req, reply));
   }
 }
