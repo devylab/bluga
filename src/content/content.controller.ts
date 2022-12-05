@@ -11,8 +11,9 @@ export class ContentController {
 
   async createContent(req: FastifyRequest, reply: FastifyReply) {
     const body = req.body as CreateContent;
+    const query = req.query as { content: string };
 
-    const { data, error } = await this.contentService.createContent(body);
+    const { data, error } = await this.contentService.saveContent(body, query?.content);
     if (error) {
       return reply.code(400).send({
         status: 'error',
@@ -21,14 +22,33 @@ export class ContentController {
       });
     }
 
-    return reply.code(201).send({
+    return reply.code(200).send({
       status: 'success',
-      code: 201,
+      code: 200,
       data: {
         title: body.title,
         status: body.status,
         to: `/admin/contents/edit/${data?.id}`,
       },
+    });
+  }
+
+  async getContentById(req: FastifyRequest, reply: FastifyReply) {
+    const params = req.params as { id: string };
+
+    const { data, error } = await this.contentService.getContentById(params.id);
+    if (error) {
+      return reply.code(400).send({
+        status: 'error',
+        code: 400,
+        error,
+      });
+    }
+
+    return reply.code(200).send({
+      status: 'success',
+      code: 200,
+      data,
     });
   }
 }
