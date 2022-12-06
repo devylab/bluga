@@ -40,7 +40,33 @@ export class ContentService {
       });
       return { data, error: null };
     } catch (err) {
-      logger.error(err, 'error while creating content');
+      logger.error(err, 'error while getting content by id');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async getContents() {
+    try {
+      const headings = [
+        {
+          key: 'title',
+          value: 'Title',
+        },
+        {
+          key: 'status',
+          value: 'Status',
+        },
+        {
+          key: 'createdAt',
+          value: 'CreatedAt',
+        },
+      ];
+      const contents = await this.db.content.findMany({
+        select: { id: true, title: true, status: true, createdAt: true },
+      });
+      return { data: { contents, headings }, error: null };
+    } catch (err) {
+      logger.error(err, 'error while getting contents');
       return { data: null, error: 'error' };
     }
   }
