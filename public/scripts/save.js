@@ -74,7 +74,7 @@ document.addEventListener('alpine:init', async () => {
         const res = await axios.post(saveUrl, {
           title: title.value,
           rawContent,
-          status: 'DRAFT',
+          // status: 'DRAFT',
         });
         this.message = `content saved as ${res.data?.data?.status}`;
         this.show = true;
