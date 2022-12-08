@@ -9,6 +9,7 @@ import { env } from '@shared/constants/env';
 import { Utils } from '@shared/utils';
 import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 import { ContentRoute } from './content/content.route';
+import { ContentService } from './content/content.service';
 
 const minifierOpts = {
   removeComments: true,
@@ -23,10 +24,16 @@ export class AppModule {
   private readonly userRoutes;
   private readonly contentRoutes;
 
+  // eslint-disable-next-line max-lines-per-function
   constructor(private readonly app: FastifyInstance) {
     this.app.register(fastifyStatic, {
       root: [path.join(__dirname, '..', 'public')],
       prefix: '/public/',
+    });
+
+    this.app.register(fastifyStatic, {
+      root: path.join(__dirname, 'tools'),
+      decorateReply: false,
     });
 
     this.app.register(fastifyView, {
@@ -78,12 +85,17 @@ export class AppModule {
   private loadIndex() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     this.app.get('/', async (req, reply: any) => {
-      const theme = '/home-coming' + '/pages/index.hbs';
+      const theme = '/avail' + '/pages/index.ejs';
+      const conServ = new ContentService();
       // We are awaiting a functioon result
-      // const t = await something();
+      const contents = await conServ.getPublicContents('DRAFT');
+
+      const options = {
+        themePath: () => '/themes/avail',
+      };
 
       // Note the return statement
-      return reply.themes(theme, { text: 'text' });
+      return reply.themes(theme, { contents: contents.data, ...options });
     });
 
     this.app.get('/robots.txt', async (req, reply) => {

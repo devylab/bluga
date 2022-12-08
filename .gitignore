@@ -5,3 +5,4 @@ node_modules
 .next
 build
 yarn-error.log
+/src/tools/themes/avail

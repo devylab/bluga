@@ -1,5 +1,6 @@
+export type StatusType = 'DRAFT' | 'PRIVATE' | 'PUBLIC';
 export type CreateContent = {
   title: string;
-  status: 'DRAFT' | 'PRIVATE' | 'PUBLIC';
+  status: StatusType;
   rawContent: string;
 };

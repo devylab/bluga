@@ -3,7 +3,7 @@ import sanitizeHtml from 'sanitize-html';
 import database from '@shared/database';
 import { logger } from '@shared/logger';
 import { Utils } from '@shared/utils';
-import { CreateContent } from './entities/create-content.entity';
+import { CreateContent, StatusType } from './entities/create-content.entity';
 
 const edjsParser = edjsHTML();
 
@@ -65,6 +65,19 @@ export class ContentService {
         select: { id: true, title: true, status: true, createdAt: true },
       });
       return { data: { contents, headings }, error: null };
+    } catch (err) {
+      logger.error(err, 'error while getting contents');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async getPublicContents(status: StatusType) {
+    try {
+      const contents = await this.db.content.findMany({
+        select: { id: true, title: true, content: true, createdAt: true },
+        where: { status },
+      });
+      return { data: contents, error: null };
     } catch (err) {
       logger.error(err, 'error while getting contents');
       return { data: null, error: 'error' };
