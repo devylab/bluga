@@ -56,6 +56,14 @@ export const adminMenus: AdminMenu[] = [
   },
   {
     id: '3',
+    to: '/admin/themes',
+    name: 'Themes',
+    icon: '',
+    path: '/pages/themes.ejs',
+    sidebar: true,
+  },
+  {
+    id: '4',
     to: '/admin/Settings',
     name: 'Settings',
     icon: '',
