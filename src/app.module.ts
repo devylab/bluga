@@ -20,9 +20,20 @@ const minifierOpts = {
   removeEmptyAttributes: true,
 };
 
+type ChangeLater = {
+  route: string;
+  path: string;
+  queries: {
+    name: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    query: (self: unknown) => any;
+  }[];
+};
+
 export class AppModule {
   private readonly userRoutes;
   private readonly contentRoutes;
+  private readonly contentService;
 
   // eslint-disable-next-line max-lines-per-function
   constructor(private readonly app: FastifyInstance) {
@@ -60,6 +71,7 @@ export class AppModule {
     // this.app.use
     this.userRoutes = new UserRoute(this.app);
     this.contentRoutes = new ContentRoute(this.app);
+    this.contentService = new ContentService();
   }
 
   private loadAdmin() {
@@ -83,20 +95,29 @@ export class AppModule {
   }
 
   private loadIndex() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.app.get('/', async (req, reply: any) => {
-      const theme = '/avail' + '/pages/index.ejs';
-      const conServ = new ContentService();
-      // We are awaiting a functioon result
-      const contents = await conServ.getPublicContents('DRAFT');
+    const currentTheme = '/avail';
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const themeConfig = require(path.join(__dirname, 'tools', 'themes', currentTheme, 'config.js')) as ChangeLater[];
+    for (const current of themeConfig) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.app.get(current.route, async (req, reply: any) => {
+        const options = {
+          themePath: () => '/themes/avail',
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any;
 
-      const options = {
-        themePath: () => '/themes/avail',
-      };
+        for (const query of current.queries) {
+          const queryOptions = {
+            content: this.contentService,
+          };
+          const { data } = await query.query(queryOptions);
+          options[query.name] = data;
+        }
 
-      // Note the return statement
-      return reply.themes(theme, { contents: contents.data, ...options });
-    });
+        // Note the return statement
+        return reply.themes(currentTheme + current.path, options);
+      });
+    }
 
     this.app.get('/robots.txt', async (req, reply) => {
       return reply.sendFile('/robots.txt');

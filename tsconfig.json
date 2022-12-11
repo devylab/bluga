@@ -22,13 +22,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noUnusedLocals": true,
+    // "noUnusedLocals": true,
     "noImplicitAny": true,
     "typeRoots": ["./node_modules/@types", "./typings"],
     "lib": ["esnext", "DOM"],
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["src/shared/*"]
+      "@shared/*": ["src/shared/*"],
+      "@types/*": ["typings/*"]
     }
   },
   "include": ["src/**/*", "./typings"],
