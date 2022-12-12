@@ -52,8 +52,8 @@ export class ContentController {
     });
   }
 
-  async getContents(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.contentService.getContents();
+  async getAdminContents(req: FastifyRequest, reply: FastifyReply) {
+    const { data, error } = await this.contentService.getAdminContents();
     if (error) {
       return reply.code(400).send({
         status: 'error',
@@ -69,8 +69,8 @@ export class ContentController {
     });
   }
 
-  async getPublicContents(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.contentService.getPublicContents('PUBLIC');
+  async getContents(req: FastifyRequest, reply: FastifyReply) {
+    const { data, error } = await this.contentService.getContents('PUBLIC');
     if (error) {
       return reply.code(400).send({
         status: 'error',

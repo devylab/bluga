@@ -103,12 +103,12 @@ export class AppModule {
       this.app.get(current.route, async (req, reply: any) => {
         const options = {
           themePath: () => '/themes/avail',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any;
+        } as { [name: string]: unknown };
 
         for (const query of current.queries) {
           const queryOptions = {
             content: this.contentService,
+            params: req.params,
           };
           const { data } = await query.query(queryOptions);
           options[query.name] = data;
