@@ -25,7 +25,9 @@ model User {
 model Content {
   id            String          @id
   title         String          @db.VarChar(255)
-  slug          String          @db.VarChar(255)
+  slug          String          @db.VarChar(255) @unique
+  thumbnail     String          @db.VarChar(255)
+  description   String          @db.VarChar(255)
   rawContent    Json
   content       String          @db.Text
   status        ContentStatus   @default(DRAFT)

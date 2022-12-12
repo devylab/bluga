@@ -14,14 +14,24 @@ export class ContentService {
     this.db = database.instance();
   }
 
-  async saveContent({ rawContent, title, status }: CreateContent, contentID = '') {
+  async saveContent({ rawContent, title, thumbnail, description, ...rest }: CreateContent, contentID = '') {
     try {
       const html = edjsParser.parse(rawContent);
       const stringHtml = html?.reduce((a: string, b: string) => a + b, '');
       const content = sanitizeHtml(stringHtml);
+      const slug = title.toLowerCase().replaceAll(' ', '-');
+      const payload = {
+        content,
+        rawContent,
+        title,
+        slug,
+        thumbnail: thumbnail || '',
+        description: description || '',
+        ...rest,
+      };
       const data = await this.db.content.upsert({
-        create: { id: Utils.uniqueId(), content, rawContent, title, status },
-        update: { content, rawContent, title, status },
+        create: { id: Utils.uniqueId(), ...payload },
+        update: { ...payload },
         select: { id: true },
         where: { id: contentID },
       });
@@ -45,7 +55,7 @@ export class ContentService {
     }
   }
 
-  async getContents() {
+  async getAdminContents() {
     try {
       const headings = [
         {
@@ -71,15 +81,28 @@ export class ContentService {
     }
   }
 
-  async getPublicContents(status: StatusType) {
+  async getContents(status: StatusType) {
     try {
       const contents = await this.db.content.findMany({
-        select: { id: true, title: true, content: true, createdAt: true },
+        select: { id: true, title: true, createdAt: true, slug: true },
         where: { status },
       });
       return { data: contents, error: null };
     } catch (err) {
       logger.error(err, 'error while getting contents');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async getContentBySlug(slug: string) {
+    try {
+      const data = await this.db.content.findUnique({
+        select: { content: true, title: true, createdAt: true },
+        where: { slug },
+      });
+      return { data, error: null };
+    } catch (err) {
+      logger.error(err, 'error while getting content by slug');
       return { data: null, error: 'error' };
     }
   }
