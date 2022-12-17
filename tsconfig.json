@@ -28,10 +28,10 @@
     "lib": ["esnext", "DOM"],
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["src/shared/*"],
+      "@shared/*": ["src/shared/*", "build/shared/*"],
       "@types/*": ["typings/*"]
     }
   },
-  "include": ["src/**/*", "./typings"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "./typings", "src/public"],
+  "exclude": ["node_modules", "src/tools", "src/public"]
 }

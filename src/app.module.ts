@@ -38,7 +38,7 @@ export class AppModule {
   // eslint-disable-next-line max-lines-per-function
   constructor(private readonly app: FastifyInstance) {
     this.app.register(fastifyStatic, {
-      root: [path.join(__dirname, '..', 'public')],
+      root: [path.join(__dirname, 'public')],
       prefix: '/public/',
     });
 
@@ -103,6 +103,7 @@ export class AppModule {
       this.app.get(current.route, async (req, reply: any) => {
         const options = {
           themePath: () => '/themes/avail',
+          page: 'ContentQuery',
         } as { [name: string]: unknown };
 
         for (const query of current.queries) {
