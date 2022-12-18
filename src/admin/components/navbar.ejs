@@ -1,0 +1,73 @@
+<nav
+  x-data
+  :class="$store.sidebar.show ? 'w-[calc(100%-255px)]' : '!w-[calc(100%-15px)]'"
+  class="nav fixed top-0 z-50 mb-4 flex h-16 w-[calc(100%-255px)] items-center bg-main-light px-2 py-2.5 dark:bg-main-dark sm:px-4"
+>
+  <div class="mx-auto flex w-full flex-wrap items-center justify-between">
+    <button @click="$store.sidebar.toggleSidebar()">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <title>Menu Toggle</title>
+        <path
+          d="M17 9h-14c-0.552 0-1 0.448-1 1s0.448 1 1 1h14c0.552 0 1-0.448 1-1s-0.448-1-1-1zM21 5h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1h18c0.552 0 1-0.448 1-1s-0.448-1-1-1zM21 13h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1h18c0.552 0 1-0.448 1-1s-0.448-1-1-1zM17 17h-14c-0.552 0-1 0.448-1 1s0.448 1 1 1h14c0.552 0 1-0.448 1-1s-0.448-1-1-1z"
+        ></path>
+      </svg>
+    </button>
+
+    <div class="flex items-center md:order-2" x-data="{ open: false }">
+      <button
+        type="button"
+        @click="open = !open"
+        class="mr-3 flex rounded-full bg-gray-800 text-sm focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 md:mr-0"
+        id="user-menu-button"
+        aria-expanded="false"
+        data-dropdown-toggle="user-dropdown"
+        data-dropdown-placement="bottom"
+      >
+        <span class="sr-only">Open user menu</span>
+        <img class="h-8 w-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo" />
+      </button>
+      <!-- Dropdown menu -->
+      <div
+        x-cloak
+        :class="open ? 'block' : 'hidden'"
+        class="absolute top-8 right-4 z-50 my-4 list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
+        id="user-dropdown"
+      >
+        <div class="px-4 py-3">
+          <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+          <span class="block truncate text-sm font-medium text-gray-500 dark:text-gray-400">name@flowbite.com</span>
+        </div>
+        <ul class="py-1" aria-labelledby="user-menu-button">
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Dashboard</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Settings</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Earnings</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+              >Sign out</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
