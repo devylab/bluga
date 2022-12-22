@@ -15,4 +15,5 @@ export const env = {
     isTest: clean.isTest,
   },
   port: clean.PORT,
+  host: clean.isDev ? '127.0.0.1' : '0.0.0.0',
 };

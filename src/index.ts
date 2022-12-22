@@ -50,7 +50,7 @@ export class AppInstance {
       }
     });
 
-    this.server.listen({ port: env.port }, (err, address) => {
+    this.server.listen({ port: env.port, host: env.host }, (err, address) => {
       if (err) {
         logger.error(err, 'unable to start app');
         process.exit(1);
