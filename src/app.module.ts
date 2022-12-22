@@ -111,11 +111,11 @@ export class AppModule {
         for (const query of current.queries) {
           const queryOptions = { content: this.contentService, params: req.params };
           const { data } = await query.query(queryOptions);
-          options[query.name] = data;
+          options[query.name] = data || {};
         }
         options.page = Utils.replacePlaceholder(current.title, {
           name: 'ContentQuery',
-          'content.title': options['content']['title'],
+          // 'content.title': options['content']['title'] || 'not found',
         });
         return reply.themes(currentTheme + current.path, options);
       });
