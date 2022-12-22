@@ -5,6 +5,6 @@ node_modules
 .next
 build
 yarn-error.log
-/src/tools/themes/avail
+# /src/tools/themes/avail
 /src/public/scripts/*.min.js
 /src/public/styles/styles.css

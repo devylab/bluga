@@ -3,6 +3,7 @@ import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import EJS from 'ejs';
 import path from 'path';
+import fs from 'fs';
 import minifier from 'html-minifier';
 import { UserRoute } from './users/user.route';
 import { env } from '@shared/constants/env';
@@ -97,8 +98,8 @@ export class AppModule {
 
   private loadIndex() {
     const currentTheme = '/avail';
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const themeConfig = require(path.join(__dirname, 'tools', 'themes', currentTheme, 'config.js')) as ChangeLater[];
+    const themeConfigPath = path.join(__dirname, 'tools', 'themes', currentTheme, 'config.js');
+    const themeConfig = eval(fs.readFileSync(themeConfigPath, 'utf-8')) as ChangeLater[];
     for (const current of themeConfig) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.app.get(current.route, async (req, reply: any) => {
@@ -108,14 +109,10 @@ export class AppModule {
         } as { [name: string]: any };
 
         for (const query of current.queries) {
-          const queryOptions = {
-            content: this.contentService,
-            params: req.params,
-          };
+          const queryOptions = { content: this.contentService, params: req.params };
           const { data } = await query.query(queryOptions);
           options[query.name] = data;
         }
-
         options.page = Utils.replacePlaceholder(current.title, {
           name: 'ContentQuery',
           'content.title': options['content']['title'],
