@@ -108,6 +108,7 @@ export class AppModule {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as { [name: string]: any };
 
+        // TODO: handle not found page
         for (const query of current.queries) {
           const queryOptions = { content: this.contentService, params: req.params };
           const { data } = await query.query(queryOptions);
