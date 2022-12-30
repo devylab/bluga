@@ -33,8 +33,4 @@ export class Utils {
   static async comparePassword(hash: string, password: string) {
     return argon2.verify(hash, password);
   }
-
-  static replacePlaceholder(pattern: string, payload: { [name: string]: string }) {
-    return pattern.replace(/{{(.+?)}}/g, (keyExpr, key) => payload[key] || `{{${key}}`).replace(/{{[a-zA-Z_]*}?}/g, '');
-  }
 }

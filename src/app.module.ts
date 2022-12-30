@@ -24,7 +24,6 @@ const minifierOpts = {
 type ChangeLater = {
   route: string;
   path: string;
-  title: string;
   queries: {
     name: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -105,6 +104,7 @@ export class AppModule {
       this.app.get(current.route, async (req, reply: any) => {
         const options = {
           themePath: () => '/themes/avail',
+          page: 'ContentQuery',
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as { [name: string]: any };
 
@@ -114,10 +114,7 @@ export class AppModule {
           const { data } = await query.query(queryOptions);
           options[query.name] = data || {};
         }
-        options.page = Utils.replacePlaceholder(current.title, {
-          name: 'ContentQuery',
-          // 'content.title': options['content']['title'] || 'not found',
-        });
+
         return reply.themes(currentTheme + current.path, options);
       });
     }
