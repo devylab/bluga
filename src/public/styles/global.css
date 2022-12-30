@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:where(html, body) {
+  height: 100%;
+}
+
 [x-cloak] {
   display: none !important;
 }

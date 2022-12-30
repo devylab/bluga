@@ -3,7 +3,6 @@ module.exports = [
   {
     route: '/',
     path: '/pages/index.ejs',
-    title: '{{name}}',
     queries: [
       {
         name: 'contents',
@@ -14,7 +13,6 @@ module.exports = [
   {
     route: '/:slug',
     path: '/pages/single.ejs',
-    title: '{{content.title}} - {{name}}',
     queries: [
       {
         name: 'content',

@@ -7,7 +7,6 @@ type QueryOptions = {
 export type ThemeConfig = {
   route: string;
   path: string;
-  title: string;
   queries: {
     name: string;
     query: (queryOptions: QueryOptions) => unknown;
