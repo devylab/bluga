@@ -115,6 +115,8 @@ export class AppModule {
           options[query.name] = data || {};
         }
 
+        const pageTitle = options?.content?.title ? options?.content?.title + ' - ' : '';
+        options.page = pageTitle + 'ContentQuery';
         return reply.themes(currentTheme + current.path, options);
       });
     }

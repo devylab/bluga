@@ -16,7 +16,7 @@ export class AppInstance {
     this.server = fastify({
       ignoreTrailingSlash: true,
       ignoreDuplicateSlashes: true,
-      logger: env.environment.isProduction,
+      logger: env.environment.isDevelopment,
       pluginTimeout: env.environment.isDevelopment ? 120_000 : undefined,
     });
   }
