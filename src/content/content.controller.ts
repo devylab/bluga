@@ -27,7 +27,7 @@ export class ContentController {
       code: 200,
       data: {
         title: body.title,
-        status: body.status,
+        status: data?.status,
         to: `/admin/contents/edit/${data?.id}`,
       },
     });

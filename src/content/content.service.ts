@@ -32,7 +32,7 @@ export class ContentService {
       const data = await this.db.content.upsert({
         create: { id: Utils.uniqueId(), ...payload },
         update: { ...payload },
-        select: { id: true },
+        select: { id: true, status: true },
         where: { id: contentID },
       });
       return { data, error: null };
