@@ -60,7 +60,7 @@ export const adminMenus: AdminMenu[] = [
     name: 'Themes',
     icon: '',
     path: '/pages/themes.ejs',
-    sidebar: true,
+    sidebar: false,
   },
   {
     id: '4',
@@ -77,6 +77,14 @@ export const adminMenus: AdminMenu[] = [
         sidebar: true,
       },
     ],
+  },
+  {
+    id: '5',
+    to: '/admin/login',
+    name: 'Login',
+    icon: '',
+    path: '/pages/login.ejs',
+    sidebar: false,
   },
 ];
 

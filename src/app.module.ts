@@ -11,6 +11,7 @@ import { Utils } from '@shared/utils';
 import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 import { ContentRoute } from './content/content.route';
 import { ContentService } from './content/content.service';
+import { authGuard } from '@shared/guards/authGuard';
 
 const minifierOpts = {
   removeComments: true,
@@ -82,13 +83,20 @@ export class AppModule {
       formattedRoutes.forEach((route) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this.app.get(route.to, async (req, reply: any) => {
-          // We are awaiting a function result
-          // const t = await something();
+          const notProtected = ['/admin/login'];
+          let user = '';
+          if (notProtected.includes(req.routerPath)) {
+            const authUser = await authGuard(req);
+            if (!authUser) return reply.redirect('/admin/login');
+            user = authUser; // get user data
+          }
+
           return reply.admin(route.path, {
-            async: true,
+            // async: true,
             page: route.name,
             sidebarLinks: adminMenus,
             currentPage: req.url,
+            user,
           });
         });
       });
