@@ -1,3 +1,5 @@
+import { accessTokenKey, refreshTokenKey, secretTokenKey } from '@shared/constants';
+import { env } from '@shared/constants/env';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateUser } from './entities/create-user.entity';
 import { UserService } from './user.service';
@@ -26,5 +28,37 @@ export class UserController {
       code: 201,
       data,
     });
+  }
+
+  async login(req: FastifyRequest, reply: FastifyReply) {
+    const body = req.body as CreateUser;
+    const secret = reply.generateCsrf();
+
+    const { data, error } = await this.userService.login(body, secret);
+    if (error) {
+      return reply.code(400).send({
+        status: 'error',
+        code: 400,
+        error,
+      });
+    }
+
+    const options = {
+      path: '/',
+      signed: true,
+      httpOnly: true,
+      secure: env.environment.isProduction,
+      sameSite: true,
+    };
+    reply
+      .setCookie(accessTokenKey, data.accessToken, options)
+      .cookie(secretTokenKey, data.secret, options)
+      .setCookie(refreshTokenKey, data.refreshToken, options)
+      .code(200)
+      .send({
+        status: 'success',
+        code: 200,
+        data: 'login success',
+      });
   }
 }

@@ -1,0 +1,28 @@
+<section x-data="{ email: '', password: '' }" class="grid h-screen place-content-center">
+  <div class="mb-10 text-center text-indigo-400">
+    <h1 class="text-3xl font-bold tracking-widest">ContentQuery</h1>
+    <!-- <p>Enter</p> -->
+  </div>
+  <div class="flex flex-col items-center justify-center space-y-6">
+    <input
+      type="email"
+      id="email"
+      name="email"
+      x-model="email"
+      placeholder="example@example.com"
+      class="w-80 appearance-none rounded-full border-0 p-2 px-4 focus:ring-2 focus:ring-orange-500"
+    />
+    <div>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        x-model="password"
+        placeholder="password"
+        class="w-80 appearance-none rounded-full border-0 p-2 px-4 focus:ring-2 focus:ring-orange-500"
+      />
+    </div>
+    <button @click="handleLogin(email, password)" class="rounded-full bg-indigo-500 p-2 px-4 text-white">Login</button>
+  </div>
+</section>
+<script src="/public/scripts/auth.min.js"></script>

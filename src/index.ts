@@ -1,5 +1,7 @@
 import fastify from 'fastify';
+import fastifyCookie from '@fastify/cookie';
 import fastifyCompress from '@fastify/compress';
+import fastifyCSRF from '@fastify/csrf-protection';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyRateLimit from '@fastify/rate-limit';
 import formBody from '@fastify/formbody';
@@ -36,6 +38,8 @@ export class AppInstance {
       timeWindow: '1 minute',
     });
     await this.server.register(fastifyCompress);
+    await this.server.register(fastifyCookie, { secret: env.cookieSecret });
+    await this.server.register(fastifyCSRF, { cookieOpts: { signed: true } });
     await this.server.register(formBody);
 
     const appModule = new AppModule(this.server);
