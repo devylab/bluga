@@ -13,7 +13,7 @@ export class ContentController {
     const body = req.body as CreateContent;
     const query = req.query as { content: string };
 
-    const { data, error } = await this.contentService.saveContent(body, query?.content);
+    const { data, error } = await this.contentService.saveContent(body, req.user_id, query?.content);
     if (error) {
       return reply.code(400).send({
         status: 'error',

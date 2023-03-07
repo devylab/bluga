@@ -1,11 +1,12 @@
-import { FastifyRequest } from 'fastify';
+import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify';
 import fastifyCookie from '@fastify/cookie';
 import { accessTokenKey, secretTokenKey } from '@shared/constants';
 import { env } from '@shared/constants/env';
 import { verifyAuthToken } from '@shared/jwt';
 import { logger } from '@shared/logger';
+import database from '@shared/database';
 
-export const authGuard = async (request: FastifyRequest) => {
+export const authGuard = async (request: FastifyRequest, reply: FastifyReply, next?: HookHandlerDoneFunction) => {
   try {
     const accessToken = request.cookies[accessTokenKey];
     const secretToken = request.cookies[secretTokenKey];
@@ -16,11 +17,20 @@ export const authGuard = async (request: FastifyRequest) => {
     const decryptCookie = await verifyAuthToken(unsignedAccessToken.value || '', env.encryptionSecret);
     if (typeof decryptCookie === 'string') return null;
     if (unsignedSecretToken.value !== decryptCookie.secret) return null;
+    const user = await database.instance().user.findUniqueOrThrow({
+      select: { id: true },
+      where: { id: decryptCookie.id },
+    });
 
-    return decryptCookie.id;
+    if (next) {
+      request.user_id = user.id;
+      next();
+    }
+    return user.id;
   } catch (err) {
     const error = err as Error;
     logger.error(error, error.message);
+    if (next) next(error);
     return null;
   }
 };

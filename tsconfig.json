@@ -32,6 +32,6 @@
       "@types/*": ["typings/*"]
     }
   },
-  "include": ["src/**/*", "./typings", "src/public"],
+  "include": ["src/**/*", "./typings", "src/public", "*.d.ts"],
   "exclude": ["node_modules", "src/tools", "src/public"]
 }
