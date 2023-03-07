@@ -14,7 +14,11 @@ export class ContentService {
     this.db = database.instance();
   }
 
-  async saveContent({ rawContent, title, thumbnail, description, ...rest }: CreateContent, contentID = '') {
+  async saveContent(
+    { rawContent, title, thumbnail, description, ...rest }: CreateContent,
+    authorId: string,
+    contentID = '',
+  ) {
     try {
       const html = edjsParser.parse(rawContent);
       const stringHtml = html?.reduce((a: string, b: string) => a + b, '');
@@ -28,6 +32,7 @@ export class ContentService {
         thumbnail: thumbnail || '',
         description: description || '',
         ...rest,
+        authorId,
       };
       const data = await this.db.content.upsert({
         create: { id: Utils.uniqueId(), ...payload },

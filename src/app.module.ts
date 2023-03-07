@@ -85,8 +85,8 @@ export class AppModule {
         this.app.get(route.to, async (req, reply: any) => {
           const notProtected = ['/admin/login'];
           let user = '';
-          if (notProtected.includes(req.routerPath)) {
-            const authUser = await authGuard(req);
+          if (!notProtected.includes(req.routerPath)) {
+            const authUser = await authGuard(req, reply);
             if (!authUser) return reply.redirect('/admin/login');
             user = authUser; // get user data
           }

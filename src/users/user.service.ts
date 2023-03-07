@@ -56,4 +56,18 @@ export class UserService {
       return { data: null, error: 'error' };
     }
   }
+
+  async getUserById(id: string): Promise<returnType> {
+    try {
+      const user = await this.db.user.findFirstOrThrow({
+        select: { avatar: true, id: true, firstName: true, lastName: true, username: true, email: true },
+        where: { id },
+      });
+
+      return { data: user, error: null };
+    } catch (err) {
+      logger.error(err, 'error while creating user');
+      return { data: null, error: 'error' };
+    }
+  }
 }
