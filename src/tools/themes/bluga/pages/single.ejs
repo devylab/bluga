@@ -1,0 +1,48 @@
+<%- include('../components/header') %> <%- include('../components/navbar.ejs') %>
+<main>
+  <div class="single-post">
+    <div class="single-post__container">
+      <h2 class="heading single-post__heading">Breaking the barrier of imposter syndrome</h2>
+      <p class="single-post__sub">Boosting self-actualization through perception, practice and communication.</p>
+      <div class="single-post__card--tags">
+        <p class="single-post__card--tag">Design</p>
+        <p class="single-post__card--tag">Career</p>
+        <p class="single-post__card--tag">Psychology</p>
+      </div>
+      <div class="single-post__info">
+        <img src="<%= themePath() %>/assets/post-img.png" alt="avatar" class="single-post__avatar" />
+        <div class="single-post__details">
+          <p class="single-post__username">Cavdy Ogbuefi</p>
+          <p class="single-post__timeframe">
+            <%= new Date(content.createdAt).toLocaleDateString("en-US", {month: "long",day: "numeric",year: "numeric"})
+            %>
+          </p>
+        </div>
+      </div>
+      <div class="single-post__image--container">
+        <img src="<%= themePath() %>/assets/post-img.png" alt="post" class="single-post__image" />
+      </div>
+      <div class="single-post__cta">
+        <div class="single-post__cta--container">
+          <div class="single-post__cta--box">
+            <button class="single-post__cta--btn">
+              <i data-feather="thumbs-up" class="single-post__cta--icon"></i>
+            </button>
+            <span class="single-post__cta--text">249</span>
+          </div>
+          <div class="single-post__cta--box">
+            <button class="single-post__cta--btn">
+              <i data-feather="message-circle" class="single-post__cta--icon"></i>
+            </button>
+            <span class="single-post__cta--text">17</span>
+          </div>
+        </div>
+        <button class="single-post__cta--btn">
+          <i data-feather="bookmark" class="single-post__cta--icon"></i>
+        </button>
+      </div>
+      <div class="single-post__content"><%- content.content %></div>
+    </div>
+  </div>
+</main>
+<%- include('../components/footer') %>

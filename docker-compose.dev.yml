@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_PASSWORD: 'password'
       POSTGRES_USER: 'root'
-      POSTGRES_DB: 'contentquery'
+      POSTGRES_DB: 'bluga'
   redis:
     image: 'redis:latest'
     restart: always
