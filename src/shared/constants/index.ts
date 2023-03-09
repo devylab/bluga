@@ -5,3 +5,11 @@ export const refreshTokenKey = 'drawn';
 export const secretTokenKey = 'down';
 export const fiveMinutesInSeconds = 44444;
 export const sixMonthsInSeconds = 44444;
+export const minifierOpts = {
+  removeComments: true,
+  removeCommentsFromCDATA: true,
+  collapseWhitespace: true,
+  collapseBooleanAttributes: true,
+  removeAttributeQuotes: true,
+  removeEmptyAttributes: true,
+};
