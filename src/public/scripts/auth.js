@@ -1,8 +1,3 @@
-document.querySelector('.nav').style.display = 'none';
-document.querySelector('.sidebar').style.display = 'none';
-document.querySelector('main.relative').style.margin = '0px';
-document.querySelector('main.relative').style.padding = '0px';
-
 const handleLogin = async (email, password) => {
   console.log('TRUTH', email, password);
   try {

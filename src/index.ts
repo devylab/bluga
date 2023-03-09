@@ -81,8 +81,8 @@ app.startApp().catch((err) => {
 
 const events = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM', 'uncaughtException'];
 events.forEach((event) => {
-  process.on(event, () => {
-    app.stopApp();
+  process.on(event, async () => {
+    await app.stopApp();
     logger.info(`app stopped because this event: ${event} was triggere`);
   });
 });
