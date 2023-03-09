@@ -104,15 +104,16 @@ export class AppModule {
   }
 
   private loadIndex() {
-    const currentTheme = '/avail';
+    const currentTheme = '/bluga';
     const themeConfigPath = path.join(__dirname, 'tools', 'themes', currentTheme, 'config.js');
     const themeConfig = eval(fs.readFileSync(themeConfigPath, 'utf-8')) as ChangeLater[];
     for (const current of themeConfig) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.app.get(current.route, async (req, reply: any) => {
         const options = {
-          themePath: () => '/themes/avail',
-          page: 'ContentQuery',
+          themePath: () => '/themes/bluga',
+          page: 'Cavdy',
+          app: 'Cavdy',
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as { [name: string]: any };
 
@@ -124,7 +125,7 @@ export class AppModule {
         }
 
         const pageTitle = options?.content?.title ? options?.content?.title + ' - ' : '';
-        options.page = pageTitle + 'ContentQuery';
+        options.page = pageTitle + 'Cavdy';
         return reply.themes(currentTheme + current.path, options);
       });
     }

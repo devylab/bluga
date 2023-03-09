@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf build && yarn find-deadcode",
-    "minify-copy": "yarn build:css && yarn grunt && yarn grunt:copy && yarn migrate:prod",
+    "prestart": "yarn migrate:prod",
+    "minify-copy": "yarn build:css && yarn grunt && yarn grunt:copy",
     "build": "tsc && yarn minify-copy",
     "generate": "npx prisma generate",
     "dev": "ts-node-dev -r tsconfig-paths/register --files src/index.ts",
