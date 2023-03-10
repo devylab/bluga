@@ -16,7 +16,7 @@
     "find-deadcode": "ts-prune",
     "start": "node -r tsconfig-paths/register build/index.js",
     "migrate:dev": "prisma migrate dev --name",
-    "migrate:prod": "prisma migrate deploy",
+    "migrate:prod": "prisma migrate deploy && prisma db seed",
     "grunt": "grunt",
     "grunt:watch": "grunt watch --force",
     "grunt:copy": "grunt copy",
@@ -73,5 +73,8 @@
     "rxjs": "^7.5.7",
     "sanitize-html": "^2.7.3",
     "tsconfig-paths": "^4.1.1"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed/index.ts"
   }
 }
