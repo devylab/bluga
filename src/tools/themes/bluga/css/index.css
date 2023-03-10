@@ -594,3 +594,11 @@
     padding: 1.6rem 2rem;
   }
 }
+
+@media only screen and (min-width: 1500px) {
+  .sub-footer__container,
+  .footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
