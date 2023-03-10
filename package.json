@@ -1,9 +1,9 @@
 {
-  "name": "contentquery",
+  "name": "bluga",
   "version": "1.0.0",
-  "description": "a content creator",
+  "description": "A blogging platform",
   "main": "index.js",
-  "repository": "https://github.com/devylab/contentquery.git",
+  "repository": "https://github.com/devylab/bluga.git",
   "author": "Cavdy <cavdyofficials@gmail.com>",
   "license": "MIT",
   "scripts": {
