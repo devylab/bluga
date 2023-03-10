@@ -3,10 +3,12 @@ import { UserRoute } from './users/user.route';
 import { ContentRoute } from './content/content.route';
 import { AdminView } from './views/admin.view';
 import { IndexView } from './views/index.view';
+import { ThemeRoute } from './theme/theme.route';
 
 export class AppModule {
   private readonly userRoutes;
   private readonly contentRoutes;
+  private readonly themeRoutes;
   private readonly indexView;
   private readonly adminView;
 
@@ -17,6 +19,7 @@ export class AppModule {
     this.adminView = new AdminView(this.app);
     this.userRoutes = new UserRoute(this.app);
     this.contentRoutes = new ContentRoute(this.app);
+    this.themeRoutes = new ThemeRoute(this.app);
   }
 
   private noRoute() {
@@ -29,6 +32,7 @@ export class AppModule {
   private loadApi() {
     this.userRoutes.loadRoutes();
     this.contentRoutes.loadRoutes();
+    this.themeRoutes.loadRoutes();
   }
 
   loadRoutes() {

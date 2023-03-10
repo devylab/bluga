@@ -8,7 +8,7 @@ export class Cache {
     this.nodeCache = new NodeCache();
   }
 
-  async set(key: string, value: unknown) {
+  async set(key: string, value: string) {
     if (this.cacheType === 'redis') {
       //
     } else {
@@ -20,7 +20,7 @@ export class Cache {
     if (this.cacheType === 'redis') {
       //
     } else {
-      return this.nodeCache.get(key);
+      return this.nodeCache.get(key) as string;
     }
   }
 

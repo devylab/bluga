@@ -1,4 +1,4 @@
-<%- include('../components/header') %> <%- include('../components/navbar.ejs') %>
+<%- include('../components/header') %> <%- include('../components/navbar') %>
 <div class="container">
   <main>
     <!--                 Filter                    -->
@@ -38,13 +38,14 @@
           <div class="recent-post__image--container">
             <img src="<%= themePath() %>/assets/post-img.png" alt="post" class="recent-post__image" />
           </div>
+          <% if (contents[0]) { %>
           <div class="recent-post__card--container">
             <div class="recent-post__card--info">
               <img src="<%= themePath() %>/assets/post-img.png" alt="avatar" class="recent-post__card--avatar" />
               <div class="recent-post__card--details">
                 <p class="recent-post__card--username">Cavdy Ogbuefi</p>
                 <p class="recent-post__card--timeframe">
-                  <%= new Date(contents[0].createdAt).toLocaleDateString("en-US", {month: "long",day: "numeric",year:
+                  <%= new Date(contents[0]?.createdAt)?.toLocaleDateString("en-US", {month: "long",day: "numeric",year:
                   "numeric"}) %>
                 </p>
               </div>
@@ -71,6 +72,7 @@
               </div>
             </div>
           </div>
+          <% } %>
         </div>
         <div class="posts__wrapper">
           <% for(var i=1; i < contents.length; i++) { %>
