@@ -1,10 +1,14 @@
-<section class="container mx-auto overflow-hidden text-gray-700">
+<section class="container mx-auto overflow-hidden text-gray-700" x-data x-init="$store.themes.getThemes()" x-cloak>
   <!-- <h1 class="mb-10 border-b py-4 text-3xl">Themes</h1> -->
   <div class="container mx-auto">
-    <div>
-      <h1>Name</h1>
-      <p>Active</p>
-      <button>activate</button>
-    </div>
+    <template x-for="theme in $store.themes.themes" :key="theme.id">
+      <div id="theme.id" class="my-9">
+        <h1 x-text="theme.name">Name</h1>
+        <p x-text="theme.createdAt"></p>
+        <p x-show="theme.status" x-text="theme.status && 'ACTIVE'"></p>
+        <button x-show="!theme.status" @click.prevent="$store.themes.activateTheme(theme.id)">Activate</button>
+      </div>
+    </template>
   </div>
 </section>
+<script src="/public/scripts/theme.min.js"></script>
