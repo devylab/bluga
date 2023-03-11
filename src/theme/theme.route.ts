@@ -9,8 +9,11 @@ export class ThemeRoute {
   }
 
   loadRoutes() {
-    this.server.post('/api/themes', { preHandler: [authGuard] }, (req, reply) =>
+    this.server.get('/api/themes', { preHandler: [authGuard] }, (req, reply) =>
       this.themeController.getThemes(req, reply),
+    );
+    this.server.post('/api/theme/:id', { preHandler: [authGuard] }, (req, reply) =>
+      this.themeController.setActive(req, reply),
     );
   }
 }

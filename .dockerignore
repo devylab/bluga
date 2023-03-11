@@ -1,0 +1,6 @@
+node_modules
+*.log
+*.env
+src
+docker-entrypoint-initdb.d
+test
