@@ -40,12 +40,12 @@ export class AdminView {
           const notProtected = ['/admin/login'];
           const isNotProtected = notProtected.includes(req.routerPath);
 
-          let user = '';
-          // if (!isNotProtected) {
-          //   const authUser = await authGuard(req, reply);
-          //   if (!authUser) return reply.redirect('/admin/login');
-          //   user = authUser; // get user data
-          // }
+          let user;
+          if (!isNotProtected) {
+            const authUser = await authGuard(req, reply);
+            if (!authUser) return reply.redirect('/admin/login');
+            user = authUser;
+          }
 
           return reply.admin(
             route.path || '',
@@ -55,7 +55,7 @@ export class AdminView {
               currentPage: req.url,
               user,
             },
-            { layout: isNotProtected ? '/layouts/public.ejs' : '/layouts/dashboard.ejs' },
+            { layout: isNotProtected ? undefined : '/layouts/dashboard.ejs' },
           );
         });
       });
