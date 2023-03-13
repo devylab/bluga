@@ -8,7 +8,7 @@ import minifier from 'html-minifier';
 import { env } from '@shared/constants/env';
 import { minifierOpts } from '@shared/constants';
 import { ContentService } from '../content/content.service';
-import { ThemeService } from 'src/theme/theme.service';
+import { ThemeService } from '../theme/theme.service';
 
 type ThemeConfig = {
   route: string;

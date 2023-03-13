@@ -31,7 +31,7 @@ https: module.exports = function (grunt) {
           { expand: true, cwd: 'src', src: ['**/public/scripts/*.min.js'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/public/img/**'], dest: 'build' },
           { expand: true, cwd: 'src', src: ['**/admin/**'], dest: 'build' },
-          { expand: true, cwd: 'src', src: ['**/tools/themes/avail/**'], dest: 'build' },
+          { expand: true, cwd: 'src', src: ['**/tools/themes/**'], dest: 'build' },
         ],
       },
     },

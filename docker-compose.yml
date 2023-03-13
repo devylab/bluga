@@ -6,55 +6,11 @@ services:
     restart: unless-stopped
     ports:
       - '50921:50921'
-    volumes:
-      - ./temp:/usr/src/app/temp
     networks:
       - devy-db
-      - app-network
-  bluga-webserver:
-    image: nginx:mainline-alpine
-    container_name: bluga-webserver
-    restart: unless-stopped
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - web-root:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - dhparam:/etc/ssl/certs
-    depends_on:
-      - bluga
-    networks:
-      - app-network
-  bluga-certbot:
-    image: certbot/certbot
-    container_name: bluga-certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - bluga-webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email social@devylab.com --agree-tos --no-eff-email --force-renewal -d demo-bluga.devylab.com
-volumes:
-  certbot-etc:
-  certbot-var:
-  web-root:
-    driver: local
-    driver_opts:
-      type: none
-      device: /root/bluga
-      o: bind
-  dhparam:
-    driver: local
-    driver_opts:
-      type: none
-      device: /root/bluga/dhparam/
-      o: bind
+      - devy-network
 networks:
-  app-network:
-    driver: bridge
+  devy-network:
+    name: devylab_devylab-network
   devy-db:
-    name: database_devylab
+    name: devylab_database_devylab-db

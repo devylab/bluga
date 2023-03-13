@@ -9,6 +9,7 @@ const clean = cleanEnv(process.env, {
   COOKIE_SECRET: str(),
   ENCRYPTION_SECRET: str(),
   RE_ENCRYPTION_SECRET: str(),
+  SUB_DIRECTORY: str({ default: '' }),
 });
 
 export const env = {
@@ -22,4 +23,5 @@ export const env = {
   cookieSecret: clean.COOKIE_SECRET,
   encryptionSecret: clean.ENCRYPTION_SECRET,
   reEncryptionSecret: clean.RE_ENCRYPTION_SECRET,
+  subDirectory: clean.SUB_DIRECTORY,
 };
