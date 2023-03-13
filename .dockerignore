@@ -4,3 +4,6 @@ node_modules
 src
 docker-entrypoint-initdb.d
 test
+*.config.js
+*.yml
+gruntfile.js

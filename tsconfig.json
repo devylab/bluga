@@ -32,6 +32,6 @@
       "@types/*": ["typings/*"]
     }
   },
-  "include": ["src/**/*", "./typings", "*.d.ts", "prisma/**/*"],
+  "include": ["src/**/*", "./typings", "*.d.ts"],
   "exclude": ["node_modules", "src/tools", "src/public"]
 }

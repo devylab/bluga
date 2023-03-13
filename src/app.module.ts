@@ -12,9 +12,7 @@ export class AppModule {
   private readonly indexView;
   private readonly adminView;
 
-  // eslint-disable-next-line max-lines-per-function
   constructor(private readonly app: FastifyInstance) {
-    // this.app.use
     this.indexView = new IndexView(this.app);
     this.adminView = new AdminView(this.app);
     this.userRoutes = new UserRoute(this.app);
