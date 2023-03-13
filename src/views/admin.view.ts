@@ -41,11 +41,11 @@ export class AdminView {
           const isNotProtected = notProtected.includes(req.routerPath);
 
           let user = '';
-          if (!isNotProtected) {
-            const authUser = await authGuard(req, reply);
-            if (!authUser) return reply.redirect('/admin/login');
-            user = authUser; // get user data
-          }
+          // if (!isNotProtected) {
+          //   const authUser = await authGuard(req, reply);
+          //   if (!authUser) return reply.redirect('/admin/login');
+          //   user = authUser; // get user data
+          // }
 
           return reply.admin(
             route.path || '',
