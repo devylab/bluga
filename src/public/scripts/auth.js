@@ -1,17 +1,21 @@
-const handleLogin = async (email, password) => {
-  console.log('TRUTH', email, password);
-  try {
-    const res = await axios.post('/api/user/login', {
-      email,
-      password,
+$('#loginBtn').click((event) => {
+  event.preventDefault();
+  const email = $('#email').val();
+  const password = $('#password').val();
+
+  $.post('/api/user/login', { email, password })
+    .done((data) => {
+      if (data?.code === 200 && data?.data === 'login success') {
+        window.location.replace('/admin');
+      }
+    })
+    .fail((error) => {
+      $(document).Toasts('create', {
+        title: 'Login Error',
+        class: 'bg-danger',
+        autohide: true,
+        delay: 4000,
+        body: error.responseJSON.error,
+      });
     });
-    console.log(res.data);
-    if (res.data?.code === 200 && res.data?.data === 'login success') {
-      window.location.replace('/admin');
-    }
-  } catch (err) {
-    // this.message = 'error while saving content';
-    // this.show = true;
-    console.log(err.response.data);
-  }
-};
+});

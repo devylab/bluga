@@ -18,7 +18,7 @@ export const authGuard = async (request: FastifyRequest, reply: FastifyReply, ne
     if (typeof decryptCookie === 'string') return null;
     if (unsignedSecretToken.value !== decryptCookie.secret) return null;
     const user = await database.instance().user.findUniqueOrThrow({
-      select: { id: true },
+      select: { id: true, firstName: true, lastName: true, username: true },
       where: { id: decryptCookie.id },
     });
 
@@ -26,7 +26,8 @@ export const authGuard = async (request: FastifyRequest, reply: FastifyReply, ne
       request.user_id = user.id;
       next();
     }
-    return user.id;
+
+    return user;
   } catch (err) {
     const error = err as Error;
     logger.error(error, error.message);
