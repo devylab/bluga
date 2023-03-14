@@ -1,15 +1,3 @@
-document.addEventListener('alpine:init', () => {
-  Alpine.store('sidebar', {
-    show: window.innerWidth >= 774,
-    toggleSidebar() {
-      this.show = !this.show;
-    },
-  });
-
-  Alpine.store('app', {
-    appLoading: window.innerWidth >= 774,
-    toggleSidebar() {
-      this.show = !this.show;
-    },
-  });
-});
+const dateFormatter = (date) => {
+  return new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+};
