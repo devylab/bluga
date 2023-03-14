@@ -1,14 +1,81 @@
-<section class="container mx-auto overflow-hidden text-gray-700" x-data x-init="$store.themes.getThemes()" x-cloak>
-  <!-- <h1 class="mb-10 border-b py-4 text-3xl">Themes</h1> -->
-  <div class="container mx-auto">
-    <template x-for="theme in $store.themes.themes" :key="theme.id">
-      <div id="theme.id" class="my-9">
-        <h1 x-text="theme.name">Name</h1>
-        <p x-text="theme.createdAt"></p>
-        <p x-show="theme.status" x-text="theme.status && 'ACTIVE'"></p>
-        <button x-show="!theme.status" @click.prevent="$store.themes.activateTheme(theme.id)">Activate</button>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Themes</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+            <li class="breadcrumb-item active">Themes</li>
+          </ol>
+        </div>
       </div>
-    </template>
-  </div>
-</section>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content" x-data x-init="$store.themes.getThemes()" x-cloak>
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="row">
+          <template x-for="theme in $store.themes.themes" :key="theme.id">
+            <div id="theme.id" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+              <div class="card bg-light d-flex flex-fill">
+                <div class="card-header text-muted border-bottom-0 text-capitalize">Nicole Pearson</div>
+                <div class="card-body pt-0">
+                  <div class="row">
+                    <div class="col-7">
+                      <h2 class="lead text-capitalize"><b x-text="theme.name"></b></h2>
+                      <p class="text-muted text-sm"><b>Version: </b> 1.0.0</p>
+                      <p class="text-muted text-sm">
+                        <b>Uploaded: </b> <span x-text="dateFormatter(theme.createdAt)"></span>
+                      </p>
+                      <!-- <p class="text-muted text-sm">
+                        <b>Description: </b> Web Designer / UX / Graphic Artist / Coffee Lover
+                      </p> -->
+                    </div>
+                    <div class="col-5 text-center">
+                      <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid" />
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="text-right">
+                    <button
+                      class="btn btn-sm btn-primary"
+                      x-show="!theme.status"
+                      @click.prevent="$store.themes.activateTheme(theme.id)"
+                    >
+                      Activate
+                    </button>
+                    <p x-show="theme.status" x-text="theme.status && 'ACTIVE'"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <nav aria-label="Contacts Page Navigation">
+          <ul class="pagination justify-content-center m-0">
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<script src="/public/scripts/app.min.js"></script>
 <script src="/public/scripts/theme.min.js"></script>

@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "rimraf build && yarn find-deadcode",
     "prestart": "yarn migrate:prod",
-    "minify-copy": "yarn build:css && yarn grunt && yarn grunt:copy",
+    "minify-copy": "yarn grunt && yarn grunt:copy",
     "build": "tsc && yarn minify-copy",
     "generate": "npx prisma generate",
     "dev": "ts-node-dev -r tsconfig-paths/register --files src/index.ts",
@@ -20,9 +20,7 @@
     "grunt": "grunt",
     "grunt:watch": "grunt watch --force",
     "grunt:copy": "grunt copy",
-    "prettier": "prettier --write \"**/*.{ts,tsx}\"",
-    "build:css": "tailwindcss -i ./src/public/styles/global.css -o ./src/public/styles/styles.css --minify",
-    "watch:css": "tailwindcss -i ./src/public/styles/global.css -o ./src/public/styles/styles.css --watch"
+    "prettier": "prettier --write \"**/*.{ts,tsx}\""
   },
   "devDependencies": {
     "@types/ejs": "^3.1.1",
