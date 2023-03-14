@@ -1,0 +1,20 @@
+.content-input {
+  width: 100%;
+  max-width: 86%;
+  border: none;
+  height: 40px;
+  outline: none;
+  background: none;
+}
+
+.content-save-btn {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

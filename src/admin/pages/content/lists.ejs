@@ -1,5 +1,5 @@
 <!-- https://tailwindcomponents.com/component/table-ui-with-tailwindcss-and-alpinejs -->
-<div class="container mx-auto" x-data x-init="$store.contents.getContents()" x-cloak>
+<!-- <div class="container mx-auto" x-data x-init="$store.contents.getContents()" x-cloak>
 
 		<div x-show="$store.contents.selectedRows.length" class="bg-teal-200 fixed top-0 left-0 right-0 z-40 w-full shadow">
 			<div class="container mx-auto px-4 py-4">
@@ -112,4 +112,84 @@
 	</div>
 
   <script src="/public/scripts/lists.min.js"></script>
+</div> -->
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Contents</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+            <li class="breadcrumb-item active">Contents</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content" x-data x-init="$store.contents.getContents()" x-cloak>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <!-- <h3 class="card-title">Simple Full Width Table</h3> -->
+
+              <div class="card-tools">
+                <ul class="pagination pagination-sm float-right">
+                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <template x-for="heading in $store.contents.headings">
+                      <th x-text="heading.value"></th>
+                    </template>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="content in $store.contents.contents" :key="content.id">
+                    <tr>
+                      <td>
+                        <a class="" x-bind:href="'/admin/contents/edit/' + content.id" x-text="content.title"></a>
+                      </td>
+                      <td class="border-dashed border-t border-gray-200 status">
+                        <span class="" x-text="content.status"></span>
+                      </td>
+                      <td class="border-dashed border-t border-gray-200 createdAt">
+                        <span class="" x-text="dateFormatter(content.createdAt)"></span>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
 </div>
+<!-- /.content-wrapper -->
+<script src="/public/scripts/app.min.js"></script>
+<script src="/public/scripts/lists.min.js"></script>
