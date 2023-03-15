@@ -7,7 +7,6 @@ import { env } from '@shared/constants/env';
 import minifier from 'html-minifier';
 import { minifierOpts } from '@shared/constants';
 import { Utils } from '@shared/utils';
-import { formatAdminRoutes } from '@shared/constants/adminRoutes';
 import { authGuard } from '@shared/guards/authGuard';
 
 export class AdminView {
@@ -27,6 +26,7 @@ export class AdminView {
       options: {
         useHtmlMinifier: minifier,
         htmlMinifierOptions: minifierOpts,
+        async: true,
       },
     });
   }
@@ -34,7 +34,7 @@ export class AdminView {
   loadAdminView() {
     const { adminRoutes, adminMenus } = Utils.renderAdminRoutes();
     adminRoutes.subscribe((routes) => {
-      const formattedRoutes = formatAdminRoutes(routes);
+      const formattedRoutes = Utils.formatAdminRoutes(routes);
       formattedRoutes.forEach((route) => {
         this.app.get(route.to, async (req, reply) => {
           const notProtected = ['/admin/login'];
@@ -53,6 +53,8 @@ export class AdminView {
               page: route.name,
               sidebarLinks: adminMenus,
               currentPage: req.url,
+              header: route.header || [],
+              footer: route.footer || [],
               user,
             },
             { layout: isNotProtected ? undefined : '/layouts/dashboard.ejs' },
