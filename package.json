@@ -58,7 +58,7 @@
     "argon2": "^0.30.2",
     "dotenv": "^16.0.3",
     "editorjs-html": "^3.4.2",
-    "ejs": "^3.1.8",
+    "ejs": "^3.1.9",
     "envalid": "^7.3.1",
     "fastify": "^4.10.0",
     "html-minifier": "^4.0.0",

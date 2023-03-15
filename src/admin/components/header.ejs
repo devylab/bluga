@@ -1,3 +1,9 @@
+<% 
+  let styleLinks = "";
+  header?.forEach(function(style){
+    styleLinks += `<link type="text/css" rel="stylesheet" href="${style}">`;
+  })
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +16,7 @@
   <link rel="stylesheet" href="/public/plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="/public/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="/public/styles/global.css">
+  <%- styleLinks %>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 </head>
