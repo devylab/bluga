@@ -17,7 +17,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content" x-data x-init="$store.contents.getContents()" x-cloak>
+<section class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
@@ -35,28 +35,31 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
+            <% const contents = await db.contentService.getAdminContents(); %>
             <table class="table">
               <thead>
                 <tr>
-                  <template x-for="heading in $store.contents.headings">
-                    <th x-text="heading.value"></th>
-                  </template>
+                  <!-- loop through the contents heading -->
+                  <% for (let heading of contents.data.headings) { %>
+                  <th><%= heading.value %></th>
+                  <% } %>
                 </tr>
               </thead>
               <tbody>
-                <template x-for="content in $store.contents.contents" :key="content.id">
-                  <tr>
-                    <td>
-                      <a class="" x-bind:href="'/admin/contents/edit/' + content.id" x-text="content.title"></a>
-                    </td>
-                    <td class="border-dashed border-t border-gray-200 status">
-                      <span class="" x-text="content.status"></span>
-                    </td>
-                    <td class="border-dashed border-t border-gray-200 createdAt">
-                      <span class="" x-text="dateFormatter(content.createdAt)"></span>
-                    </td>
-                  </tr>
-                </template>
+                <!-- loop through the contents -->
+                <% for (let content of contents.data.contents) { %>
+                <tr>
+                  <td>
+                    <a href="/admin/contents/edit/<%= content.id %>"><%= content.title %></a>
+                  </td>
+                  <td class="border-dashed border-t border-gray-200 status">
+                    <span class=""><%= content.status %></span>
+                  </td>
+                  <td class="border-dashed border-t border-gray-200 createdAt">
+                    <span class=""><%= tools.utils.dateFormatter(content.createdAt) %></span>
+                  </td>
+                </tr>
+                <% } %>
               </tbody>
             </table>
           </div>
@@ -70,6 +73,3 @@
   </div>
   <!-- /.container-fluid -->
 </section>
-
-<script src="/public/scripts/app.min.js"></script>
-<script src="/public/scripts/lists.min.js"></script>

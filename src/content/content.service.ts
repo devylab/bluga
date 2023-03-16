@@ -82,7 +82,7 @@ export class ContentService {
       return { data: { contents, headings }, error: null };
     } catch (err) {
       logger.error(err, 'error while getting contents');
-      return { data: null, error: 'error' };
+      return { data: { contents: [], headings: [] }, error: 'error' };
     }
   }
 
@@ -95,7 +95,7 @@ export class ContentService {
       return { data: contents, error: null };
     } catch (err) {
       logger.error(err, 'error while getting contents');
-      return { data: null, error: 'error' };
+      return { data: [], error: 'error' };
     }
   }
 

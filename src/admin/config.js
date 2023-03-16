@@ -18,14 +18,14 @@ export const adminMenus = [
     children: [
       {
         to: '/lists',
-        name: 'Lists',
+        name: 'Content Lists',
         icon: '',
         path: '/pages/content/lists.ejs',
         sidebar: true,
       },
       {
         to: '/create',
-        name: 'Create',
+        name: 'Content Create',
         icon: '',
         path: '/pages/content/create.ejs',
         sidebar: true,
@@ -34,7 +34,7 @@ export const adminMenus = [
       },
       {
         to: '/edit/:id',
-        name: 'Edit',
+        name: 'Content Edit',
         icon: '',
         path: '/pages/content/edit.ejs',
         sidebar: false,

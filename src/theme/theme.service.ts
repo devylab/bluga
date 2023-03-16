@@ -9,7 +9,7 @@ export class ThemeService {
     this.db = database.instance();
   }
 
-  async getThemesAPI() {
+  async getThemes() {
     try {
       const data = await this.db.theme.findMany({
         select: { id: true, name: true, status: true, createdAt: true },
@@ -19,21 +19,7 @@ export class ThemeService {
       return { data, error: null };
     } catch (err) {
       logger.error(err, 'error while getting themes');
-      return { data: null, error: 'error' };
-    }
-  }
-
-  async getThemes() {
-    try {
-      const data = await this.db.theme.findMany({
-        select: { id: true, name: true, status: true, createdAt: true },
-        orderBy: [{ status: 'desc' }, { createdAt: 'desc' }],
-      });
-
-      return data;
-    } catch (err) {
-      logger.error(err, 'error while getting themes');
-      return [];
+      return { data: [], error: 'error' };
     }
   }
 
