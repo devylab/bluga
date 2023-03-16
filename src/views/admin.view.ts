@@ -8,8 +8,11 @@ import minifier from 'html-minifier';
 import { minifierOpts } from '@shared/constants';
 import { Utils } from '@shared/utils';
 import { authGuard } from '@shared/guards/authGuard';
+import { ThemeService } from 'src/theme/theme.service';
 
 export class AdminView {
+  private readonly db;
+
   constructor(private readonly app: FastifyInstance) {
     this.app.register(fastifyStatic, {
       root: path.join(__dirname, '..', 'public'),
@@ -29,6 +32,10 @@ export class AdminView {
         async: true,
       },
     });
+
+    this.db = {
+      themeService: new ThemeService(),
+    };
   }
 
   loadAdminView() {
@@ -56,6 +63,7 @@ export class AdminView {
               header: route.header || [],
               footer: route.footer || [],
               user,
+              db: this.db,
             },
             { layout: isNotProtected ? undefined : '/layouts/dashboard.ejs' },
           );

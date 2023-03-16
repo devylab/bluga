@@ -12,7 +12,7 @@ export class ThemeRoute {
     this.server.get('/api/themes', { preHandler: [authGuard] }, (req, reply) =>
       this.themeController.getThemes(req, reply),
     );
-    this.server.post('/api/theme/:id', { preHandler: [authGuard] }, (req, reply) =>
+    this.server.post('/api/theme/active', { preHandler: [authGuard] }, (req, reply) =>
       this.themeController.setActive(req, reply),
     );
   }
