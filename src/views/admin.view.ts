@@ -8,7 +8,9 @@ import minifier from 'html-minifier';
 import { minifierOpts } from '@shared/constants';
 import { Utils } from '@shared/utils';
 import { authGuard } from '@shared/guards/authGuard';
-import { ThemeService } from 'src/theme/theme.service';
+import { ThemeService } from '../theme/theme.service';
+import { ContentService } from '../content/content.service';
+import { GlobalUtils } from '@shared/utils/global';
 
 export class AdminView {
   private readonly db;
@@ -35,6 +37,7 @@ export class AdminView {
 
     this.db = {
       themeService: new ThemeService(),
+      contentService: new ContentService(),
     };
   }
 
@@ -64,6 +67,7 @@ export class AdminView {
               footer: route.footer || [],
               user,
               db: this.db,
+              tools: { utils: GlobalUtils },
             },
             { layout: isNotProtected ? undefined : '/layouts/dashboard.ejs' },
           );

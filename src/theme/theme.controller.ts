@@ -9,7 +9,7 @@ export class ThemeController {
   }
 
   async getThemes(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.themeService.getThemesAPI();
+    const { data, error } = await this.themeService.getThemes();
     if (error) {
       return reply.code(400).send({
         status: 'error',
