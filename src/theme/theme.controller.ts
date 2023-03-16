@@ -9,7 +9,7 @@ export class ThemeController {
   }
 
   async getThemes(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.themeService.getThemes();
+    const { data, error } = await this.themeService.getThemesAPI();
     if (error) {
       return reply.code(400).send({
         status: 'error',
@@ -43,9 +43,9 @@ export class ThemeController {
   }
 
   async setActive(req: FastifyRequest, reply: FastifyReply) {
-    const params = req.params as { id: string };
+    const body = req.body as { theme: string };
 
-    const { data, error } = await this.themeService.setActive(params.id);
+    const { error } = await this.themeService.setActive(body.theme);
     if (error) {
       return reply.code(400).send({
         status: 'error',
@@ -54,10 +54,6 @@ export class ThemeController {
       });
     }
 
-    return reply.code(200).send({
-      status: 'success',
-      code: 200,
-      data,
-    });
+    return reply.redirect('/admin/themes');
   }
 }

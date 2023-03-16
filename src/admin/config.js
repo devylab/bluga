@@ -53,7 +53,7 @@ export const adminMenus = [
   },
   {
     id: '4',
-    to: '/admin/Settings',
+    to: '/admin/settings',
     name: 'Settings',
     icon: '',
     sidebar: true,
