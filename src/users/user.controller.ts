@@ -36,11 +36,7 @@ export class UserController {
 
     const { data, error } = await this.userService.login(body, secret);
     if (error) {
-      return reply.code(400).send({
-        status: 'error',
-        code: 400,
-        error,
-      });
+      return reply.redirect(`/admin/login?error=${error}`);
     }
 
     const options = {
@@ -54,11 +50,6 @@ export class UserController {
       .setCookie(accessTokenKey, data.accessToken, options)
       .cookie(secretTokenKey, data.secret, options)
       .setCookie(refreshTokenKey, data.refreshToken, options)
-      .code(200)
-      .send({
-        status: 'success',
-        code: 200,
-        data: 'login success',
-      });
+      .redirect('/admin');
   }
 }
