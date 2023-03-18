@@ -1,1 +1,82 @@
-<h1>General Setting</h1>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>General Settings</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+          <li class="breadcrumb-item active">General Settings</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- left column -->
+      <div class="col-12">
+        <!-- general form elements -->
+        <div class="card">
+          <!-- /.card-header -->
+          <!-- form start -->
+          <% const {data} = await db.settingsService.getSettings(); %>
+          <form action="/api/settings" method="post" enctype="multipart/form-data">
+            <div class="card-body">
+              <div class="form-group">
+                <label for="blogFavicon">Favicon</label>
+                <div class="input-group">
+                  <div class="custom-file">
+                    <input name="blogFavicon" type="file" class="custom-file-input" id="blogFavicon" accept="image/*" />
+                    <label class="custom-file-label" for="blogFavicon">Choose file</label>
+                  </div>
+                  <div class="invalid-feedback" id="favicon-msg">favicon size can not be greater than 500kb</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="blogName">Blog Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="blogName"
+                  name="blogName"
+                  placeholder="Blog Name"
+                  value="<%= data?.name %>"
+                />
+              </div>
+              <div class="form-group">
+                <label for="blogDescription">Description</label>
+                <textarea
+                  style="resize: none"
+                  id="blogDescription"
+                  name="blogDescription"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Description"
+                >
+<%= data?.description %></textarea
+                >
+              </div>
+            </div>
+            <!-- /.card-body -->
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+        <!-- /.card -->
+      </div>
+      <!--/.col (left) -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->

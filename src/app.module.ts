@@ -4,6 +4,7 @@ import { ContentRoute } from './content/content.route';
 import { AdminView } from './views/admin.view';
 import { IndexView } from './views/index.view';
 import { ThemeRoute } from './theme/theme.route';
+import { SettingsRoute } from './settings/settings.route';
 
 export class AppModule {
   private readonly userRoutes;
@@ -11,6 +12,7 @@ export class AppModule {
   private readonly themeRoutes;
   private readonly indexView;
   private readonly adminView;
+  private readonly settingsRoute;
 
   constructor(private readonly app: FastifyInstance) {
     this.indexView = new IndexView(this.app);
@@ -18,6 +20,7 @@ export class AppModule {
     this.userRoutes = new UserRoute(this.app);
     this.contentRoutes = new ContentRoute(this.app);
     this.themeRoutes = new ThemeRoute(this.app);
+    this.settingsRoute = new SettingsRoute(this.app);
   }
 
   private noRoute() {
@@ -31,6 +34,7 @@ export class AppModule {
     this.userRoutes.loadRoutes();
     this.contentRoutes.loadRoutes();
     this.themeRoutes.loadRoutes();
+    this.settingsRoute.loadRoutes();
   }
 
   loadRoutes() {

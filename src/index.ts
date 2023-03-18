@@ -3,6 +3,7 @@ import fastifyCookie from '@fastify/cookie';
 import fastifyCompress from '@fastify/compress';
 import fastifyCSRF from '@fastify/csrf-protection';
 import fastifyHelmet from '@fastify/helmet';
+import fastifyMultipart from '@fastify/multipart';
 import fastifyRateLimit from '@fastify/rate-limit';
 import formBody from '@fastify/formbody';
 import { env } from '@shared/constants/env';
@@ -41,6 +42,7 @@ export class AppInstance {
     await this.server.register(fastifyCookie, { secret: env.cookieSecret });
     await this.server.register(fastifyCSRF, { cookieOpts: { signed: true } });
     await this.server.register(formBody);
+    await this.server.register(fastifyMultipart, { attachFieldsToBody: true });
 
     const appModule = new AppModule(this.server);
     appModule.loadRoutes();

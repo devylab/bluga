@@ -11,6 +11,7 @@ import { authGuard } from '@shared/guards/authGuard';
 import { ThemeService } from '../theme/theme.service';
 import { ContentService } from '../content/content.service';
 import { GlobalUtils } from '@shared/utils/global';
+import { SettingsService } from '../settings/settings.service';
 
 export class AdminView {
   private readonly db;
@@ -38,6 +39,7 @@ export class AdminView {
     this.db = {
       themeService: new ThemeService(),
       contentService: new ContentService(),
+      settingsService: new SettingsService(),
     };
   }
 
