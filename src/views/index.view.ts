@@ -9,6 +9,7 @@ import { env } from '@shared/constants/env';
 import { minifierOpts } from '@shared/constants';
 import { ContentService } from '../content/content.service';
 import { ThemeService } from '../theme/theme.service';
+import { SettingsService } from 'src/settings/settings.service';
 
 type ThemeConfig = {
   route: string;
@@ -25,10 +26,12 @@ const rootPath = path.join(__dirname, '..', 'tools');
 export class IndexView {
   private readonly contentService;
   private readonly themeService;
+  private readonly settingsService;
 
   constructor(private readonly app: FastifyInstance) {
     this.contentService = new ContentService();
     this.themeService = new ThemeService();
+    this.settingsService = new SettingsService();
 
     this.app.register(fastifyStatic, {
       root: rootPath,
@@ -48,11 +51,13 @@ export class IndexView {
 
   async loadTheme(routeUrl: string, params: unknown) {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
+    const { data: settings } = await this.settingsService.getSettings();
     const currentTheme = `/${activeTheme.name || 'bluga'}`;
     const options = {
       themePath: () => path.join('themes', currentTheme),
-      page: 'Cavdy', // TODO: GET PAGE FROM DB
-      app: 'Cavdy',
+      page: settings?.name, // TODO: GET PAGE FROM DB
+      app: settings?.name,
+      description: settings?.description,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as { [name: string]: any };
 

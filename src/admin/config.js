@@ -60,10 +60,11 @@ export const adminMenus = [
     children: [
       {
         to: '/general',
-        name: 'General',
+        name: 'General Settings',
         icon: '',
         path: '/pages/settings/general.ejs',
         sidebar: true,
+        footer: ['/public/plugins/bs-custom-file-input/bs-custom-file-input.min.js', '/public/scripts/general.min.js'],
       },
     ],
   },

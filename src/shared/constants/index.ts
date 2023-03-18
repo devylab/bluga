@@ -13,3 +13,4 @@ export const minifierOpts = {
   removeAttributeQuotes: true,
   removeEmptyAttributes: true,
 };
+export const settingsId = '09UsZLX3kSXS';
