@@ -1,8 +1,9 @@
-<%- include('../components/header') %> <%- include('../components/navbar.ejs') %>
+<% const { data: content } = await service.content.getContentBySlug(params.slug); %> <%- await
+include('../components/header', { currentPage: content.title + ' | '}) %> <%- await include('../components/navbar') %>
 <main>
   <div class="single-post">
     <div class="single-post__container">
-      <h2 class="heading single-post__heading">Breaking the barrier of imposter syndrome</h2>
+      <h2 class="heading single-post__heading"><%= content.title %></h2>
       <p class="single-post__sub">Boosting self-actualization through perception, practice and communication.</p>
       <div class="single-post__card--tags">
         <p class="single-post__card--tag">Design</p>
@@ -45,4 +46,4 @@
     </div>
   </div>
 </main>
-<%- include('../components/footer') %>
+<%- await include('../components/footer') %>

@@ -1,4 +1,6 @@
-<%- include('../components/header') %> <%- include('../components/navbar.ejs') %>
+<% const { data: content } = await service.content.getContentBySlug(params.slug); %> <%- await
+include('../components/header', { currentPage: content.title + ' | '}) %> <%- await include('../components/navbar.ejs')
+%>
 <div class="container-fluid">
   <div class="row fh5co-post-entry single-entry">
     <article
@@ -23,4 +25,4 @@
     </article>
   </div>
 </div>
-<%- include('../components/footer') %>
+<%- await include('../components/footer') %>

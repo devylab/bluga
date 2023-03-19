@@ -1,3 +1,4 @@
+import cache from '@shared/cache';
 import { settingsId } from '@shared/constants';
 import database from '@shared/database';
 import { logger } from '@shared/logger';
@@ -12,6 +13,8 @@ export class SettingsService {
 
   async saveSettings(body: SettingsEntity) {
     try {
+      // TODO: cache settings
+      await cache.remove('settings');
       const data = { name: body.blogName.value?.trim(), description: body.blogDescription.value?.trim(), favicon: '/' };
       await this.db.setting.upsert({
         where: { id: settingsId },
@@ -27,10 +30,17 @@ export class SettingsService {
 
   async getSettings() {
     try {
+      const cacheSettings = await cache.get('settings');
+      if (cacheSettings) {
+        return { data: JSON.parse(cacheSettings), error: null };
+      }
+
       const settings = await this.db.setting.findUnique({
         where: { id: settingsId },
         select: { name: true, description: true },
       });
+      await cache.set('settings', JSON.stringify(settings));
+
       return { data: settings, error: null };
     } catch (err) {
       logger.error(err, 'error while getting settings');
