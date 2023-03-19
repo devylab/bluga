@@ -9,7 +9,7 @@ export class ContentRoute {
   }
 
   loadRoutes() {
-    this.server.post('/api/save-content', { preHandler: [authGuard] }, (req, reply) =>
+    this.server.post('/api/content/save-content', { preHandler: [authGuard] }, (req, reply) =>
       this.contentController.createContent(req, reply),
     );
     this.server.get('/api/content/:id', { preHandler: [authGuard] }, (req, reply) =>

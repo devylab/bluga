@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify';
+import { FastifyRequest } from 'fastify';
 import fastifyCookie from '@fastify/cookie';
 import { accessTokenKey, secretTokenKey } from '@shared/constants';
 import { env } from '@shared/constants/env';
@@ -6,7 +6,7 @@ import { verifyAuthToken } from '@shared/jwt';
 import { logger } from '@shared/logger';
 import database from '@shared/database';
 
-export const authGuard = async (request: FastifyRequest, reply: FastifyReply, next?: HookHandlerDoneFunction) => {
+export const authGuard = async (request: FastifyRequest) => {
   try {
     const accessToken = request.cookies[accessTokenKey];
     const secretToken = request.cookies[secretTokenKey];
@@ -22,16 +22,11 @@ export const authGuard = async (request: FastifyRequest, reply: FastifyReply, ne
       where: { id: decryptCookie.id },
     });
 
-    if (next) {
-      request.user_id = user.id;
-      next();
-    }
-
+    request.user_id = user.id;
     return user;
   } catch (err) {
     const error = err as Error;
     logger.error(error, error.message);
-    if (next) next(error);
     return null;
   }
 };

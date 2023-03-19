@@ -5,7 +5,7 @@ import path from 'path';
 import EJS from 'ejs';
 import minifier from 'html-minifier';
 import { env } from '@shared/constants/env';
-import { minifierOpts } from '@shared/constants';
+import { subDirectoryPath, minifierOpts } from '@shared/constants';
 import { ContentService } from '../content/content.service';
 import { ThemeService } from '../theme/theme.service';
 import { SettingsService } from '../settings/settings.service';
@@ -49,14 +49,16 @@ export class IndexView {
     });
   }
 
-  async loadTheme(routeUrl: string, params: unknown) {
+  async loadTheme(routeUrl: string, params: unknown, schema: string) {
+    const bindRoute = path.join(subDirectoryPath, routeUrl);
     const { data: activeTheme } = await this.themeService.getActiveTheme();
     const { data: settings } = await this.settingsService.getSettings();
     const currentTheme = `/${activeTheme.name || 'bluga'}`;
     const options = {
-      themePath: () => path.join('themes', currentTheme),
+      themePath: () => schema + path.join('/', 'themes', currentTheme),
       app: settings?.name, // TODO: GET PAGE FROM DB
       description: settings?.description,
+      appLink: schema,
       currentPage: '',
       service: {
         content: this.contentService,
@@ -67,7 +69,7 @@ export class IndexView {
     const themeConfigPath = path.join(rootPath, 'themes', currentTheme, 'config.js');
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const themeConfig = require(themeConfigPath) as ThemeConfig[];
-    const currentPage = themeConfig.find((config) => config.route === routeUrl);
+    const currentPage = themeConfig.find((config) => path.join(subDirectoryPath, config.route) === bindRoute);
 
     // TODO: handle not found page
     if (currentPage) {
@@ -78,7 +80,8 @@ export class IndexView {
   // eslint-disable-next-line max-lines-per-function
   async loadIndexView() {
     this.app.get('/', async (req, reply) => {
-      const currentTheme = await this.loadTheme(req.url, req.params);
+      const schema = `${req.protocol}://${req.hostname}${subDirectoryPath}`;
+      const currentTheme = await this.loadTheme('/', req.params, schema);
 
       // TODO: handle not found page
       if (currentTheme) return reply.themes(currentTheme.page, currentTheme.options);
@@ -87,12 +90,13 @@ export class IndexView {
     });
 
     this.app.get('/:slug', async (req, reply) => {
-      const currentTheme = await this.loadTheme('/:slug', req.params);
+      const schema = `${req.protocol}://${req.hostname}${subDirectoryPath}`;
+      const currentTheme = await this.loadTheme('/:slug', req.params, schema);
 
       // TODO: handle not found page
       if (currentTheme) return reply.themes(currentTheme.page, currentTheme.options);
 
-      return reply.send({ not: 'found' });
+      return reply.send({ not: 'founding' });
     });
 
     this.app.get('/robots.txt', async (_req, reply) => {

@@ -44,8 +44,14 @@ export class AppInstance {
     await this.server.register(formBody);
     await this.server.register(fastifyMultipart, { attachFieldsToBody: true });
 
-    const appModule = new AppModule(this.server);
-    appModule.loadRoutes();
+    this.server.register(
+      (fasti, _, done) => {
+        const appModule = new AppModule(fasti);
+        appModule.loadRoutes();
+        done();
+      },
+      { prefix: `/${env.subDirectory}` },
+    );
 
     this.server.setErrorHandler(function (error, request, reply) {
       if (error instanceof fastify.errorCodes.FST_ERR_BAD_STATUS_CODE) {

@@ -1,3 +1,4 @@
+import { subDirectoryPath } from '@shared/constants';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ContentService } from './content.service';
 import { CreateContent } from './entities/create-content.entity';
@@ -28,7 +29,7 @@ export class ContentController {
       data: {
         title: body.title,
         status: data?.status,
-        to: `/admin/contents/edit/${data?.id}`,
+        to: `${subDirectoryPath}/contents/edit/${data?.id}`,
       },
     });
   }

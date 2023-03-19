@@ -9,16 +9,27 @@
   </footer>
 </div>
 
+
+<!-- ./wrapper -->
 <% 
+  const subDirectory = tools.subDirectory;
   let footerScripts = "";
   footer?.forEach(function(footerScript){
-    footerScripts += `<script src="${footerScript}"></script>`;
+    if (footerScript.startsWith('http')) {
+      footerScripts += `<script src="${footerScript}"></script>`;
+    } else {
+      footerScripts += `<script src="${subDirectory}${footerScript}"></script>`;
+    }
   })
 %>
-<!-- ./wrapper -->
-<script src="/public/plugins/jquery/jquery.min.js"></script>
-<script src="/public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/public/dist/js/adminlte.min.js"></script>
+<script>
+  window.bluga = {
+    appLink: "<%= appLink  %>"
+  }
+</script>
+<script src="<%- tools.subDirectory %>/public/plugins/jquery/jquery.min.js"></script>
+<script src="<%- tools.subDirectory %>/public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<%- tools.subDirectory %>/public/dist/js/adminlte.min.js"></script>
 <%- footerScripts %>
 </body>
 </html>

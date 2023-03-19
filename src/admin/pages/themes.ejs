@@ -48,7 +48,7 @@
                 <% if (theme.status) { %>
                 <p>ACTIVE</p>
                 <% } else { %>
-                <form method="post" action="/api/theme/active">
+                <form method="post" action="<%= appLink %>api/theme/active">
                   <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-primary">Activate</button>
                 </form>
                 <% } %>
