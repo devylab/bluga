@@ -2,14 +2,13 @@ import { FastifyInstance } from 'fastify';
 import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import path from 'path';
-import fs from 'fs';
 import EJS from 'ejs';
 import minifier from 'html-minifier';
 import { env } from '@shared/constants/env';
 import { minifierOpts } from '@shared/constants';
 import { ContentService } from '../content/content.service';
 import { ThemeService } from '../theme/theme.service';
-import { SettingsService } from 'src/settings/settings.service';
+import { SettingsService } from '../settings/settings.service';
 
 type ThemeConfig = {
   route: string;
@@ -45,6 +44,7 @@ export class IndexView {
       options: {
         useHtmlMinifier: minifier,
         htmlMinifierOptions: minifierOpts,
+        async: true,
       },
     });
   }
@@ -55,25 +55,22 @@ export class IndexView {
     const currentTheme = `/${activeTheme.name || 'bluga'}`;
     const options = {
       themePath: () => path.join('themes', currentTheme),
-      page: settings?.name, // TODO: GET PAGE FROM DB
-      app: settings?.name,
+      app: settings?.name, // TODO: GET PAGE FROM DB
       description: settings?.description,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as { [name: string]: any };
+      currentPage: '',
+      service: {
+        content: this.contentService,
+      },
+      params,
+    };
 
     const themeConfigPath = path.join(rootPath, 'themes', currentTheme, 'config.js');
-    const themeConfig = eval(fs.readFileSync(themeConfigPath, 'utf-8')) as ThemeConfig[];
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const themeConfig = require(themeConfigPath) as ThemeConfig[];
     const currentPage = themeConfig.find((config) => config.route === routeUrl);
 
     // TODO: handle not found page
     if (currentPage) {
-      for (const query of currentPage.queries) {
-        const queryOptions = { content: this.contentService, params };
-        const { data } = await query.query(queryOptions);
-        options[query.name] = data || {};
-      }
-      const pageTitle = options?.content?.title ? options?.content?.title + ' - ' : '';
-      options.page = pageTitle + options.app;
       return { page: currentTheme + currentPage.path, options };
     }
   }

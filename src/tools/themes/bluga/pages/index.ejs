@@ -1,4 +1,4 @@
-<%- include('../components/header') %> <%- include('../components/navbar') %>
+<%- await include('../components/header') %> <%- await include('../components/navbar') %>
 <div class="container">
   <main>
     <!--                 Filter                    -->
@@ -32,6 +32,7 @@
 
     <!--              Projects section             -->
 
+    <% const { data: contents } = await service.content.getContents('DRAFT'); %>
     <section class="posts">
       <div class="posts__container">
         <div class="recent-post__card">
@@ -137,7 +138,7 @@
 </div>
 
 <div class="sub-footer">
-  <h2 class="heading sub-footer__heading">Get the latest <span><%= page %></span></h2>
+  <h2 class="heading sub-footer__heading">Get the latest <span><%= app %></span></h2>
   <p class="sub-footer__sub">We'll keep you updated on the latest posts</p>
   <form action="" class="sub-footer__form">
     <div class="sub-footer__form--container">
@@ -146,4 +147,4 @@
     </div>
   </form>
 </div>
-<%- include('../components/footer') %>
+<%- await include('../components/footer') %>

@@ -1,8 +1,9 @@
-<%- include('../components/header') %>
-<%- include('../components/navbar.ejs') %>
+<%- await include('../components/header') %>
+<%- await include('../components/navbar') %>
 
 	<div class="container-fluid">
 		<div class="row fh5co-post-entry">
+      <% const { data: contents } = await service.content.getContents('DRAFT'); %>
       <% for(var i=0; i < contents.length; i++) { %>
         <article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
           <figure>
@@ -21,4 +22,4 @@
 		</div>
 	</div>
 </main>
-<%- include('../components/footer') %>
+<%- await include('../components/footer') %>

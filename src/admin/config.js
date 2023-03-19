@@ -1,6 +1,6 @@
 /** @type {import('@src/shared/interfaces/adminRoute.interface').AdminMenu[]} */
 
-export const adminMenus = [
+const adminMenus = [
   {
     id: '1',
     to: '/admin',
@@ -77,3 +77,5 @@ export const adminMenus = [
     sidebar: false,
   },
 ];
+
+module.exports = { adminMenus };
