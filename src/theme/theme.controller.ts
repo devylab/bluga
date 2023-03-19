@@ -1,3 +1,4 @@
+import { subDirectoryPath } from '@shared/constants';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ThemeService } from './theme.service';
 
@@ -47,13 +48,9 @@ export class ThemeController {
 
     const { error } = await this.themeService.setActive(body.theme);
     if (error) {
-      return reply.code(400).send({
-        status: 'error',
-        code: 400,
-        error,
-      });
+      return reply.redirect(`${subDirectoryPath}admin/?error=${error}`);
     }
 
-    return reply.redirect('/admin/themes');
+    return reply.redirect(subDirectoryPath + 'admin/themes');
   }
 }

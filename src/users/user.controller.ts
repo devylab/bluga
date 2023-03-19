@@ -1,4 +1,4 @@
-import { accessTokenKey, refreshTokenKey, secretTokenKey } from '@shared/constants';
+import { accessTokenKey, subDirectoryPath, refreshTokenKey, secretTokenKey } from '@shared/constants';
 import { env } from '@shared/constants/env';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateUser } from './entities/create-user.entity';
@@ -36,7 +36,7 @@ export class UserController {
 
     const { data, error } = await this.userService.login(body, secret);
     if (error) {
-      return reply.redirect(`/admin/login?error=${error}`);
+      return reply.redirect(`${subDirectoryPath}admin/login?error=${error}`);
     }
 
     const options = {
@@ -50,6 +50,6 @@ export class UserController {
       .setCookie(accessTokenKey, data.accessToken, options)
       .cookie(secretTokenKey, data.secret, options)
       .setCookie(refreshTokenKey, data.refreshToken, options)
-      .redirect('/admin');
+      .redirect(subDirectoryPath + 'admin');
   }
 }

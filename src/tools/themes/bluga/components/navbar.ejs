@@ -1,6 +1,6 @@
 <nav class="navigation">
   <div class="navigation__wrapper">
-    <a href="/" class="navigation__logo"><%= app %></a>
+    <a href="<%= appLink %>" class="navigation__logo"><%= app %></a>
     <button class="navigation__hamburger">
       <img src="<%= themePath() %>/assets/navigation.svg" alt="hamburger" class="navigation__hamburger--icon" />
     </button>
@@ -10,21 +10,21 @@
       </button>
       <ul class="navigation__list">
         <li class="navigation__item">
-          <a href="/" class="navigation__link">Home</a>
+          <a href="<%= appLink %>" class="navigation__link">Home</a>
         </li>
         <li class="navigation__item">
-          <a href="/" class="navigation__link">Blog</a>
+          <a href="<%= appLink %>" class="navigation__link">Blog</a>
         </li>
         <li class="navigation__item">
-          <a href="/" class="navigation__link">About Us</a>
+          <a href="<%= appLink %>" class="navigation__link">About Us</a>
         </li>
       </ul>
       <ul class="navigation__cta">
         <li class="navigation__cta--list">
-          <a href="/" class="navigation__cta--link">Log in</a>
+          <a href="<%= appLink %>" class="navigation__cta--link">Log in</a>
         </li>
         <li class="navigation__cta--list">
-          <a href="/" class="btn">Sign Up</a>
+          <a href="<%= appLink %>" class="btn">Sign Up</a>
         </li>
       </ul>
     </div>

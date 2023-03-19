@@ -23,7 +23,7 @@ document.addEventListener('alpine:init', async () => {
     },
     async getContent(id) {
       try {
-        const res = await axios.get('/api/content/' + id);
+        const res = await axios.get(`${bluga.appLink}api/content/${id}`);
         this.data = res.data?.data?.rawContent;
         this.title = res.data?.data?.title;
         return res.data?.data?.rawContent;
@@ -35,7 +35,7 @@ document.addEventListener('alpine:init', async () => {
       }
     },
     async saveContent(rawContent) {
-      let saveUrl = '/api/save-content';
+      let saveUrl = `${bluga.appLink}api/content/save-content`;
       this.message = 'saving content';
       this.show = true;
 

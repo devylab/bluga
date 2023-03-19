@@ -1,3 +1,4 @@
+import { subDirectoryPath } from '@shared/constants';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { SettingsEntity } from './entities/settings.entities';
 import { SettingsService } from './settings.service';
@@ -17,9 +18,9 @@ export class SettingsController {
     const body = req.body as SettingsEntity;
     const { error } = await this.settingsService.saveSettings(body);
     if (error) {
-      return reply.redirect(`/admin/settings/general?error=${error}`);
+      return reply.redirect(`${subDirectoryPath}admin/settings/general?error=${error}`);
     }
 
-    return reply.redirect('/admin/settings/general');
+    return reply.redirect(subDirectoryPath + 'admin/settings/general');
   }
 }

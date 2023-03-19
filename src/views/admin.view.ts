@@ -5,7 +5,7 @@ import path from 'path';
 import EJS from 'ejs';
 import { env } from '@shared/constants/env';
 import minifier from 'html-minifier';
-import { minifierOpts } from '@shared/constants';
+import { subDirectoryPath, minifierOpts } from '@shared/constants';
 import { Utils } from '@shared/utils';
 import { authGuard } from '@shared/guards/authGuard';
 import { ThemeService } from '../theme/theme.service';
@@ -43,19 +43,21 @@ export class AdminView {
     };
   }
 
+  // eslint-disable-next-line max-lines-per-function
   loadAdminView() {
     const { adminRoutes, adminMenus } = Utils.renderAdminRoutes();
     adminRoutes.subscribe((routes) => {
       const formattedRoutes = Utils.formatAdminRoutes(routes);
       formattedRoutes.forEach((route) => {
         this.app.get(route.to, async (req, reply) => {
-          const notProtected = ['/admin/login'];
+          const schema = `${req.protocol}://${req.hostname}${subDirectoryPath}`;
+          const notProtected = [path.join(subDirectoryPath, 'admin/', 'login')];
           const isNotProtected = notProtected.includes(req.routerPath);
 
           let user;
           if (!isNotProtected) {
-            const authUser = await authGuard(req, reply);
-            if (!authUser) return reply.redirect('/admin/login');
+            const authUser = await authGuard(req);
+            if (!authUser) return reply.redirect(`${subDirectoryPath}admin/login`);
             user = authUser;
           }
 
@@ -69,7 +71,8 @@ export class AdminView {
               footer: route.footer || [],
               user,
               db: this.db,
-              tools: { utils: GlobalUtils },
+              appLink: schema,
+              tools: { utils: GlobalUtils, subDirectory: path.join('/', env.subDirectory) },
             },
             { layout: isNotProtected ? undefined : '/layouts/dashboard.ejs' },
           );

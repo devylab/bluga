@@ -27,7 +27,7 @@
           <!-- /.card-header -->
           <!-- form start -->
           <% const {data} = await db.settingsService.getSettings(); %>
-          <form action="/api/settings" method="post" enctype="multipart/form-data">
+          <form action="<%= appLink %>api/settings" method="post" enctype="multipart/form-data">
             <div class="card-body">
               <div class="form-group">
                 <label for="blogFavicon">Favicon</label>

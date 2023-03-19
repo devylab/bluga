@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid';
 import argon2 from 'argon2';
 import { AdminMenu, Routes } from '@shared/interfaces/adminRoute.interface';
 import { adminMenus } from '../../admin/config';
+import { subDirectoryPath } from '@shared/constants';
+import path from 'path';
 
 export class Utils {
   static renderAdminRoutes() {
@@ -13,19 +15,23 @@ export class Utils {
       const newRoutes = [...adminRoutes.value];
 
       if (Array.isArray(item)) {
-        newRoutes.concat(item);
+        newRoutes.concat(item.map((i) => ({ ...i, to: path.join(subDirectoryPath, '/', i.to) })));
       } else {
-        newRoutes.push(item);
+        newRoutes.push({ ...item, to: path.join(subDirectoryPath, '/', item.to) });
       }
 
       adminRoutes.next(newRoutes);
     };
 
-    return { addNewAdminRoute, adminRoutes, adminMenus };
+    return {
+      addNewAdminRoute,
+      adminRoutes,
+      adminMenus: adminMenus.map((menu) => ({ ...menu, to: path.join(subDirectoryPath, '/', menu.to) })),
+    };
   }
 
-  static getMenus(to: string, name: string, path?: string, header?: string[], footer?: string[]) {
-    return { to, path, name, header, footer };
+  static getMenus(to: string, name: string, menuPath?: string, header?: string[], footer?: string[]) {
+    return { to, path: menuPath, name, header, footer };
   }
 
   // eslint-disable-next-line max-lines-per-function

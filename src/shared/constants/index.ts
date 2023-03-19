@@ -1,3 +1,6 @@
+import path from 'path';
+import { env } from './env';
+
 export const SomethingWentWrong = 'something went wrong';
 export const InvalidToken = 'Please use a valid token';
 export const accessTokenKey = 'dawn';
@@ -14,3 +17,4 @@ export const minifierOpts = {
   removeEmptyAttributes: true,
 };
 export const settingsId = '09UsZLX3kSXS';
+export const subDirectoryPath = path.join('/', env.subDirectory, '/');
