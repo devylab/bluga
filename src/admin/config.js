@@ -36,7 +36,7 @@ const adminMenus = [
         to: '/edit/:id',
         name: 'Content Edit',
         icon: '',
-        path: '/pages/content/edit.ejs',
+        path: '/pages/content/create.ejs',
         sidebar: false,
         header: ['/public/styles/content.css'],
         footer: ['https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest', '/public/scripts/save.min.js'],

@@ -50,7 +50,7 @@
                 <% for (let content of contents.data.contents) { %>
                 <tr>
                   <td>
-                    <a href="/admin/contents/edit/<%= content.id %>"><%= content.title %></a>
+                    <a href="<%= appLink %>admin/contents/edit/<%= content.id %>"><%= content.title %></a>
                   </td>
                   <td class="border-dashed border-t border-gray-200 status">
                     <span class=""><%= content.status %></span>

@@ -17,4 +17,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: black;
+}
+
+.content-save-btn:hover {
+  color: black;
 }
