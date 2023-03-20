@@ -86,11 +86,11 @@ export class ContentService {
     }
   }
 
-  async getContents(status: StatusType) {
+  async getContents(status?: StatusType) {
     try {
       const contents = await this.db.content.findMany({
         select: { id: true, title: true, createdAt: true, slug: true },
-        where: { status },
+        where: { status: status || 'PUBLIC' },
       });
       return { data: contents, error: null };
     } catch (err) {
