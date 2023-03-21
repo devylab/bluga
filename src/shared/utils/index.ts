@@ -5,6 +5,7 @@ import { AdminMenu, Routes } from '@shared/interfaces/adminRoute.interface';
 import { adminMenus } from '../../admin/config';
 import { subDirectoryPath } from '@shared/constants';
 import path from 'path';
+import striptags from 'striptags';
 
 export class Utils {
   static renderAdminRoutes() {
@@ -93,5 +94,12 @@ export class Utils {
 
   static async comparePassword(hash: string, password: string) {
     return argon2.verify(hash, password);
+  }
+
+  static readingTime(text: string) {
+    const strippedText = striptags(text);
+    const wpm = 225;
+    const words = strippedText.trim().split(/\s+/).length;
+    return Math.ceil(words / wpm);
   }
 }
