@@ -2,13 +2,13 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Starter Page</h1>
+        <h1 class="m-0">Bluga</h1>
       </div>
       <!-- /.col -->
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Starter Page</li>
+          <li class="breadcrumb-item active">Bluga</li>
         </ol>
       </div>
       <!-- /.col -->
@@ -18,65 +18,104 @@
   <!-- /.container-fluid -->
 </div>
 
-<div class="content">
+<section class="content">
   <div class="container-fluid">
+    <!-- Info boxes -->
+    <% const { data } = await db.contentService.contentAnalytics(); %>
     <div class="row">
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box">
+          <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
 
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+          <div class="info-box-content">
+            <span class="info-box-text">Total Contents</span>
+            <span class="info-box-number"> <%= data?.totalContents %> </span>
           </div>
+          <!-- /.info-box-content -->
         </div>
-
-        <div class="card card-primary card-outline">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-
-            <p class="card-text">
-              Some quick example text to build on the card title and make up the bulk of the card's content.
-            </p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
-        </div>
-        <!-- /.card -->
+        <!-- /.info-box -->
       </div>
-      <!-- /.col-md-6 -->
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="m-0">Featured</h5>
-          </div>
-          <div class="card-body">
-            <h6 class="card-title">Special title treatment</h6>
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
 
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+          <div class="info-box-content">
+            <span class="info-box-text">Public Contents</span>
+            <span class="info-box-number"><%= data?.publicContents %></span>
           </div>
+          <!-- /.info-box-content -->
         </div>
-
-        <div class="card card-primary card-outline">
-          <div class="card-header">
-            <h5 class="m-0">Featured</h5>
-          </div>
-          <div class="card-body">
-            <h6 class="card-title">Special title treatment</h6>
-
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
+        <!-- /.info-box -->
       </div>
-      <!-- /.col-md-6 -->
+      <!-- /.col -->
+
+      <!-- fix for small devices only -->
+      <div class="clearfix hidden-md-up"></div>
+
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Highest Views</span>
+            <span class="info-box-number"><%= data?.highestViews %></span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+          <div class="info-box-content">
+            <span class="info-box-text">Draft Contents</span>
+            <span class="info-box-number"><%= data?.draftContents %></span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+      <!-- /.col -->
     </div>
     <!-- /.row -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header border-transparent">
+            <h3 class="card-title">Most Viewed Contents</h3>
+          </div>
+          <!-- /.card-header -->
+          <% const { data: viewedContents } = await db.contentService.mostViewedContents(); %>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <th>links</th>
+                    <th>Views</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (const viewedContent of viewedContents) { %>
+                  <tr>
+                    <td>
+                      <a target="_blank" href="<%= appLink %><%= viewedContent?.slug %>">/<%= viewedContent?.slug %></a>
+                    </td>
+                    <td><%= viewedContent?.ContentMeta[0]?.views %></td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.table-responsive -->
+          </div>
+          <!-- /.card-body -->
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- /.container-fluid -->
-</div>
+  <!--/. container-fluid -->
+</section>
