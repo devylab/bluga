@@ -34,6 +34,7 @@ model Content {
   status        ContentStatus   @default(DRAFT)
   author        User            @relation(fields: [authorId], references: [id])
   authorId      String
+  ContentMeta   ContentMeta[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
@@ -51,6 +52,17 @@ model Setting {
   name          String          @db.VarChar(255)
   favicon       String?         @db.VarChar(255)
   description   String?         @db.Text
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model ContentMeta {
+  id            String          @id
+  time          Int          
+  views         Int         
+  status        ContentStatus   @default(DRAFT)
+  content       Content         @relation(fields: [contentId], references: [id])
+  contentId     String          @unique
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }

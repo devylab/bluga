@@ -1,5 +1,9 @@
-<% const { data: content } = await service.content.getContentBySlug(params.slug); %> <%- await
-include('../components/header', { currentPage: content.title + ' | '}) %> <%- await include('../components/navbar') %>
+<% const { data: content } = await service.content.getContentBySlug(params.slug); %>
+<!--Divider-->
+<% service.content.updateContentViews(params.slug); %>
+<!--Divider-->
+<%- await include('../components/header', { currentPage: content.title + ' | '}) %> <%- await
+include('../components/navbar') %>
 <main>
   <div class="single-post">
     <div class="single-post__container">

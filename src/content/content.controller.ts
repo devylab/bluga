@@ -71,7 +71,7 @@ export class ContentController {
   }
 
   async getContents(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.contentService.getContents('PUBLIC');
+    const { data, error } = await this.contentService.getContents();
     if (error) {
       return reply.code(400).send({
         status: 'error',
