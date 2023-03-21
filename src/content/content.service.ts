@@ -150,7 +150,46 @@ export class ContentService {
       });
       return { data: 'updated views', error: null };
     } catch (err) {
-      logger.error(err, 'error while getting content by slug');
+      logger.error(err, 'error while updating views');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async contentAnalytics() {
+    try {
+      const data = await this.db.$transaction(async (tx) => {
+        const totalContents = await tx.content.count();
+        const publicContents = await tx.content.count({ where: { status: 'PUBLIC' } });
+        const draftContents = await tx.content.count({ where: { status: 'DRAFT' } });
+        const highestViews = await tx.contentMeta.findFirst({
+          select: { views: true },
+          take: 1,
+          orderBy: { views: 'desc' },
+        });
+        return { totalContents, publicContents, draftContents, highestViews: highestViews?.views || 0 };
+      });
+      return { data, error: null };
+    } catch (err) {
+      logger.error(err, 'error while content analytics');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async mostViewedContents() {
+    try {
+      const data = await this.db.content.findMany({
+        select: {
+          slug: true,
+          ContentMeta: {
+            select: { views: true },
+          },
+        },
+        where: { status: 'PUBLIC' },
+        take: 5,
+      });
+      return { data, error: null };
+    } catch (err) {
+      logger.error(err, 'error while most viewed content');
       return { data: null, error: 'error' };
     }
   }
