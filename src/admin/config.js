@@ -6,14 +6,14 @@ const adminMenus = [
     to: '/admin',
     name: 'Overview',
     path: '/pages/overview.ejs',
-    icon: '',
+    icon: 'fas fa-tachometer-alt',
     sidebar: true,
   },
   {
     id: '2',
     to: '/admin/contents',
     name: 'Contents',
-    icon: '',
+    icon: 'fas fa-blog',
     sidebar: true,
     children: [
       {
@@ -47,7 +47,7 @@ const adminMenus = [
     id: '3',
     to: '/admin/themes',
     name: 'Themes',
-    icon: '',
+    icon: 'fas fa-palette',
     path: '/pages/themes.ejs',
     sidebar: true,
   },
@@ -55,7 +55,7 @@ const adminMenus = [
     id: '4',
     to: '/admin/settings',
     name: 'Settings',
-    icon: '',
+    icon: 'fas fa-tools',
     sidebar: true,
     children: [
       {

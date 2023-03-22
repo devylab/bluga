@@ -97,6 +97,7 @@ export class ContentService {
       ];
       const contents = await this.db.content.findMany({
         select: { id: true, title: true, status: true, createdAt: true },
+        orderBy: { createdAt: 'desc' },
       });
       return { data: { contents, headings }, error: null };
     } catch (err) {
@@ -118,6 +119,7 @@ export class ContentService {
           },
         },
         where: { status: status || 'PUBLIC' },
+        orderBy: { createdAt: 'desc' },
       });
       return { data: contents, error: null };
     } catch (err) {
