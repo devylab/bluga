@@ -1,7 +1,7 @@
 <!-- Main Sidebar Container -->
 <aside x-data class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
-  <a href="<%= appLink %>" class="brand-link">
+  <a href="<%= appLink %>admin" class="brand-link">
     <!-- <img
       src="dist/img/AdminLTELogo.png"
       alt="AdminLTE Logo"
@@ -46,7 +46,7 @@
         <% if (sidebarLink?.children) { %>
         <li class="nav-item <%= currentPage.startsWith(sidebarLink.to) && 'menu-open' %>">
           <a href="#" class="nav-link <%= currentPage.startsWith(sidebarLink.to) && 'active' %>">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon <%= sidebarLink.icon %>"></i>
             <p>
               <%= sidebarLink.name %>
               <i class="right fas fa-angle-left"></i>
@@ -73,7 +73,7 @@
         <% } else { %>
         <li class="nav-item">
           <a href="<%= sidebarLink.to %>" class="nav-link <%= currentPage === sidebarLink.to && 'active' %>">
-            <i class="nav-icon fas fa-th"></i>
+            <i class="nav-icon <%= sidebarLink.icon %>"></i>
             <p><%= sidebarLink.name %></p>
           </a>
         </li>

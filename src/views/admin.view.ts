@@ -50,7 +50,7 @@ export class AdminView {
       const formattedRoutes = Utils.formatAdminRoutes(routes);
       formattedRoutes.forEach((route) => {
         this.app.get(route.to, async (req, reply) => {
-          const schema = `${req.protocol}://${req.hostname}${subDirectoryPath}`;
+          const schema = `${env.environment.isProduction ? 'https' : 'http'}://${req.hostname}${subDirectoryPath}`;
           const notProtected = [path.join(subDirectoryPath, 'admin/', 'login')];
           const isNotProtected = notProtected.includes(req.routerPath);
 
@@ -72,7 +72,7 @@ export class AdminView {
               user,
               db: this.db,
               appLink: schema,
-              tools: { utils: GlobalUtils, subDirectory: path.join('/', env.subDirectory) },
+              tools: { utils: GlobalUtils, subDirectory: schema },
             },
             { layout: isNotProtected ? undefined : '/layouts/dashboard.ejs' },
           );

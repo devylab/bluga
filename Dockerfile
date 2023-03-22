@@ -15,4 +15,4 @@ COPY . .
 # Run the app
 EXPOSE 50921
 
-CMD ["yarn", "start"]
+CMD ["node", "-r", "tsconfig-paths/register", "build/index.js"]

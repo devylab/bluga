@@ -1,5 +1,6 @@
 import { subDirectoryPath } from '@shared/constants';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import path from 'path';
 import { ContentService } from './content.service';
 import { CreateContent } from './entities/create-content.entity';
 
@@ -15,7 +16,7 @@ export class ContentController {
     const query = req.query as { content: string };
 
     const { data, error } = await this.contentService.saveContent(body, req.user_id, query?.content);
-    if (error) {
+    if (error || !data) {
       return reply.code(400).send({
         status: 'error',
         code: 400,
@@ -29,7 +30,7 @@ export class ContentController {
       data: {
         title: body.title,
         status: data?.status,
-        to: `${subDirectoryPath}/contents/edit/${data?.id}`,
+        to: path.join(subDirectoryPath, '/contents/edit/', data.id),
       },
     });
   }

@@ -80,7 +80,7 @@ export class IndexView {
   // eslint-disable-next-line max-lines-per-function
   async loadIndexView() {
     this.app.get('/', async (req, reply) => {
-      const schema = `${req.protocol}://${req.hostname}${subDirectoryPath}`;
+      const schema = `${env.environment.isProduction ? 'https' : 'http'}://${req.hostname}${subDirectoryPath}`;
       const currentTheme = await this.loadTheme('/', req.params, schema);
 
       // TODO: handle not found page

@@ -17,6 +17,7 @@
     "start": "node -r tsconfig-paths/register build/index.js",
     "migrate:dev": "prisma migrate dev --name",
     "migrate:prod": "prisma migrate deploy && prisma db seed",
+    "seed": "prisma db seed",
     "grunt": "grunt",
     "grunt:watch": "grunt watch --force",
     "grunt:copy": "grunt copy",
