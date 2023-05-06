@@ -18,5 +18,8 @@ export class ContentRoute {
     this.server.get('/api/contents', { preHandler: [authGuard] }, (req, reply) =>
       this.contentController.getAdminContents(req, reply),
     );
+    this.server.post('/api/content/remove-content', { preHandler: [authGuard] }, (req, reply) =>
+      this.contentController.removeContents(req, reply),
+    );
   }
 }

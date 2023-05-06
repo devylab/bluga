@@ -117,6 +117,9 @@ export class ContentService {
           ContentMeta: {
             select: { views: true, time: true },
           },
+          author: {
+            select: { username: true },
+          },
         },
         where: { status: status || 'PUBLIC' },
         orderBy: { createdAt: 'desc' },
@@ -131,7 +134,14 @@ export class ContentService {
   async getContentBySlug(slug: string) {
     try {
       const data = await this.db.content.findUnique({
-        select: { content: true, title: true, createdAt: true },
+        select: {
+          content: true,
+          title: true,
+          createdAt: true,
+          author: {
+            select: { username: true },
+          },
+        },
         where: { slug },
       });
       return { data, error: null };
@@ -192,6 +202,18 @@ export class ContentService {
       return { data, error: null };
     } catch (err) {
       logger.error(err, 'error while most viewed content');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async removeContents(ids: string[]) {
+    try {
+      await this.db.content.deleteMany({
+        where: { id: { in: ids } },
+      });
+      return { data: 'removed', error: null };
+    } catch (err) {
+      logger.error(err, 'error while removing contents');
       return { data: null, error: 'error' };
     }
   }

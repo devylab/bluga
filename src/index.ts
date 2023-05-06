@@ -19,7 +19,7 @@ export class AppInstance {
     this.server = fastify({
       ignoreTrailingSlash: true,
       ignoreDuplicateSlashes: true,
-      logger: env.environment.isDevelopment,
+      logger: true,
       pluginTimeout: env.environment.isDevelopment ? 120_000 : undefined,
     });
   }
@@ -91,6 +91,6 @@ const events = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM', 'uncaughtExce
 events.forEach((event) => {
   process.on(event, async () => {
     await app.stopApp();
-    logger.info(`app stopped because this event: ${event} was triggere`);
+    logger.info(`app stopped because this event: ${event} was triggered`);
   });
 });

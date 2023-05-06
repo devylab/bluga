@@ -22,6 +22,7 @@ const adminMenus = [
         icon: '',
         path: '/pages/content/lists.ejs',
         sidebar: true,
+        footer: ['/public/scripts/lists.min.js'],
       },
       {
         to: '/create',
