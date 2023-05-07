@@ -1,0 +1,15 @@
+.favicon-thumbnail {
+  width: 150px;
+  height: 150px;
+}
+
+.favicon-thumbnail-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.favicon-thumbnail-input {
+  display: none;
+}

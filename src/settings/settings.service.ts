@@ -3,6 +3,7 @@ import { settingsId } from '@shared/constants';
 import database from '@shared/database';
 import { logger } from '@shared/logger';
 import { SettingsEntity } from './entities/settings.entities';
+import { cloudinary } from '@shared/cloudinary';
 
 export class SettingsService {
   private readonly db;
@@ -11,11 +12,15 @@ export class SettingsService {
     this.db = database.instance();
   }
 
-  async saveSettings(body: SettingsEntity) {
+  async saveSettings(body: SettingsEntity, filePath: string | null) {
     try {
-      // TODO: cache settings
       await cache.remove('settings');
       const data = { name: body.blogName.value?.trim(), description: body.blogDescription.value?.trim(), favicon: '/' };
+      if (filePath) {
+        const faviconUrl = await cloudinary.uploadImage(filePath, 'favicon.png');
+        data.favicon = faviconUrl;
+      }
+
       await this.db.setting.upsert({
         where: { id: settingsId },
         create: { id: settingsId, ...data },
@@ -37,7 +42,7 @@ export class SettingsService {
 
       const settings = await this.db.setting.findUnique({
         where: { id: settingsId },
-        select: { name: true, description: true },
+        select: { name: true, description: true, favicon: true },
       });
       await cache.set('settings', JSON.stringify(settings));
 

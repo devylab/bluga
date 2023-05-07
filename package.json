@@ -58,6 +58,7 @@
     "@fastify/view": "^7.1.2",
     "@prisma/client": "^4.11.0",
     "argon2": "^0.30.2",
+    "cloudinary": "^1.36.4",
     "dotenv": "^16.0.3",
     "editorjs-html": "^3.4.2",
     "ejs": "^3.1.9",

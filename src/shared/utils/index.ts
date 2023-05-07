@@ -102,4 +102,8 @@ export class Utils {
     const words = strippedText.trim().split(/\s+/).length;
     return Math.ceil(words / wpm);
   }
+
+  static defaultTitle() {
+    return `untitled-${Utils.uniqueId(5)}`;
+  }
 }

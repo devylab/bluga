@@ -15,8 +15,10 @@ export class SettingsController {
     // console.log('\n\n FILE', file, '\n\n');
     // console.log('\n\n Body', req.body, '\n\n');
     // TODO: validate file size
+    const files = await req.saveRequestFiles();
     const body = req.body as SettingsEntity;
-    const { error } = await this.settingsService.saveSettings(body);
+    const filePath = Array.isArray(files) && files.length ? files[0].filepath : null;
+    const { error } = await this.settingsService.saveSettings(body, filePath);
     if (error) {
       return reply.redirect(`${subDirectoryPath}admin/settings/general?error=${error}`);
     }

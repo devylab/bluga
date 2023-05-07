@@ -30,7 +30,7 @@ export class ContentController {
       data: {
         title: body.title,
         status: data?.status,
-        to: path.join(subDirectoryPath, '/contents/edit/', data.id),
+        to: path.join(subDirectoryPath, '/admin/contents/edit/', data.id),
       },
     });
   }

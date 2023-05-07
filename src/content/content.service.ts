@@ -21,19 +21,20 @@ export class ContentService {
     contentID = '',
   ) {
     try {
+      let contentTitle = title;
       // TODO: proper validation handler
       if (!title || title.trim() === '') {
-        return { data: null, error: 'error' };
+        contentTitle = Utils.defaultTitle();
       }
 
       const html = this.edjsParser.parse(rawContent);
       const stringHtml = html?.reduce((a: string, b: string) => a + b, '');
       const content = sanitizeHtml(stringHtml);
-      const slug = title.toLowerCase().replaceAll(' ', '-');
+      const slug = contentTitle.toLowerCase().replaceAll(' ', '-');
       const payload = {
         content,
         rawContent,
-        title,
+        title: contentTitle,
         slug,
         thumbnail: thumbnail || '',
         description: description || '',
