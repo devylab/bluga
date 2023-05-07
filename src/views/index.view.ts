@@ -59,6 +59,7 @@ export class IndexView {
       app: settings?.name, // TODO: GET PAGE FROM DB
       description: settings?.description,
       appLink: schema,
+      appFavicon: settings?.favicon,
       currentPage: '',
       service: {
         content: this.contentService,

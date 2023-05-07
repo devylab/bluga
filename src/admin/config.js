@@ -18,7 +18,7 @@ const adminMenus = [
     children: [
       {
         to: '/lists',
-        name: 'Content Lists',
+        name: 'Lists',
         icon: '',
         path: '/pages/content/lists.ejs',
         sidebar: true,
@@ -26,7 +26,7 @@ const adminMenus = [
       },
       {
         to: '/create',
-        name: 'Content Create',
+        name: 'Create',
         icon: '',
         path: '/pages/content/create.ejs',
         sidebar: true,
@@ -65,7 +65,12 @@ const adminMenus = [
         icon: '',
         path: '/pages/settings/general.ejs',
         sidebar: true,
-        footer: ['/public/plugins/bs-custom-file-input/bs-custom-file-input.min.js', '/public/scripts/general.min.js'],
+        header: ['/public/styles/settings.css'],
+        footer: [
+          '/public/plugins/bs-custom-file-input/bs-custom-file-input.min.js',
+          '/public/scripts/general.min.js',
+          '/public/scripts/settings.min.js',
+        ],
       },
     ],
   },

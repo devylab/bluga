@@ -27,16 +27,45 @@
           <!-- /.card-header -->
           <!-- form start -->
           <% const {data} = await db.settingsService.getSettings(); %>
-          <form action="<%= appLink %>api/settings" method="post" enctype="multipart/form-data">
+          <script>
+            window.bluga = { ...window.bluga, favicon: '<%= data?.favicon %>' };
+          </script>
+
+          <form
+            x-data="faviconViewer()"
+            action="<%= appLink %>api/settings"
+            method="post"
+            enctype="multipart/form-data"
+          >
             <div class="card-body">
               <div class="form-group">
                 <label for="blogFavicon">Favicon</label>
                 <div class="input-group">
-                  <div class="custom-file">
-                    <input name="blogFavicon" type="file" class="custom-file-input" id="blogFavicon" accept="image/*" />
-                    <label class="custom-file-label" for="blogFavicon">Choose file</label>
+                  <div class="">
+                    <input
+                      :class="showFileError ? 'is-invalid' : ''"
+                      class="favicon-thumbnail-input"
+                      name="blogFavicon"
+                      id="blogFavicon"
+                      type="file"
+                      accept="image/*"
+                      @change="fileChosen"
+                    />
+                    <label for="blogFavicon" class="d-block">
+                      <template x-if="!imageUrl">
+                        <div class="favicon-thumbnail favicon-thumbnail-add">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                        </div>
+                      </template>
+                      <template x-if="imageUrl">
+                        <img class="favicon-thumbnail" :src="imageUrl" src="<%= data?.favicon %>" />
+                      </template>
+                    </label>
                   </div>
-                  <div class="invalid-feedback" id="favicon-msg">favicon size can not be greater than 500kb</div>
+
+                  <div :class="showFileError ? 'd-block' : 'd-none'" class="invalid-feedback">
+                    favicon size can not be greater than 500kb
+                  </div>
                 </div>
               </div>
               <div class="form-group">

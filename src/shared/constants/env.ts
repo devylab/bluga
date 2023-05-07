@@ -10,6 +10,9 @@ const clean = cleanEnv(process.env, {
   ENCRYPTION_SECRET: str(),
   RE_ENCRYPTION_SECRET: str(),
   SUB_DIRECTORY: str({ default: '' }),
+  CLOUDINARY_NAME: str(),
+  CLOUDINARY_KEY: str(),
+  CLOUDINARY_SECRET: str(),
 });
 
 export const env = {
@@ -24,4 +27,9 @@ export const env = {
   encryptionSecret: clean.ENCRYPTION_SECRET,
   reEncryptionSecret: clean.RE_ENCRYPTION_SECRET,
   subDirectory: clean.SUB_DIRECTORY,
+  cloudinary: {
+    name: clean.CLOUDINARY_NAME,
+    key: clean.CLOUDINARY_KEY,
+    secret: clean.CLOUDINARY_SECRET,
+  },
 };

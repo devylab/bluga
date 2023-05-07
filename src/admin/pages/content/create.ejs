@@ -6,9 +6,9 @@
       x-text="$store.content.message"
       x-transition
       x-effect="(() => {
-      $store.content.show;
-      setTimeout(() => $store.content.hideMessage(), 3000);
-    })()"
+        $store.content.show;
+        setTimeout(() => $store.content.hideMessage(), 3000);
+      })()"
     ></p>
     <input
       x-model="$store.content.title"
@@ -20,22 +20,55 @@
     />
   </div>
   <div id="editorjs"></div>
-  <button class="content-save-btn" data-widget="control-sidebar" data-slide="true"><i class="fas fa-save"></i></button>
-  <aside class="control-sidebar control-sidebar-light">
+  <button class="content-save-btn" data-widget="control-sidebar" data-slide="true">
+    <i class="fas fa-save"></i>
+  </button>
+  <aside class="control-sidebar control-sidebar-light content-side-drawer">
     <!-- Control sidebar content goes here -->
     <div class="p-3">
       <h5>Save Content</h5>
-      <p>Sidebar content</p>
-      <button
-        type="button"
-        @click.prevent="$store.content.saveContent(null, 'PUBLIC')"
-        class="btn btn-block btn-outline-primary"
-      >
-        Publish
-      </button>
-      <button type="button" data-widget="control-sidebar" data-slide="true" class="btn btn-block btn-outline-danger">
-        Close
-      </button>
+
+      <div>
+        <label for="content-thumbnail" class="d-block">Choose Thumbnail</label>
+        <input
+          class="content-thumbnail-input"
+          id="content-thumbnail"
+          type="file"
+          accept="image/*"
+          @change="$store.content.selectThumbnail"
+        />
+        <label for="content-thumbnail" class="d-block">
+          <template x-if="!$store.content.thumbnail">
+            <div class="content-thumbnail content-thumbnail-add"><i class="fa fa-plus" aria-hidden="true"></i></div>
+          </template>
+          <template x-if="$store.content.thumbnail">
+            <img class="content-thumbnail" :src="$store.content.thumbnail" />
+          </template>
+        </label>
+      </div>
+
+      <div>
+        <label for="content-category">Choose Category</label>
+      </div>
+      <div></div>
+
+      <div class="content-drawer-btns">
+        <button
+          type="button"
+          data-widget="control-sidebar"
+          data-slide="true"
+          class="btn btn-block btn-sm btn-outline-danger"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          @click.prevent="$store.content.saveContent(null, 'PUBLIC')"
+          class="btn btn-block btn-sm btn-outline-primary"
+        >
+          Publish
+        </button>
+      </div>
     </div>
   </aside>
 </form>
