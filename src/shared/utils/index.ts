@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { nanoid } from 'nanoid';
 import argon2 from 'argon2';
+import sanitizeHtml from 'sanitize-html';
 import { AdminMenu, Routes } from '@shared/interfaces/adminRoute.interface';
 import { adminMenus } from '../../admin/config';
 import { subDirectoryPath } from '@shared/constants';
@@ -105,5 +106,15 @@ export class Utils {
 
   static defaultTitle() {
     return `untitled-${Utils.uniqueId(5)}`;
+  }
+
+  static htmlSanitizer(html: string) {
+    return sanitizeHtml(html, {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        a: ['href', 'name', 'target', 'download'],
+      },
+    });
   }
 }
