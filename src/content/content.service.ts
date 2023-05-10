@@ -5,13 +5,18 @@ import { logger } from '@shared/logger';
 import { Utils } from '@shared/utils';
 import { CreateContent, StatusType } from './entities/create-content.entity';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function customParser(block: any) {
+  return `<attaches> ${block.data.text} </attaches>`;
+}
+
 export class ContentService {
   private readonly db;
   private edjsParser;
 
   constructor() {
     this.db = database.instance();
-    this.edjsParser = edjsHTML();
+    this.edjsParser = edjsHTML({ custom: customParser });
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -28,8 +33,14 @@ export class ContentService {
       }
 
       const html = this.edjsParser.parse(rawContent);
+      // const validate = this.edjsParser.validate(rawContent);
+      // console.log('\n\n\n validate', validate, '\n\n\n\n');
+      // console.log('\n\n\n rawContent', JSON.stringify(rawContent, null, 2), '\n\n\n\n');
+      // console.log('\n\n\n HTML', html, '\n\n\n\n');
       const stringHtml = html?.reduce((a: string, b: string) => a + b, '');
-      const content = sanitizeHtml(stringHtml);
+      const content = sanitizeHtml(stringHtml, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+      });
       const slug = contentTitle.toLowerCase().replaceAll(' ', '-');
       const payload = {
         content,

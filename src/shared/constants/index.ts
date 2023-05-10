@@ -18,3 +18,4 @@ export const minifierOpts = {
 };
 export const settingsId = '09UsZLX3kSXS';
 export const subDirectoryPath = path.join('/', env.subDirectory, '/');
+export const hostProtocol = `${env.environment.isProduction ? 'https' : 'http'}://`;

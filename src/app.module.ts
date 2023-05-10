@@ -5,11 +5,13 @@ import { AdminView } from './views/admin.view';
 import { IndexView } from './views/index.view';
 import { ThemeRoute } from './theme/theme.route';
 import { SettingsRoute } from './settings/settings.route';
+import { UploadRoute } from './upload/upload.route';
 
 export class AppModule {
   private readonly userRoutes;
   private readonly contentRoutes;
   private readonly themeRoutes;
+  private readonly uploadRoutes;
   private readonly indexView;
   private readonly adminView;
   private readonly settingsRoute;
@@ -21,6 +23,7 @@ export class AppModule {
     this.contentRoutes = new ContentRoute(this.app);
     this.themeRoutes = new ThemeRoute(this.app);
     this.settingsRoute = new SettingsRoute(this.app);
+    this.uploadRoutes = new UploadRoute(this.app);
   }
 
   private noRoute() {
@@ -35,6 +38,7 @@ export class AppModule {
     this.contentRoutes.loadRoutes();
     this.themeRoutes.loadRoutes();
     this.settingsRoute.loadRoutes();
+    this.uploadRoutes.loadRoutes();
   }
 
   loadRoutes() {

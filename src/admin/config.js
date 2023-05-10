@@ -1,5 +1,4 @@
 /** @type {import('@src/shared/interfaces/adminRoute.interface').AdminMenu[]} */
-
 const adminMenus = [
   {
     id: '1',
@@ -31,7 +30,12 @@ const adminMenus = [
         path: '/pages/content/create.ejs',
         sidebar: true,
         header: ['/public/styles/content.css'],
-        footer: ['https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest', '/public/scripts/save.min.js'],
+        footer: [
+          'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.26.5',
+          'https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0',
+          'https://cdn.jsdelivr.net/npm/@editorjs/attaches@1.3.0',
+          '/public/scripts/save.min.js',
+        ],
       },
       {
         to: '/edit/:id',
@@ -40,7 +44,12 @@ const adminMenus = [
         path: '/pages/content/create.ejs',
         sidebar: false,
         header: ['/public/styles/content.css'],
-        footer: ['https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest', '/public/scripts/save.min.js'],
+        footer: [
+          'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.26.5',
+          'https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0',
+          'https://cdn.jsdelivr.net/npm/@editorjs/attaches@1.3.0',
+          '/public/scripts/save.min.js',
+        ],
       },
     ],
   },

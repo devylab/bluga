@@ -26,7 +26,7 @@ https: module.exports = function (grunt) {
         files: [
           { expand: true, cwd: 'src', src: ['**/public/robots.txt'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/tools/plugins/do_not_delete.txt'], dest: 'build', filter: 'isFile' },
-          { expand: true, cwd: 'src', src: ['**/tools/upload/do_not_delete.txt'], dest: 'build', filter: 'isFile' },
+          { expand: true, cwd: 'src', src: ['**/public/uploads/do_not_delete.txt'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/public/styles/*.css'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/public/scripts/*.min.js'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/public/img/**'], dest: 'build' },
