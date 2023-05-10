@@ -1,15 +1,5 @@
 <form class="content-header" x-data autocomplete="off">
   <div class="d-flex flex-column align-items-center justify-content">
-    <p
-      class="font-thin lowercase italic"
-      x-show="$store.content.show"
-      x-text="$store.content.message"
-      x-transition
-      x-effect="(() => {
-        $store.content.show;
-        setTimeout(() => $store.content.hideMessage(), 3000);
-      })()"
-    ></p>
     <input
       x-model="$store.content.title"
       id="contentTitle"
