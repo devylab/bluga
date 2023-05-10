@@ -30,6 +30,7 @@ document.addEventListener('alpine:init', async () => {
             },
           },
         },
+        code: CodeTool,
       },
       onChange: async (api) => {
         Alpine.debounce(
@@ -44,15 +45,9 @@ document.addEventListener('alpine:init', async () => {
   };
 
   Alpine.store('content', {
-    show: false,
     data: {},
     title: '',
-    message: '',
     thumbnail: '',
-    hideMessage() {
-      this.message = '';
-      this.show = false;
-    },
     async getContent(id) {
       try {
         const res = await axios.get(`${bluga.appLink}/api/content/${id}`);
@@ -61,8 +56,6 @@ document.addEventListener('alpine:init', async () => {
         return res.data?.data?.rawContent;
       } catch (err) {
         console.log(err);
-        // this.message = 'error while saving content';
-        // this.show = true;
         return {};
       }
     },
@@ -77,19 +70,16 @@ document.addEventListener('alpine:init', async () => {
       if (!rawContent) rawContent = await editor.save(); // get content if it doesn't exist
 
       try {
-        this.message = 'saving content';
-        this.show = true;
         const res = await axios.post(saveUrl, {
           title: title.value,
           rawContent,
           status: status || 'DRAFT',
         });
-        this.message = `content saved as ${res.data?.data?.status}`;
-        this.show = true;
+
+        toastr.success(`content saved as ${res.data?.data?.status}`);
         if (!contentID) window.history.pushState('Edit', '', res.data?.data?.to); // redirect if not in edit state
       } catch (err) {
-        this.message = 'error while saving content';
-        this.show = true;
+        toastr.error('error while saving content');
       }
     },
 
