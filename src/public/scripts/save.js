@@ -5,6 +5,32 @@ document.addEventListener('alpine:init', async () => {
       holder: 'editorjs',
       data,
       placeholder: 'Let`s write an awesome story!',
+      tools: {
+        image: {
+          class: ImageTool,
+          config: {
+            uploader: {
+              uploadByFile(file) {
+                const formData = new FormData();
+                formData.append('field', file);
+                return axios.post(`${bluga.appLink}/api/upload/content-image`, formData).then((res) => res.data);
+              },
+            },
+          },
+        },
+        attaches: {
+          class: AttachesTool,
+          config: {
+            uploader: {
+              uploadByFile(file) {
+                const formData = new FormData();
+                formData.append('field', file);
+                return axios.post(`${bluga.appLink}/api/upload/content-file`, formData).then((res) => res.data);
+              },
+            },
+          },
+        },
+      },
       onChange: async (api) => {
         Alpine.debounce(
           (async () => {

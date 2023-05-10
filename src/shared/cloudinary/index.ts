@@ -10,9 +10,27 @@ cloud.config({
 });
 
 export const cloudinary = {
-  uploadImage: async (path: string, filename: string) => {
+  // TODO: Image optimazition
+  uploadImage: async (path: string, filename: string, directory?: string) => {
     try {
-      const res = await cloud.uploader.upload(path, { public_id: filename, resource_type: 'image', folder: 'bluga' });
+      const res = await cloud.uploader.upload(path, {
+        public_id: filename,
+        resource_type: 'image',
+        folder: directory ? `bluga/${directory}` : 'bluga',
+      });
+      return env.environment.isDevelopment ? res.url : res.secure_url;
+    } catch (err) {
+      logger.error(err, 'error while uploading image');
+      return 'could not upload image';
+    }
+  },
+
+  uploadFile: async (path: string, filename: string, directory?: string) => {
+    try {
+      const res = await cloud.uploader.upload(path, {
+        public_id: filename,
+        folder: directory ? `bluga/${directory}` : 'bluga',
+      });
       return env.environment.isDevelopment ? res.url : res.secure_url;
     } catch (err) {
       logger.error(err, 'error while uploading file');

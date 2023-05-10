@@ -21,6 +21,7 @@ export class AppInstance {
       ignoreDuplicateSlashes: true,
       logger: true,
       pluginTimeout: env.environment.isDevelopment ? 120_000 : undefined,
+      // bodyLimit: 5242880, // 5mb
     });
   }
 
@@ -42,7 +43,7 @@ export class AppInstance {
     await this.server.register(fastifyCookie, { secret: env.cookieSecret });
     await this.server.register(fastifyCSRF, { cookieOpts: { signed: true } });
     await this.server.register(formBody);
-    await this.server.register(fastifyMultipart, { attachFieldsToBody: true });
+    await this.server.register(fastifyMultipart);
 
     this.server.register(
       (fasti, _, done) => {
