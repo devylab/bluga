@@ -1,4 +1,6 @@
+import { subDirectoryPath } from '@shared/constants';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import path from 'path';
 import { ContentService } from './content.service';
 import { CreateContent } from './entities/create-content.entity';
 
@@ -13,8 +15,8 @@ export class ContentController {
     const body = req.body as CreateContent;
     const query = req.query as { content: string };
 
-    const { data, error } = await this.contentService.saveContent(body, query?.content);
-    if (error) {
+    const { data, error } = await this.contentService.saveContent(body, req.user_id, query?.content);
+    if (error || !data) {
       return reply.code(400).send({
         status: 'error',
         code: 400,
@@ -27,8 +29,8 @@ export class ContentController {
       code: 200,
       data: {
         title: body.title,
-        status: body.status,
-        to: `/admin/contents/edit/${data?.id}`,
+        status: data?.status,
+        to: path.join(subDirectoryPath, '/admin/contents/edit/', data.id),
       },
     });
   }
@@ -70,7 +72,25 @@ export class ContentController {
   }
 
   async getContents(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.contentService.getContents('PUBLIC');
+    const { data, error } = await this.contentService.getContents();
+    if (error) {
+      return reply.code(400).send({
+        status: 'error',
+        code: 400,
+        error,
+      });
+    }
+
+    return reply.code(200).send({
+      status: 'success',
+      code: 200,
+      data,
+    });
+  }
+
+  async removeContents(req: FastifyRequest, reply: FastifyReply) {
+    const body = req.body as { ids: string[] };
+    const { data, error } = await this.contentService.removeContents(body.ids);
     if (error) {
       return reply.code(400).send({
         status: 'error',

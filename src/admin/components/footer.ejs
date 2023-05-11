@@ -1,3 +1,36 @@
-  <script src="/public/scripts/app.min.js"></script>
-  </body>
+<!-- Main Footer -->
+  <!-- <footer class="main-footer text-sm">
+    <div class="float-right d-none d-sm-inline">
+      Anything you want
+    </div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer> -->
+</div>
+
+
+<!-- ./wrapper -->
+<% 
+  const subDirectory = tools.subDirectory;
+  let footerScripts = "";
+  footer?.forEach(function(footerScript){
+    if (footerScript.startsWith('http')) {
+      footerScripts += `<script src="${footerScript}"></script>`;
+    } else {
+      footerScripts += `<script src="${subDirectory}${footerScript}"></script>`;
+    }
+  })
+%>
+
+<script src="<%- tools.subDirectory %>/public/plugins/jquery/jquery.min.js"></script>
+<script src="<%- tools.subDirectory %>/public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<%- tools.subDirectory %>/public/plugins/toastr/toastr.min.js"></script>
+<script src="<%- tools.subDirectory %>/public/dist/js/adminlte.min.js"></script>
+<script src="<%- tools.subDirectory %>/public/scripts/app.min.js"></script>
+<script>
+  toastr.options = {
+    "preventDuplicates": true,
+  }
+</script>
+<%- footerScripts %>
+</body>
 </html>

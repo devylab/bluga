@@ -1,6 +1,9 @@
+import { accessTokenKey, subDirectoryPath, refreshTokenKey, secretTokenKey } from '@shared/constants';
+import { env } from '@shared/constants/env';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateUser } from './entities/create-user.entity';
 import { UserService } from './user.service';
+import fastifyCookie from '@fastify/cookie';
 
 export class UserController {
   private readonly userService;
@@ -26,5 +29,54 @@ export class UserController {
       code: 201,
       data,
     });
+  }
+
+  async login(req: FastifyRequest, reply: FastifyReply) {
+    const body = req.body as CreateUser;
+    const secret = reply.generateCsrf();
+
+    const { data, error } = await this.userService.login(body, secret);
+    if (error) {
+      return reply.redirect(`${subDirectoryPath}admin/login?error=${error}`);
+    }
+
+    const options = {
+      path: '/',
+      signed: true,
+      httpOnly: true,
+      secure: env.environment.isProduction,
+      sameSite: true,
+    };
+    reply
+      .setCookie(accessTokenKey, data.accessToken, options)
+      .cookie(secretTokenKey, data.secret, options)
+      .setCookie(refreshTokenKey, data.refreshToken, options)
+      .redirect(subDirectoryPath + 'admin');
+  }
+
+  async refreshToken(req: FastifyRequest, reply: FastifyReply) {
+    const refreshToken = req.cookies[refreshTokenKey] || '';
+    const secretToken = req.cookies[secretTokenKey] || '';
+    const secret = reply.generateCsrf();
+    const unsignedRefreshToken = fastifyCookie.unsign(refreshToken, env.cookieSecret).value || '';
+    const unsignedSecretToken = fastifyCookie.unsign(secretToken, env.cookieSecret).value || '';
+
+    const { data, error } = await this.userService.refreshToken(secret, unsignedSecretToken, unsignedRefreshToken);
+    if (error) {
+      return reply.redirect(`${subDirectoryPath}admin/login?error=${error}`);
+    }
+
+    const options = {
+      path: '/',
+      signed: true,
+      httpOnly: true,
+      secure: env.environment.isProduction,
+      sameSite: true,
+    };
+    reply
+      .setCookie(accessTokenKey, data.accessToken, options)
+      .cookie(secretTokenKey, data.secret, options)
+      .setCookie(refreshTokenKey, data.refreshToken, options)
+      .send({ status: 'success', code: 200, data: 'token refreshed' });
   }
 }

@@ -1,1 +1,4 @@
 src/admin/components/header.ejs
+*public.ejs
+*dashboard.ejs
+*header.ejs

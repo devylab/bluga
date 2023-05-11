@@ -1,0 +1,16 @@
+services:
+  bluga:
+    image: cavdy/bluga
+    container_name: bluga
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - '50921:50921'
+    networks:
+      - devy-db
+      - devy-network
+networks:
+  devy-network:
+    name: devylab_devylab-network
+  devy-db:
+    name: devylab_database_devylab-db

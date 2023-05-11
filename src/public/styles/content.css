@@ -1,0 +1,60 @@
+.content-input {
+  width: 100%;
+  max-width: 86%;
+  border: none;
+  height: 40px;
+  outline: none;
+  background: none;
+}
+
+.content-save-btn {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  border-radius: 100%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
+
+.content-save-btn:hover {
+  color: black;
+}
+
+.content-side-drawer {
+  min-height: calc(100% - 57px);
+  max-height: calc(100% - 57px);
+}
+
+.content-drawer-btns {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.content-drawer-btns .btn-block {
+  margin: 0px;
+}
+
+.content-drawer-btns .btn-block:first-child {
+  margin-right: 10px;
+}
+
+.content-thumbnail {
+  width: 100%;
+  height: 150px;
+}
+
+.content-thumbnail-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.content-thumbnail-input {
+  display: none;
+}

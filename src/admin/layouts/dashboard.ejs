@@ -1,6 +1,12 @@
-<%- include('../components/header') %> <%- include('../components/sidebar') %>
-<div class="flex-1 overflow-auto bg-main-light dark:bg-main-dark">
-  <%- include('../components/navbar') %>
-  <main class="relative mt-[75px] px-2 sm:px-4"><%- body %></main>
+<!-- Header -->
+<%- await include('../components/header') %>
+<!-- Navbar -->
+<%- await include('../components/navbar') %>
+<!-- Sidebar -->
+<%- await include('../components/sidebar') %>
+<!-- Body Content -->
+<div class="content-wrapper">
+<%- body %>
 </div>
-<%- include('../components/footer') %>
+<!-- Footer -->
+<%- await include('../components/footer') %>

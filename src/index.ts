@@ -1,6 +1,9 @@
 import fastify from 'fastify';
+import fastifyCookie from '@fastify/cookie';
 import fastifyCompress from '@fastify/compress';
+import fastifyCSRF from '@fastify/csrf-protection';
 import fastifyHelmet from '@fastify/helmet';
+import fastifyMultipart from '@fastify/multipart';
 import fastifyRateLimit from '@fastify/rate-limit';
 import formBody from '@fastify/formbody';
 import { env } from '@shared/constants/env';
@@ -16,8 +19,9 @@ export class AppInstance {
     this.server = fastify({
       ignoreTrailingSlash: true,
       ignoreDuplicateSlashes: true,
-      logger: env.environment.isProduction,
+      logger: true,
       pluginTimeout: env.environment.isDevelopment ? 120_000 : undefined,
+      // bodyLimit: 5242880, // 5mb
     });
   }
 
@@ -36,10 +40,19 @@ export class AppInstance {
       timeWindow: '1 minute',
     });
     await this.server.register(fastifyCompress);
+    await this.server.register(fastifyCookie, { secret: env.cookieSecret });
+    await this.server.register(fastifyCSRF, { cookieOpts: { signed: true } });
     await this.server.register(formBody);
+    await this.server.register(fastifyMultipart);
 
-    const appModule = new AppModule(this.server);
-    appModule.loadRoutes();
+    this.server.register(
+      (fasti, _, done) => {
+        const appModule = new AppModule(fasti);
+        appModule.loadRoutes();
+        done();
+      },
+      { prefix: `/${env.subDirectory}` },
+    );
 
     this.server.setErrorHandler(function (error, request, reply) {
       if (error instanceof fastify.errorCodes.FST_ERR_BAD_STATUS_CODE) {
@@ -50,7 +63,7 @@ export class AppInstance {
       }
     });
 
-    this.server.listen({ port: env.port }, (err, address) => {
+    this.server.listen({ port: env.port, host: env.host }, (err, address) => {
       if (err) {
         logger.error(err, 'unable to start app');
         process.exit(1);
@@ -77,8 +90,8 @@ app.startApp().catch((err) => {
 
 const events = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM', 'uncaughtException'];
 events.forEach((event) => {
-  process.on(event, () => {
-    app.stopApp();
-    logger.info(`app stopped because this event: ${event} was triggere`);
+  process.on(event, async () => {
+    await app.stopApp();
+    logger.info(`app stopped because this event: ${event} was triggered`);
   });
 });

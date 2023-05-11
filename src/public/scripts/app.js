@@ -1,15 +1,22 @@
-document.addEventListener('alpine:init', () => {
-  Alpine.store('sidebar', {
-    show: window.innerWidth >= 774,
-    toggleSidebar() {
-      this.show = !this.show;
-    },
-  });
-
-  Alpine.store('app', {
-    appLoading: window.innerWidth >= 774,
-    toggleSidebar() {
-      this.show = !this.show;
-    },
-  });
+const axiosApiInstance = axios.create({
+  baseURL: bluga.appLink + '/api',
 });
+
+axiosApiInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    console.log(error, originalRequest._retry);
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      await axiosApiInstance.post('/user/refresh');
+      return axiosApiInstance(originalRequest);
+    }
+
+    console.log('HERE', error);
+    return Promise.reject(error);
+  },
+);
+
+const BlugaUtils = {};

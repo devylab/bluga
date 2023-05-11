@@ -1,27 +1,3 @@
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('appearance')?.addEventListener('click', () => {
-    console.log('headache');
-    if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      console.log('\n', localStorage.theme);
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    // Whenever the user explicitly chooses light mode
-    // localStorage.theme = 'light';
-
-    // // Whenever the user explicitly chooses dark mode
-    // localStorage.theme = 'dark';
-
-    // // Whenever the user explicitly chooses to respect the OS preference
-    // localStorage.removeItem('theme');
-  });
-});
-
 document.addEventListener('alpine:init', async () => {
   let editor; //editor instance
   const renderEditor = (data) => {
@@ -29,39 +5,62 @@ document.addEventListener('alpine:init', async () => {
       holder: 'editorjs',
       data,
       placeholder: 'Let`s write an awesome story!',
+      tools: {
+        image: {
+          class: ImageTool,
+          config: {
+            uploader: {
+              uploadByFile(file) {
+                const formData = new FormData();
+                formData.append('field', file);
+                return axiosApiInstance.post(`/upload/content-image`, formData).then((res) => res.data);
+              },
+            },
+          },
+        },
+        attaches: {
+          class: AttachesTool,
+          config: {
+            uploader: {
+              uploadByFile(file) {
+                const formData = new FormData();
+                formData.append('field', file);
+                return axiosApiInstance.post(`/upload/content-file`, formData).then((res) => res.data);
+              },
+            },
+          },
+        },
+        code: CodeTool,
+      },
       onChange: async (api) => {
-        const rawContent = await api.saver.save();
-        Alpine.store('content').saveContent(rawContent);
+        Alpine.debounce(
+          (async () => {
+            const rawContent = await api.saver.save();
+            Alpine.store('content').saveContent(rawContent);
+          })(),
+          500,
+        );
       },
     });
   };
 
   Alpine.store('content', {
-    show: false,
     data: {},
     title: '',
-    message: '',
-    hideMessage() {
-      this.message = '';
-      this.show = false;
-    },
+    thumbnail: '',
     async getContent(id) {
       try {
-        const res = await axios.get('/api/content/' + id);
+        const res = await axiosApiInstance.get(`/content/${id}`);
         this.data = res.data?.data?.rawContent;
         this.title = res.data?.data?.title;
         return res.data?.data?.rawContent;
       } catch (err) {
         console.log(err);
-        // this.message = 'error while saving content';
-        // this.show = true;
         return {};
       }
     },
-    async saveContent(rawContent) {
-      let saveUrl = '/api/save-content';
-      this.message = 'saving content';
-      this.show = true;
+    async saveContent(rawContent, status) {
+      let saveUrl = `/content/save-content`;
 
       // get id if exists
       const contentID = window.location.pathname.split('/edit/')[1];
@@ -71,18 +70,35 @@ document.addEventListener('alpine:init', async () => {
       if (!rawContent) rawContent = await editor.save(); // get content if it doesn't exist
 
       try {
-        const res = await axios.post(saveUrl, {
+        const res = await axiosApiInstance.post(saveUrl, {
           title: title.value,
           rawContent,
-          // status: 'DRAFT',
+          status: status || 'DRAFT',
         });
-        this.message = `content saved as ${res.data?.data?.status}`;
-        this.show = true;
+
+        toastr.success(`content saved as ${res.data?.data?.status}`);
         if (!contentID) window.history.pushState('Edit', '', res.data?.data?.to); // redirect if not in edit state
       } catch (err) {
-        this.message = 'error while saving content';
-        this.show = true;
+        if (err?.response?.status !== 401) {
+          toastr.error('error while saving content');
+        }
       }
+    },
+
+    selectThumbnail(event) {
+      Alpine.store('content').fileToDataUrl(event, (src) => {
+        Alpine.store('content').thumbnail = src;
+      });
+    },
+
+    fileToDataUrl(event, callback) {
+      if (!event.target.files.length) return;
+
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = (e) => callback(e.target.result);
     },
   });
 

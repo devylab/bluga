@@ -1,10 +1,14 @@
+import { twentyFourHoursInSeconds, sixMonthsInSeconds } from '@shared/constants';
+import { env } from '@shared/constants/env';
 import database from '@shared/database';
+import { generateAuthToken, verifyAuthToken } from '@shared/jwt';
 import { logger } from '@shared/logger';
 import { Utils } from '@shared/utils';
 import { CreateUser } from './entities/create-user.entity';
 
 type returnType = {
-  data: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
   error: unknown;
 };
 
@@ -25,6 +29,61 @@ export class UserService {
       return { data: 'user created', error: null };
     } catch (err) {
       logger.error(err, 'error while creating user');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async login({ email, password }: CreateUser, secret: string): Promise<returnType> {
+    try {
+      const user = await this.db.user.findFirst({
+        select: { password: true, id: true },
+        where: { email },
+      });
+
+      if (!user) return { data: null, error: 'incorrect email/password' };
+
+      const isPassword = await Utils.comparePassword(user.password, password);
+      if (!isPassword) return { data: null, error: 'incorrect email/password' };
+
+      const tokenData = { id: user.id, secret };
+      // TODO: change access token duration time
+      const accessToken = generateAuthToken(tokenData, twentyFourHoursInSeconds, env.encryptionSecret);
+      const refreshToken = generateAuthToken(tokenData, sixMonthsInSeconds, env.reEncryptionSecret);
+
+      return { data: { accessToken, secret, refreshToken }, error: null };
+    } catch (err) {
+      logger.error(err, 'error while creating user');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async getUserById(id: string): Promise<returnType> {
+    try {
+      const user = await this.db.user.findFirstOrThrow({
+        select: { avatar: true, id: true, firstName: true, lastName: true, username: true, email: true },
+        where: { id },
+      });
+
+      return { data: user, error: null };
+    } catch (err) {
+      logger.error(err, 'error while creating user');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async refreshToken(secret: string, oldSecret: string, oldRefreshToken: string): Promise<returnType> {
+    try {
+      const decryptToken = await verifyAuthToken(oldRefreshToken || '', env.reEncryptionSecret);
+      if (typeof decryptToken === 'string') return { data: null, error: 'error' };
+      if (oldSecret !== decryptToken.secret) return { data: null, error: 'error' };
+
+      const tokenData = { id: decryptToken.id, secret };
+      const accessToken = generateAuthToken(tokenData, twentyFourHoursInSeconds, env.encryptionSecret);
+      const refreshToken = generateAuthToken(tokenData, sixMonthsInSeconds, env.reEncryptionSecret);
+
+      return { data: { accessToken, secret, refreshToken }, error: null };
+    } catch (err) {
+      logger.error(err, 'error while refreshing token');
       return { data: null, error: 'error' };
     }
   }

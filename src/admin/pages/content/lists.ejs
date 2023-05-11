@@ -1,116 +1,131 @@
-<!-- https://tailwindcomponents.com/component/table-ui-with-tailwindcss-and-alpinejs -->
-<div class="container mx-auto" x-data x-init="$store.contents.getContents()" x-cloak>
-		<h1 class="text-3xl py-4 border-b mb-10">Contents</h1>
+<!-- Content Header -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Contents</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+          <li class="breadcrumb-item active">Contents</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
 
-		<div x-show="$store.contents.selectedRows.length" class="bg-teal-200 fixed top-0 left-0 right-0 z-40 w-full shadow">
-			<div class="container mx-auto px-4 py-4">
-				<div class="flex md:items-center">
-					<div class="mr-4 flex-shrink-0">
-						<svg class="h-8 w-8 text-teal-600"  viewBox="0 0 20 20" fill="currentColor">  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
-					</div>
-					<div x-html="$store.contents.selectedRows.length + ' rows are selected'" class="text-teal-800 text-lg"></div>
-				</div>
-			</div>
-		</div>
+<!-- Main content -->
+<section class="content" x-data>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <!-- <h3 class="card-title">Simple Full Width Table</h3> -->
 
-		<div class="mb-4 flex justify-between items-center">
-			<div class="flex-1 pr-4">
-				<div class="relative md:w-1/3">
-					<input type="search"
-						class="w-full pl-10 pr-4 py-2 rounded-lg shadow focus:outline-none focus:shadow-outline text-gray-600 font-medium"
-						placeholder="Search...">
-					<div class="absolute top-0 left-0 inline-flex items-center p-2">
-						<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" viewBox="0 0 24 24"
-							stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-							stroke-linejoin="round">
-							<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-							<circle cx="10" cy="10" r="7" />
-							<line x1="21" y1="21" x2="15" y2="15" />
-						</svg>
-					</div>
-				</div>
-			</div>
-			<div>
-				<div class="shadow rounded-lg flex">
-					<div class="relative">
-						<button @click.prevent="$store.contents.toggle()"
-							class="rounded-lg inline-flex items-center bg-white hover:text-blue-500 focus:outline-none focus:shadow-outline text-gray-500 font-semibold py-2 px-2 md:px-4">
-							<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:hidden" viewBox="0 0 24 24"
-								stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-								stroke-linejoin="round">
-								<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-								<path
-									d="M5.5 5h13a1 1 0 0 1 0.5 1.5L14 12L14 19L10 16L10 12L5 6.5a1 1 0 0 1 0.5 -1.5" />
-							</svg>
-							<span class="hidden md:block">Display</span>
-							<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" width="24" height="24"
-								viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-								stroke-linecap="round" stroke-linejoin="round">
-								<rect x="0" y="0" width="24" height="24" stroke="none"></rect>
-								<polyline points="6 9 12 15 18 9" />
-							</svg>
-						</button>
+            <div class="d-flex align-items-center card-tools">
+              <button
+                x-bind:disabled="!$store.contentLists.ids.length"
+                type="button"
+                class="btn btn-danger btn-sm mr-2"
+                data-toggle="modal"
+                data-target="#content-delete-modal"
+              >
+                Delete
+              </button>
 
-						<div x-show="$store.contents.open" @click.away="$store.contents.open = false"
-							class="z-40 absolute top-0 right-0 w-40 bg-white rounded-lg shadow-lg mt-12 -mr-1 block py-1 overflow-hidden">
-							<template x-for="heading in $store.contents.headings">
-								<label
-									class="flex justify-start items-center text-truncate hover:bg-gray-100 px-4 py-2">
-									<div class="text-teal-600 mr-3">
-										<input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" checked @click="$store.contents.toggleColumn(heading.key)">
-									</div>
-									<div class="select-none text-gray-700" x-text="heading.value"></div>
-								</label>
-							</template>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+              <ul class="pagination pagination-sm float-right">
+                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <% const contents = await db.contentService.getAdminContents(); %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 10px">
+                    <div class="form-check">
+                      <input
+                        @click="$store.contentLists.checkAll()"
+                        class="form-check-input"
+                        type="checkbox"
+                        x-model="$store.contentLists.selectAll"
+                      />
+                      <label class="form-check-label"></label>
+                    </div>
+                  </th>
+                  <!-- loop through the contents heading -->
+                  <% for (let heading of contents.data.headings) { %>
+                  <th><%= heading.value %></th>
+                  <% } %>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- loop through the contents -->
+                <% for (let content of contents.data.contents) { %>
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input content-list-check"
+                        value="<%= content.id %>"
+                        type="checkbox"
+                        x-model="$store.contentLists.ids"
+                      />
+                      <label class="form-check-label"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="<%= appLink %>admin/contents/edit/<%= content.id %>"><%= content.title %></a>
+                  </td>
+                  <td class="border-dashed border-t border-gray-200 status">
+                    <span class=""><%= content.status %></span>
+                  </td>
+                  <td class="border-dashed border-t border-gray-200 createdAt">
+                    <span class=""><%= tools.utils.dateFormatter(content.createdAt) %></span>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
 
-		<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative"
-			style="height: 405px;">
-			<table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
-				<thead>
-					<tr class="text-left">
-						<th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
-							<label
-								class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-								<input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline" @click="$store.contents.selectAllCheckbox($event);">
-							</label>
-						</th>
-						<template x-for="heading in $store.contents.headings">
-							<th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs"
-								x-text="heading.value" :x-ref="heading.key" :class="{ [heading.key]: true }"></th>
-						</template>
-					</tr>
-				</thead>
-				<tbody>
-					<template x-for="content in $store.contents.contents" :key="content.id">
-						<tr>
-							<td class="border-dashed border-t border-gray-200 px-3">
-								<label
-									class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-									<input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline" :name="content.id"
-											@click="$store.contents.getRowDetail($event, content.id)">
-								</label>
-							</td>
-							<td class="border-dashed border-t border-gray-200 title">
-								<a class="text-gray-700 px-6 py-3 flex items-center lowercase" x-bind:href="'/admin/contents/edit/' + content.id" x-text="content.title"></a>
-							</td>
-							<td class="border-dashed border-t border-gray-200 status">
-								<span class="text-gray-700 px-6 py-3 flex items-center lowercase" x-text="content.status"></span>
-							</td>
-							<td class="border-dashed border-t border-gray-200 createdAt">
-								<span class="text-gray-700 px-6 py-3 flex items-center"
-									x-text="new Date(content.createdAt).toLocaleDateString('en-GB')"></span>
-							</td>
-						</tr>
-					</template>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-  <script src="/public/scripts/lists.min.js"></script>
-</div>
+  <div class="modal fade" id="content-delete-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete Contents</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete selected contents?</p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" @click.prevent="$store.contentLists.deleteContent()">
+            Delete
+          </button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</section>

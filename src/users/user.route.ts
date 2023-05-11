@@ -8,6 +8,8 @@ export class UserRoute {
   }
 
   loadRoutes() {
-    this.server.post('/create-user', this.userController.createUser);
+    this.server.post('/api/user/create-user', (req, reply) => this.userController.createUser(req, reply));
+    this.server.post('/api/user/login', (req, reply) => this.userController.login(req, reply));
+    this.server.post('/api/user/refresh', (req, reply) => this.userController.refreshToken(req, reply));
   }
 }

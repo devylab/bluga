@@ -1,9 +1,13 @@
 // https://stackoverflow.com/questions/17008472/how-to-minify-multiple-javascript-files-in-a-folder-with-uglifyjs
-module.exports = function (grunt) {
+// https://stackoverflow.com/questions/18997852/grunt-js-uglify-is-appending-uglified-code-to-file-instead-of-rewriting-it
+https: module.exports = function (grunt) {
   grunt.initConfig({
     uglify: {
       files: {
-        src: 'src/public/scripts/*.js',
+        options: {
+          force: true,
+        },
+        src: ['src/public/scripts/**/*.js', '!src/public/scripts/**/*.min.js'],
         dest: 'src/public/scripts/',
         expand: true,
         flatten: true,
@@ -11,6 +15,10 @@ module.exports = function (grunt) {
       },
     },
     watch: {
+      options: {
+        livereload: true,
+        nospawn: true,
+      },
       js: { files: 'src/public/scripts/*.js', tasks: ['uglify'] },
     },
     copy: {
@@ -18,12 +26,14 @@ module.exports = function (grunt) {
         files: [
           { expand: true, cwd: 'src', src: ['**/public/robots.txt'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/tools/plugins/do_not_delete.txt'], dest: 'build', filter: 'isFile' },
-          { expand: true, cwd: 'src', src: ['**/tools/themes/do_not_delete.txt'], dest: 'build', filter: 'isFile' },
-          { expand: true, cwd: 'src', src: ['**/public/styles/styles.css'], dest: 'build', filter: 'isFile' },
+          { expand: true, cwd: 'src', src: ['**/public/uploads/do_not_delete.txt'], dest: 'build', filter: 'isFile' },
+          { expand: true, cwd: 'src', src: ['**/public/styles/*.css'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/public/scripts/*.min.js'], dest: 'build', filter: 'isFile' },
           { expand: true, cwd: 'src', src: ['**/public/img/**'], dest: 'build' },
+          { expand: true, cwd: 'src', src: ['**/public/dist/**'], dest: 'build' },
+          { expand: true, cwd: 'src', src: ['**/public/plugins/**'], dest: 'build' },
           { expand: true, cwd: 'src', src: ['**/admin/**'], dest: 'build' },
-          { expand: true, cwd: 'src', src: ['**/tools/themes/avail/**'], dest: 'build' },
+          { expand: true, cwd: 'src', src: ['**/tools/themes/**'], dest: 'build' },
         ],
       },
     },

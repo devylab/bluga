@@ -1,0 +1,9 @@
+node_modules
+*.log
+*.env
+src
+docker-entrypoint-initdb.d
+test
+*.config.js
+*.yml
+gruntfile.js
