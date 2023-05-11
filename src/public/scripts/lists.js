@@ -3,10 +3,9 @@ document.addEventListener('alpine:init', async () => {
     ids: [],
     selectAll: false,
     async deleteContent() {
-      console.log(this.ids);
-      const removeUrl = `${bluga.appLink}/api/content/remove-content`;
+      const removeUrl = '/content/remove-content';
       try {
-        const res = await axios.post(removeUrl, {
+        const res = await axiosApiInstance.post(removeUrl, {
           ids: this.ids,
         });
         if (res.data.data === 'removed') {
