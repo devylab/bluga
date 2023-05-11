@@ -13,7 +13,7 @@ document.addEventListener('alpine:init', async () => {
               uploadByFile(file) {
                 const formData = new FormData();
                 formData.append('field', file);
-                return axios.post(`${bluga.appLink}/api/upload/content-image`, formData).then((res) => res.data);
+                return axiosApiInstance.post(`/upload/content-image`, formData).then((res) => res.data);
               },
             },
           },
@@ -25,7 +25,7 @@ document.addEventListener('alpine:init', async () => {
               uploadByFile(file) {
                 const formData = new FormData();
                 formData.append('field', file);
-                return axios.post(`${bluga.appLink}/api/upload/content-file`, formData).then((res) => res.data);
+                return axiosApiInstance.post(`/upload/content-file`, formData).then((res) => res.data);
               },
             },
           },
@@ -50,7 +50,7 @@ document.addEventListener('alpine:init', async () => {
     thumbnail: '',
     async getContent(id) {
       try {
-        const res = await axios.get(`${bluga.appLink}/api/content/${id}`);
+        const res = await axiosApiInstance.get(`/content/${id}`);
         this.data = res.data?.data?.rawContent;
         this.title = res.data?.data?.title;
         return res.data?.data?.rawContent;
@@ -60,7 +60,7 @@ document.addEventListener('alpine:init', async () => {
       }
     },
     async saveContent(rawContent, status) {
-      let saveUrl = `${bluga.appLink}/api/content/save-content`;
+      let saveUrl = `/content/save-content`;
 
       // get id if exists
       const contentID = window.location.pathname.split('/edit/')[1];
@@ -70,7 +70,7 @@ document.addEventListener('alpine:init', async () => {
       if (!rawContent) rawContent = await editor.save(); // get content if it doesn't exist
 
       try {
-        const res = await axios.post(saveUrl, {
+        const res = await axiosApiInstance.post(saveUrl, {
           title: title.value,
           rawContent,
           status: status || 'DRAFT',
@@ -79,7 +79,9 @@ document.addEventListener('alpine:init', async () => {
         toastr.success(`content saved as ${res.data?.data?.status}`);
         if (!contentID) window.history.pushState('Edit', '', res.data?.data?.to); // redirect if not in edit state
       } catch (err) {
-        toastr.error('error while saving content');
+        if (err?.response?.status !== 401) {
+          toastr.error('error while saving content');
+        }
       }
     },
 

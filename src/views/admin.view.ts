@@ -56,7 +56,8 @@ export class AdminView {
 
           let user;
           if (!isNotProtected) {
-            const authUser = await authGuard(req);
+            req.auth_guard_type = 'inner';
+            const authUser = await authGuard(req, reply);
             if (!authUser) return reply.redirect(`${subDirectoryPath}admin/login`);
             user = authUser;
           }

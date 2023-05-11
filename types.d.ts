@@ -13,6 +13,7 @@ export type PointOfViewProperty<
 declare module 'fastify' {
   export interface FastifyRequest {
     user_id: string;
+    auth_guard_type: 'inner' | 'api';
   }
 
   interface RouteSpecificOptions extends PointOfViewRouteSpecificOptions {}

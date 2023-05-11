@@ -6,8 +6,8 @@ export const InvalidToken = 'Please use a valid token';
 export const accessTokenKey = 'dawn';
 export const refreshTokenKey = 'drawn';
 export const secretTokenKey = 'down';
-export const fiveMinutesInSeconds = 44444;
-export const sixMonthsInSeconds = 44444;
+export const twentyFourHoursInSeconds = 108000;
+export const sixMonthsInSeconds = 2592000;
 export const minifierOpts = {
   removeComments: true,
   removeCommentsFromCDATA: true,
