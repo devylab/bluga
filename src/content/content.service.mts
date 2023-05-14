@@ -1,9 +1,9 @@
 import edjsHTML from 'editorjs-html';
-import database from '@shared/database';
-import { logger } from '@shared/logger';
-import { Utils } from '@shared/utils';
-import { CreateContent, StatusType } from './entities/create-content.entity';
-import parsers from '@shared/editorjs/parsers';
+import database from '@shared/database/index.mjs';
+import { logger } from '@shared/logger/index.mjs';
+import { Utils } from '@shared/utils/index.mjs';
+import { CreateContent, StatusType } from './entities/create-content.entity.mjs';
+import parsers from '@shared/editorjs/parsers.mjs';
 
 export class ContentService {
   private readonly db;

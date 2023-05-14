@@ -1,5 +1,5 @@
-import { env } from '@shared/constants/env';
-import { logger } from '@shared/logger';
+import { env } from '@shared/constants/env.mjs';
+import { logger } from '@shared/logger/index.mjs';
 import Cloudinary from 'cloudinary';
 
 const cloud = Cloudinary.v2;

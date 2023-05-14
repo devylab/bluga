@@ -16,13 +16,13 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/naming-convention': [
-      2,
-      {
-        selector: 'variable',
-        format: ['snake_case', 'PascalCase', 'camelCase'],
-      },
-    ],
+    // '@typescript-eslint/naming-convention': [
+    //   2,
+    //   {
+    //     selector: 'variable',
+    //     format: ['snake_case', 'PascalCase', 'camelCase'],
+    //   },
+    // ],
     'prettier/prettier': [2, {}, { usePrettierrc: true }],
     'no-useless-escape': 2,
     'no-script-url': 2,

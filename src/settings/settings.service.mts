@@ -1,9 +1,9 @@
-import cache from '@shared/cache';
-import { settingsId } from '@shared/constants';
-import database from '@shared/database';
-import { logger } from '@shared/logger';
-import { SettingsEntity } from './entities/settings.entities';
-import { cloudinary } from '@shared/cloudinary';
+import cache from '@shared/cache/index.mjs';
+import { settingsId } from '@shared/constants/index.mjs';
+import database from '@shared/database/index.mjs';
+import { logger } from '@shared/logger/index.mjs';
+import { SettingsEntity } from './entities/settings.entities.mjs';
+import { cloudinary } from '@shared/cloudinary/index.mjs';
 
 export class SettingsService {
   private readonly db;

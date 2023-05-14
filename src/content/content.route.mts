@@ -1,6 +1,6 @@
-import { authGuard } from '@shared/guards/authGuard';
+import { authGuard } from '@shared/guards/authGuard.mjs';
 import { FastifyInstance } from 'fastify';
-import { ContentController } from './content.controller';
+import { ContentController } from './content.controller.mjs';
 
 export class ContentRoute {
   private readonly contentController;

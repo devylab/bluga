@@ -1,10 +1,10 @@
-import { twentyFourHoursInSeconds, sixMonthsInSeconds } from '@shared/constants';
-import { env } from '@shared/constants/env';
-import database from '@shared/database';
-import { generateAuthToken, verifyAuthToken } from '@shared/jwt';
-import { logger } from '@shared/logger';
-import { Utils } from '@shared/utils';
-import { CreateUser } from './entities/create-user.entity';
+import { twentyFourHoursInSeconds, sixMonthsInSeconds } from '@shared/constants/index.mjs';
+import { env } from '@shared/constants/env.mjs';
+import database from '@shared/database/index.mjs';
+import { generateAuthToken, verifyAuthToken } from '@shared/jwt/index.mjs';
+import { logger } from '@shared/logger/index.mjs';
+import { Utils } from '@shared/utils/index.mjs';
+import { CreateUser } from './entities/create-user.entity.mjs';
 
 type returnType = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

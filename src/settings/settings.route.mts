@@ -1,6 +1,6 @@
-import { authGuard } from '@shared/guards/authGuard';
+import { authGuard } from '@shared/guards/authGuard.mjs';
 import { FastifyInstance } from 'fastify';
-import { SettingsController } from './settings.controller';
+import { SettingsController } from './settings.controller.mjs';
 
 export class SettingsRoute {
   private readonly settingsController;

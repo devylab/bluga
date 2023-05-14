@@ -1,8 +1,8 @@
-import { accessTokenKey, subDirectoryPath, refreshTokenKey, secretTokenKey } from '@shared/constants';
-import { env } from '@shared/constants/env';
+import { accessTokenKey, subDirectoryPath, refreshTokenKey, secretTokenKey } from '@shared/constants/index.mjs';
+import { env } from '@shared/constants/env.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { CreateUser } from './entities/create-user.entity';
-import { UserService } from './user.service';
+import { CreateUser } from './entities/create-user.entity.mjs';
+import { UserService } from './user.service.mjs';
 import fastifyCookie from '@fastify/cookie';
 
 export class UserController {

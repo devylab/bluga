@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { UploadController } from './upload.controller';
+import { UploadController } from './upload.controller.mjs';
 
 export class UploadRoute {
   private readonly uploadController;

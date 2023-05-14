@@ -1,11 +1,11 @@
 import { FastifyInstance } from 'fastify';
-import { UserRoute } from './users/user.route';
-import { ContentRoute } from './content/content.route';
-import { AdminView } from './views/admin.view';
-import { IndexView } from './views/index.view';
-import { ThemeRoute } from './theme/theme.route';
-import { SettingsRoute } from './settings/settings.route';
-import { UploadRoute } from './upload/upload.route';
+import { UserRoute } from './users/user.route.mjs';
+import { ContentRoute } from './content/content.route.mjs';
+import { AdminView } from './views/admin.view.mjs';
+import { IndexView } from './views/index.view.mjs';
+import { ThemeRoute } from './theme/theme.route.mjs';
+import { SettingsRoute } from './settings/settings.route.mjs';
+import { UploadRoute } from './upload/upload.route.mjs';
 
 export class AppModule {
   private readonly userRoutes;

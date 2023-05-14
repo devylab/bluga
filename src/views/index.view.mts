@@ -4,11 +4,12 @@ import fastifyStatic from '@fastify/static';
 import path from 'path';
 import EJS from 'ejs';
 import minifier from 'html-minifier';
-import { env } from '@shared/constants/env';
-import { subDirectoryPath, minifierOpts } from '@shared/constants';
-import { ContentService } from '../content/content.service';
-import { ThemeService } from '../theme/theme.service';
-import { SettingsService } from '../settings/settings.service';
+import { env } from '@shared/constants/env.mjs';
+import { subDirectoryPath, minifierOpts } from '@shared/constants/index.mjs';
+import { ContentService } from '../content/content.service.mjs';
+import { ThemeService } from '../theme/theme.service.mjs';
+import { SettingsService } from '../settings/settings.service.mjs';
+import { Utils } from '@shared/utils/index.mjs';
 
 type ThemeConfig = {
   route: string;
@@ -20,6 +21,7 @@ type ThemeConfig = {
   }[];
 };
 
+const { __dirname } = Utils.fileDirPath(import.meta);
 const rootPath = path.join(__dirname, '..', 'tools');
 
 export class IndexView {

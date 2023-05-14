@@ -1,6 +1,6 @@
-import cache from '@shared/cache';
-import database from '@shared/database';
-import { logger } from '@shared/logger';
+import cache from '@shared/cache/index.mjs';
+import database from '@shared/database/index.mjs';
+import { logger } from '@shared/logger/index.mjs';
 
 export class ThemeService {
   private readonly db;
