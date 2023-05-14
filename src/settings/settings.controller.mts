@@ -11,14 +11,11 @@ export class SettingsController {
   }
 
   async saveSettings(req: FastifyRequest, reply: FastifyReply) {
-    // const file = await req.file({ limits: { fileSize: 500000 } });
-    // console.log('\n\n FILE', file, '\n\n');
-    // console.log('\n\n Body', req.body, '\n\n');
-    // TODO: validate file size
-    const files = await req.saveRequestFiles();
-    const body = req.body as SettingsEntity;
-    const filePath = Array.isArray(files) && files.length ? files[0].filepath : null;
-    const { error } = await this.settingsService.saveSettings(body, filePath);
+    const host = `${req.hostname}${subDirectoryPath}`;
+    // TODO: File size validation
+    const file = await req.file();
+    const body = file?.fields as unknown as SettingsEntity;
+    const { error } = await this.settingsService.saveSettings(body, host, file);
     if (error) {
       return reply.redirect(`${subDirectoryPath}admin/settings/general?error=${error}`);
     }

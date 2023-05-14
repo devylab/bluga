@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+import { createRequire } from 'node:module';
 import { nanoid } from 'nanoid';
 import argon2 from 'argon2';
 import sanitizeHtml from 'sanitize-html';
@@ -124,5 +125,10 @@ export class Utils {
     const __filename = fileURLToPath(meta.url);
     const __dirname = dirname(__filename);
     return { __dirname, __filename };
+  }
+
+  static fileRequire() {
+    const require = createRequire(import.meta.url);
+    return require;
   }
 }

@@ -70,7 +70,7 @@ export class IndexView {
     };
 
     const themeConfigPath = path.join(rootPath, 'themes', currentTheme, 'config.js');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const require = Utils.fileRequire();
     const themeConfig = require(themeConfigPath) as ThemeConfig[];
     const currentPage = themeConfig.find((config) => path.join(subDirectoryPath, config.route) === bindRoute);
 
@@ -99,7 +99,7 @@ export class IndexView {
       // TODO: handle not found page
       if (currentTheme) return reply.themes(currentTheme.page, currentTheme.options);
 
-      return reply.send({ not: 'founding' });
+      return reply.send({ notfound: 'founding' });
     });
 
     this.app.get('/robots.txt', async (_req, reply) => {

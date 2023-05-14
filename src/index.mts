@@ -42,12 +42,13 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
   );
 
   app.setErrorHandler(function (error, request, reply) {
-    // if (error instanceof fastify.errorCodes.FST_ERR_BAD_STATUS_CODE) {
-    //   // Log error
-    this.log.error(error);
-    //   // Send error response
-    // }
-    reply.status(500).send({ ok: false });
+    logger.error(error, 'GLOBAL ERROR HANDLER');
+    const toSend = {
+      message: 'internal server error',
+      error: 'server error',
+      statusCode: 500,
+    };
+    reply.code(toSend.statusCode).send(toSend);
   });
 
   return app;
