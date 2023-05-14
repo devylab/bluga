@@ -1,5 +1,5 @@
 /** @type {import('@src/shared/interfaces/adminRoute.interface').AdminMenu[]} */
-const adminMenus = [
+export const adminMenus = [
   {
     id: '1',
     to: '/admin',
@@ -102,4 +102,4 @@ const adminMenus = [
   },
 ];
 
-module.exports = { adminMenus };
+// module.exports = { adminMenus };
