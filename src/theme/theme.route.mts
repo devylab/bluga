@@ -1,6 +1,6 @@
-import { authGuard } from '@shared/guards/authGuard';
+import { authGuard } from '@shared/guards/authGuard.mjs';
 import { FastifyInstance } from 'fastify';
-import { ThemeController } from './theme.controller';
+import { ThemeController } from './theme.controller.mjs';
 
 export class ThemeRoute {
   private readonly themeController;

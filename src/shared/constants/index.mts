@@ -1,5 +1,5 @@
 import path from 'path';
-import { env } from './env';
+import { env } from './env.mjs';
 
 export const SomethingWentWrong = 'something went wrong';
 export const InvalidToken = 'Please use a valid token';

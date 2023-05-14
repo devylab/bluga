@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { UserController } from './user.controller';
+import { UserController } from './user.controller.mjs';
 
 export class UserRoute {
   private readonly userController;

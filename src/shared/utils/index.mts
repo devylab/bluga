@@ -2,11 +2,13 @@ import { BehaviorSubject } from 'rxjs';
 import { nanoid } from 'nanoid';
 import argon2 from 'argon2';
 import sanitizeHtml from 'sanitize-html';
-import { AdminMenu, Routes } from '@shared/interfaces/adminRoute.interface';
+import { AdminMenu, Routes } from '@shared/interfaces/adminRoute.interface.mjs';
 import { adminMenus } from '../../admin/config';
-import { subDirectoryPath } from '@shared/constants';
+import { subDirectoryPath } from '@shared/constants/index.mjs';
 import path from 'path';
 import striptags from 'striptags';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 export class Utils {
   static renderAdminRoutes() {
@@ -116,5 +118,11 @@ export class Utils {
         a: ['href', 'name', 'target', 'download'],
       },
     });
+  }
+
+  static fileDirPath(meta: { url: string }) {
+    const __filename = fileURLToPath(meta.url);
+    const __dirname = dirname(__filename);
+    return { __dirname, __filename };
   }
 }

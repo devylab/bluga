@@ -1,11 +1,11 @@
 import fs from 'fs';
 import util from 'util';
 import { pipeline } from 'stream';
-import { logger } from '@shared/logger';
+import { logger } from '@shared/logger/index.mjs';
 import { MultipartFile } from '@fastify/multipart';
 import path from 'path';
-import { env } from '@shared/constants/env';
-import { hostProtocol } from '@shared/constants';
+import { env } from '@shared/constants/env.mjs';
+import { hostProtocol } from '@shared/constants/index.mjs';
 
 const pump = util.promisify(pipeline);
 

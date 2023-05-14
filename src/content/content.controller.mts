@@ -1,8 +1,8 @@
-import { subDirectoryPath } from '@shared/constants';
+import { subDirectoryPath } from '@shared/constants/index.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import path from 'path';
-import { ContentService } from './content.service';
-import { CreateContent } from './entities/create-content.entity';
+import { ContentService } from './content.service.mjs';
+import { CreateContent } from './entities/create-content.entity.mjs';
 
 export class ContentController {
   private readonly contentService;

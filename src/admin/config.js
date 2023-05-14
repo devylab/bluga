@@ -83,6 +83,13 @@ const adminMenus = [
           '/public/scripts/settings.min.js',
         ],
       },
+      {
+        to: '/blog',
+        name: 'Blog Settings',
+        icon: '',
+        path: '/pages/settings/blog.ejs',
+        sidebar: true,
+      },
     ],
   },
   {

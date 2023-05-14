@@ -1,7 +1,7 @@
-import { subDirectoryPath } from '@shared/constants';
+import { subDirectoryPath } from '@shared/constants/index.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { SettingsEntity } from './entities/settings.entities';
-import { SettingsService } from './settings.service';
+import { SettingsEntity } from './entities/settings.entities.mjs';
+import { SettingsService } from './settings.service.mjs';
 
 export class SettingsController {
   private readonly settingsService;

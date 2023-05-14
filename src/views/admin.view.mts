@@ -3,15 +3,17 @@ import fastifyView from '@fastify/view';
 import fastifyStatic from '@fastify/static';
 import path from 'path';
 import EJS from 'ejs';
-import { env } from '@shared/constants/env';
+import { env } from '@shared/constants/env.mjs';
 import minifier from 'html-minifier';
-import { subDirectoryPath, minifierOpts } from '@shared/constants';
-import { Utils } from '@shared/utils';
-import { authGuard } from '@shared/guards/authGuard';
-import { ThemeService } from '../theme/theme.service';
-import { ContentService } from '../content/content.service';
-import { GlobalUtils } from '@shared/utils/global';
-import { SettingsService } from '../settings/settings.service';
+import { subDirectoryPath, minifierOpts } from '@shared/constants/index.mjs';
+import { Utils } from '@shared/utils/index.mjs';
+import { authGuard } from '@shared/guards/authGuard.mjs';
+import { ThemeService } from '../theme/theme.service.mjs';
+import { ContentService } from '../content/content.service.mjs';
+import { GlobalUtils } from '@shared/utils/global.mjs';
+import { SettingsService } from '../settings/settings.service.mjs';
+
+const { __dirname } = Utils.fileDirPath(import.meta);
 
 export class AdminView {
   private readonly db;
