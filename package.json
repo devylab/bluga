@@ -6,6 +6,7 @@
   "repository": "https://github.com/devylab/bluga.git",
   "author": "Cavdy <cavdyofficials@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "prebuild": "rimraf build && yarn find-deadcode",
     "prestart": "yarn migrate:prod",
