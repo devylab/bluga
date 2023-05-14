@@ -3,22 +3,27 @@ import { settingsId } from '@shared/constants/index.mjs';
 import database from '@shared/database/index.mjs';
 import { logger } from '@shared/logger/index.mjs';
 import { SettingsEntity } from './entities/settings.entities.mjs';
-import { cloudinary } from '@shared/cloudinary/index.mjs';
+import { MultipartFile } from '@fastify/multipart';
+import { UploadService } from '../upload/upload.service.mjs';
 
 export class SettingsService {
   private readonly db;
+  private readonly uploadService;
 
   constructor() {
     this.db = database.instance();
+    this.uploadService = new UploadService();
   }
 
-  async saveSettings(body: SettingsEntity, filePath: string | null) {
+  async saveSettings(body: SettingsEntity, host: string, file?: MultipartFile) {
     try {
       await cache.remove('settings');
       const data = { name: body.blogName.value?.trim(), description: body.blogDescription.value?.trim(), favicon: '/' };
-      if (filePath) {
-        const faviconUrl = await cloudinary.uploadImage(filePath, 'favicon.png');
-        data.favicon = faviconUrl;
+      if (file) {
+        const { data: faviconUrl, error } = await this.uploadService.uploadContentImage(host, file);
+        if (error) return { data: null, error: 'error' };
+
+        data.favicon = faviconUrl || '';
       }
 
       await this.db.setting.upsert({
