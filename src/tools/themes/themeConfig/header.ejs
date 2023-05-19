@@ -1,0 +1,33 @@
+<% 
+  const templatePath = themePath();
+  let styleLinks = "";
+  headers?.forEach((header) => {
+    if (header.includes('js')) styleLinks += `<script src="${templatePath}/${header}"></script>`
+    else styleLinks += `<link type="text/css" rel="stylesheet" href="${templatePath}/${header}">`;
+  })
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title><%= currentPage %><%= app %></title>
+  <link rel="icon" type="image/x-icon" href="<%= appFavicon %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- <meta property="og:title" content="" />
+  <meta property="og:image" content="" />
+  <meta property="og:url" content="" />
+  <meta property="og:site_name" content="" />
+  <meta property="og:description" content="" />
+  <meta name="twitter:title" content="" />
+  <meta name="twitter:image" content="" />
+  <meta name="twitter:url" content="" />
+  <meta name="twitter:card" content="" /> -->
+
+  <!-- render head contents -->
+  <%- styleLinks %>
+
+</head>
+<body>
+  
