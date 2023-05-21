@@ -2,7 +2,7 @@ import { subDirectoryPath } from '@shared/constants/index.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import path from 'path';
 import { ContentService } from './content.service.mjs';
-import { CreateContent } from './entities/create-content.entity.mjs';
+import { CreateContent, getKeyValue } from './entities/create-content.entity.mjs';
 
 export class ContentController {
   private readonly contentService;
@@ -12,10 +12,17 @@ export class ContentController {
   }
 
   async createContent(req: FastifyRequest, reply: FastifyReply) {
-    const body = req.body as CreateContent;
+    const host = `${req.hostname}${subDirectoryPath}`;
     const query = req.query as { content: string };
+    let body = req.body as CreateContent;
+    let file = undefined;
 
-    const { data, error } = await this.contentService.saveContent(body, req.user_id, query?.content);
+    if (req.isMultipart()) {
+      file = await req.file();
+      body = file?.fields as unknown as CreateContent;
+    }
+
+    const { data, error } = await this.contentService.saveContent(body, req.user_id, query?.content, host, file);
     if (error || !data) {
       return reply.code(400).send({
         status: 'error',
@@ -28,7 +35,7 @@ export class ContentController {
       status: 'success',
       code: 200,
       data: {
-        title: body.title,
+        title: getKeyValue(body.title),
         status: data?.status,
         to: path.join(subDirectoryPath, '/admin/contents/edit/', data.id),
       },

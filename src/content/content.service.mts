@@ -1,50 +1,65 @@
+import { MultipartFile } from '@fastify/multipart';
 import edjsHTML from 'editorjs-html';
 import database from '@shared/database/index.mjs';
 import { logger } from '@shared/logger/index.mjs';
 import { Utils } from '@shared/utils/index.mjs';
-import { CreateContent, StatusType } from './entities/create-content.entity.mjs';
+import { CreateContent, StatusType, getKeyValue, getStatusValue } from './entities/create-content.entity.mjs';
 import parsers from '@shared/editorjs/parsers.mjs';
+import { UploadService } from '../upload/upload.service.mjs';
 
 export class ContentService {
   private readonly db;
-  private edjsParser;
+  private readonly edjsParser;
+  private readonly uploadService;
 
   constructor() {
     this.db = database.instance();
     this.edjsParser = edjsHTML(parsers);
+    this.uploadService = new UploadService();
   }
 
   // eslint-disable-next-line max-lines-per-function
   async saveContent(
-    { rawContent, title, thumbnail, description, ...rest }: CreateContent,
+    { rawContent, title, description, status }: CreateContent,
     authorId: string,
     contentID = '',
+    host: string,
+    file?: MultipartFile,
   ) {
     try {
-      let contentTitle = title;
+      let contentTitle = getKeyValue(title);
       // TODO: proper validation handler
-      if (!title || title.trim() === '') {
+      if (!contentTitle || contentTitle.trim() === '') {
         contentTitle = Utils.defaultTitle();
       }
 
-      const html = this.edjsParser.parse(rawContent);
+      const rawData = getKeyValue(rawContent);
+      const html = this.edjsParser.parse(JSON.parse(rawData));
       const stringHtml = html?.reduce((a: string, b: string) => a + b, '');
       const content = Utils.htmlSanitizer(stringHtml);
       const slug = contentTitle.toLowerCase().replaceAll(' ', '-');
       const payload = {
         content,
-        rawContent,
+        rawContent: rawData,
         title: contentTitle,
         slug,
-        thumbnail: thumbnail || '',
-        description: description || '',
-        ...rest,
+        thumbnail: '',
+        description: getKeyValue(description) || '',
+        status: getStatusValue(status),
         authorId,
       };
+
+      if (file) {
+        const { data: thumbnailUrl, error } = await this.uploadService.uploadContentImage(host, file);
+        if (error) return { data: null, error: 'error' };
+
+        payload.thumbnail = thumbnailUrl || '';
+      }
+
       const data = await this.db.$transaction(async (tx) => {
         const contentData = await tx.content.upsert({
           create: { id: Utils.uniqueId(), ...payload },
-          update: { ...payload },
+          update: { ...payload, thumbnail: payload.thumbnail ? payload.thumbnail : undefined },
           select: { id: true, status: true },
           where: { id: contentID },
         });
@@ -70,7 +85,7 @@ export class ContentService {
   async getContentById(id: string) {
     try {
       const data = await this.db.content.findUnique({
-        select: { rawContent: true, title: true },
+        select: { rawContent: true, title: true, thumbnail: true },
         where: { id },
       });
       return { data, error: null };
@@ -115,6 +130,7 @@ export class ContentService {
           title: true,
           createdAt: true,
           slug: true,
+          thumbnail: true,
           ContentMeta: {
             select: { views: true, time: true },
           },
@@ -139,6 +155,7 @@ export class ContentService {
           content: true,
           title: true,
           createdAt: true,
+          thumbnail: true,
           author: {
             select: { username: true },
           },
