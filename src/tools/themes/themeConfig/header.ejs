@@ -1,7 +1,8 @@
 <% 
   const templatePath = themePath();
   let styleLinks = "";
-  headers?.forEach((header) => {
+  const globalHeaders = Array.isArray(headers) ? headers : []
+  globalHeaders?.forEach((header) => {
     if (header.includes('js')) styleLinks += `<script src="${templatePath}/${header}"></script>`
     else styleLinks += `<link type="text/css" rel="stylesheet" href="${templatePath}/${header}">`;
   })

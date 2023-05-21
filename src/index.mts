@@ -5,7 +5,7 @@ import fastifyCompress from '@fastify/compress';
 import fastifyCSRF from '@fastify/csrf-protection';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';
-import fastifyRateLimit from '@fastify/rate-limit';
+// import fastifyRateLimit from '@fastify/rate-limit';
 import formBody from '@fastify/formbody';
 import { env } from '@shared/constants/env.mjs';
 import { logger } from '@shared/logger/index.mjs';
@@ -22,10 +22,10 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
     crossOriginResourcePolicy: { policy: 'cross-origin' },
     crossOriginEmbedderPolicy: false,
   });
-  await app.register(fastifyRateLimit, {
-    max: 100,
-    timeWindow: '1 minute',
-  });
+  // await app.register(fastifyRateLimit, {
+  //   max: 100,
+  //   timeWindow: '1 minute',
+  // });
   await app.register(fastifyCompress);
   await app.register(fastifyCookie, { secret: env.cookieSecret });
   await app.register(fastifyCSRF, { cookieOpts: { signed: true } });
@@ -33,9 +33,9 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
   await app.register(fastifyMultipart);
 
   await app.register(
-    (fasti, _, done) => {
+    async (fasti, _, done) => {
       const appModule = new AppModule(fasti);
-      appModule.loadRoutes();
+      await appModule.loadRoutes();
       done();
     },
     { prefix: `/${env.subDirectory}` },

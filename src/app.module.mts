@@ -41,11 +41,11 @@ export class AppModule {
     this.uploadRoutes.loadRoutes();
   }
 
-  loadRoutes() {
-    this.loadApi();
-    this.indexView.loadIndexView();
-    this.adminView.loadAdminView();
-    this.noRoute();
+  async loadRoutes() {
+    await this.loadApi();
+    await this.indexView.loadIndexView();
+    await this.adminView.loadAdminView();
+    await this.noRoute();
   }
 
   loadPlugins() {

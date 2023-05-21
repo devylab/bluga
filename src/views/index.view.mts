@@ -14,7 +14,7 @@ import { Utils } from '@shared/utils/index.mjs';
 type ThemeConfig = {
   headers: string[];
   footers: string[];
-  routes: { route: string; path: string }[];
+  routes: { route: string; path: string; headers: string[]; footers: string[] }[];
 };
 
 const { __dirname } = Utils.fileDirPath(import.meta);
@@ -47,69 +47,43 @@ export class IndexView {
     });
   }
 
-  async loadTheme(routeUrl: string, params: unknown, schema: string) {
-    const bindRoute = path.join(subDirectoryPath, routeUrl);
+  // eslint-disable-next-line max-lines-per-function
+  async loadIndexView() {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
     const { data: settings } = await this.settingsService.getSettings();
     const currentTheme = `/${activeTheme.name || 'bluga'}`;
-    const options = {
-      themePath: () => hostProtocol + path.join(schema, '/', 'themes', currentTheme),
-      app: settings?.name, // TODO: GET PAGE FROM DB
-      description: settings?.description,
-      appLink: hostProtocol + schema,
-      appFavicon: settings?.favicon,
-      currentPage: '',
-      service: {
-        content: this.contentService,
-      },
-      params,
-    };
-
-    const themeConfigPath = path.join(rootPath, 'themes', currentTheme, 'config.js');
+    const themePath = path.join(rootPath, 'themes', currentTheme, 'config.js');
     const require = Utils.fileRequire();
-    const themeConfig = require(themeConfigPath) as ThemeConfig;
-    const currentPage = themeConfig.routes.find((config) => path.join(subDirectoryPath, config.route) === bindRoute);
-
-    // TODO: handle not found page
-    if (currentPage) {
-      return {
-        page: currentTheme + currentPage.path,
-        options: { ...options, headers: themeConfig.headers, footers: themeConfig.footers },
-      };
-    }
-  }
-
-  // eslint-disable-next-line max-lines-per-function
-  async loadIndexView() {
-    this.app.get('/', async (req, reply) => {
-      const schema = `${req.hostname}${subDirectoryPath}`;
-      const currentTheme = await this.loadTheme('/', req.params, schema);
-
-      // TODO: handle not found page
-      if (currentTheme)
-        return reply.themes(currentTheme.page, currentTheme.options, {
-          layout: '/themeConfig/layout.ejs',
-        });
-
-      return reply.send({ not: 'found' });
-    });
-
-    this.app.get('/:slug', async (req, reply) => {
-      const schema = `${req.hostname}${subDirectoryPath}`;
-      const currentTheme = await this.loadTheme('/:slug', req.params, schema);
-
-      // TODO: handle not found page
-      if (currentTheme)
-        return reply.themes(currentTheme.page, currentTheme.options, {
-          layout: '/themeConfig/layout.ejs',
-        });
-
-      return reply.send({ notfound: 'founding' });
-    });
+    const themeConfig = require(themePath) as ThemeConfig;
 
     this.app.get('/favicon.ico', async (_req, reply) => reply.code(204).send());
-    this.app.get('/robots.txt', async (_req, reply) => {
-      return reply.sendFile('/robots.txt');
-    });
+    this.app.get('/robots.txt', async (_req, reply) => reply.sendFile('/robots.txt'));
+
+    for (const route of themeConfig.routes) {
+      this.app.get(route.route, async (req, reply) => {
+        const schema = `${req.hostname}${subDirectoryPath}`;
+        const headers = themeConfig.headers.concat(route.headers);
+        const footers = themeConfig.footers.concat(route.footers);
+        const options = {
+          themePath: () => hostProtocol + path.join(schema, '/', 'themes', currentTheme),
+          app: settings?.name, // TODO: GET PAGE FROM DB
+          description: settings?.description,
+          appLink: hostProtocol + schema,
+          appFavicon: settings?.favicon,
+          currentPage: '',
+          service: {
+            content: this.contentService,
+          },
+          params: req.params,
+          headers,
+          footers,
+        };
+
+        const page = currentTheme + '/pages/' + route.path;
+        return reply.themes(page, options, {
+          layout: '/themeConfig/layout.ejs',
+        });
+      });
+    }
   }
 }
