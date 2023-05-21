@@ -10,11 +10,15 @@ module.exports = {
   routes: [
     {
       route: '/',
-      path: '/pages/index.ejs',
+      path: 'index.ejs',
+      headers: [],
+      footers: [],
     },
     {
       route: '/:slug',
-      path: '/pages/single.ejs',
+      path: 'single.ejs',
+      headers: [],
+      footers: [],
     },
   ],
 };
