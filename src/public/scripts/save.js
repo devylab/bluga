@@ -48,17 +48,21 @@ document.addEventListener('alpine:init', async () => {
     data: {},
     title: '',
     thumbnail: '',
+    thumbnailFile: '',
     async getContent(id) {
       try {
         const res = await axiosApiInstance.get(`/content/${id}`);
-        this.data = res.data?.data?.rawContent;
+        const rawContent = JSON.parse(res.data?.data?.rawContent || null);
+        this.data = rawContent;
         this.title = res.data?.data?.title;
-        return res.data?.data?.rawContent;
+        this.thumbnail = res.data?.data?.thumbnail;
+        return rawContent;
       } catch (err) {
         console.log(err);
         return {};
       }
     },
+
     async saveContent(rawContent, status) {
       let saveUrl = `/content/save-content`;
 
@@ -70,13 +74,32 @@ document.addEventListener('alpine:init', async () => {
       if (!rawContent) rawContent = await editor.save(); // get content if it doesn't exist
 
       try {
-        const res = await axiosApiInstance.post(saveUrl, {
-          title: title.value,
-          rawContent,
-          status: status || 'DRAFT',
+        let data = {};
+        if (this.thumbnailFile) {
+          const formData = new FormData();
+          formData.append('title', title.value);
+          formData.append('rawContent', JSON.stringify(rawContent));
+          formData.append('status', status || 'DRAFT');
+          formData.append('description', '');
+          formData.append('thumbnail', this.thumbnailFile);
+          data = formData;
+        } else {
+          data = {
+            title: title.value,
+            rawContent: JSON.stringify(rawContent),
+            status: status || 'DRAFT',
+            description: '',
+          };
+        }
+
+        const res = await axiosApiInstance.post(saveUrl, data, {
+          headers: {
+            'Content-Type': this.thumbnailFile ? 'multipart/form-data' : 'application/json',
+          },
         });
 
         toastr.success(`content saved as ${res.data?.data?.status}`);
+        if (this.thumbnailFile) this.thumbnailFile = '';
         if (!contentID) window.history.pushState('Edit', '', res.data?.data?.to); // redirect if not in edit state
       } catch (err) {
         if (err?.response?.status !== 401) {
@@ -86,8 +109,9 @@ document.addEventListener('alpine:init', async () => {
     },
 
     selectThumbnail(event) {
-      Alpine.store('content').fileToDataUrl(event, (src) => {
+      Alpine.store('content').fileToDataUrl(event, (src, file) => {
         Alpine.store('content').thumbnail = src;
+        Alpine.store('content').thumbnailFile = file;
       });
     },
 
@@ -98,7 +122,7 @@ document.addEventListener('alpine:init', async () => {
       const reader = new FileReader();
 
       reader.readAsDataURL(file);
-      reader.onload = (e) => callback(e.target.result);
+      reader.onload = (e) => callback(e.target.result, file);
     },
   });
 
