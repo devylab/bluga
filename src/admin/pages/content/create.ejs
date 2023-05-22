@@ -37,6 +37,19 @@
         </label>
       </div>
 
+      <div class="form-group">
+        <label for="content-status" class="d-block">Status</label>
+        <select x-model="$store.content.selectedStatus" id="content-status" name="content-status" class="form-control">
+          <template x-for="status in $store.content.contentStatus">
+            <option
+              :value="status.value"
+              :selected="status.value === $store.content.selectedStatus"
+              x-text="status.value"
+            ></option>
+          </template>
+        </select>
+      </div>
+
       <!-- <div>
         <label for="content-category">Choose Category</label>
       </div>
@@ -53,10 +66,10 @@
         </button>
         <button
           type="button"
-          @click.prevent="$store.content.saveContent(null, 'PUBLIC')"
+          @click.prevent="$store.content.saveContent(null)"
           class="btn btn-block btn-sm btn-outline-primary"
         >
-          Publish
+          Save
         </button>
       </div>
     </div>
