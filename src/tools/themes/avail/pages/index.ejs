@@ -8,7 +8,7 @@
           <figure>
             <a href="<%= appLink %><%= contents[i].slug %>"><img src="<%= contents[i].thumbnail %>" alt="Image" class="img-responsive"></a>
           </figure>
-          <span class="fh5co-meta"><a href="<%= appLink %><%= contents[i].slug %>">Food &amp; Drink</a></span>
+          <span class="fh5co-meta"><a href="<%= appLink %><%= contents[i].slug %>"><%= contents[i].category.name %></a></span>
           <h2 class="fh5co-article-title"><a href="<%= appLink %><%= contents[i].slug %>"><%= contents[i].title %></a></h2>
           <span class="fh5co-meta fh5co-date">
 						<%= new Date(contents[i].createdAt).toLocaleDateString("en-US", {month: "long",day: "numeric",year: "numeric"}) %>

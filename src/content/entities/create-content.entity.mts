@@ -13,6 +13,7 @@ export type CreateContent = {
   status: StatusType | StatusContentType;
   rawContent: string | CreateContentType;
   description: string | CreateContentType;
+  categoryId: string | CreateContentType;
 };
 
 export const getKeyValue = (data: string | CreateContentType) => {

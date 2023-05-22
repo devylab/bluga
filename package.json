@@ -12,7 +12,7 @@
     "prestart": "yarn migrate:prod",
     "minify-copy": "yarn grunt && yarn grunt:copy",
     "build": "tsc && yarn minify-copy",
-    "generate": "npx prisma generate",
+    "generate": "prisma generate",
     "dev": "tsx watch -r tsconfig-paths/register src/index.mts",
     "find-deadcode": "ts-prune",
     "start": "node -r tsconfig-paths/register build/index.js",
@@ -41,7 +41,7 @@
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "prettier": "^2.7.1",
-    "prisma": "^4.11.0",
+    "prisma": "^4.14.1",
     "rimraf": "^3.0.2",
     "ts-prune": "^0.10.3",
     "tsx": "^3.12.7",
@@ -58,7 +58,7 @@
     "@fastify/restartable": "^2.1.0",
     "@fastify/static": "^6.5.0",
     "@fastify/view": "^7.1.2",
-    "@prisma/client": "^4.11.0",
+    "@prisma/client": "^4.14.1",
     "argon2": "^0.30.2",
     "dotenv": "^16.0.3",
     "editorjs-html": "^3.4.2",
@@ -75,6 +75,6 @@
     "tsconfig-paths": "^4.1.1"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed/index.ts"
+    "seed": "tsx prisma/seed/index.ts"
   }
 }
