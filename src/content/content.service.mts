@@ -85,7 +85,7 @@ export class ContentService {
   async getContentById(id: string) {
     try {
       const data = await this.db.content.findUnique({
-        select: { rawContent: true, title: true, thumbnail: true },
+        select: { rawContent: true, title: true, thumbnail: true, status: true },
         where: { id },
       });
       return { data, error: null };

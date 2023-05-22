@@ -47,6 +47,8 @@ document.addEventListener('alpine:init', async () => {
   Alpine.store('content', {
     data: {},
     title: '',
+    contentStatus: [{ value: 'DRAFT' }, { value: 'PRIVATE' }, { value: 'PUBLIC' }],
+    selectedStatus: 'DRAFT',
     thumbnail: '',
     thumbnailFile: '',
     async getContent(id) {
@@ -56,6 +58,7 @@ document.addEventListener('alpine:init', async () => {
         this.data = rawContent;
         this.title = res.data?.data?.title;
         this.thumbnail = res.data?.data?.thumbnail;
+        this.selectedStatus = res.data?.data?.status;
         return rawContent;
       } catch (err) {
         console.log(err);
@@ -63,7 +66,7 @@ document.addEventListener('alpine:init', async () => {
       }
     },
 
-    async saveContent(rawContent, status) {
+    async saveContent(rawContent) {
       let saveUrl = `/content/save-content`;
 
       // get id if exists
@@ -79,7 +82,7 @@ document.addEventListener('alpine:init', async () => {
           const formData = new FormData();
           formData.append('title', title.value);
           formData.append('rawContent', JSON.stringify(rawContent));
-          formData.append('status', status || 'DRAFT');
+          formData.append('status', this.selectedStatus);
           formData.append('description', '');
           formData.append('thumbnail', this.thumbnailFile);
           data = formData;
@@ -87,7 +90,7 @@ document.addEventListener('alpine:init', async () => {
           data = {
             title: title.value,
             rawContent: JSON.stringify(rawContent),
-            status: status || 'DRAFT',
+            status: this.selectedStatus,
             description: '',
           };
         }
