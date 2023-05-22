@@ -20,7 +20,7 @@ export class ContentService {
 
   // eslint-disable-next-line max-lines-per-function
   async saveContent(
-    { rawContent, title, description, status }: CreateContent,
+    { rawContent, title, description, status, categoryId }: CreateContent,
     authorId: string,
     contentID = '',
     host: string,
@@ -47,6 +47,7 @@ export class ContentService {
         description: getKeyValue(description) || '',
         status: getStatusValue(status),
         authorId,
+        categoryId: getKeyValue(categoryId) || '',
       };
 
       if (file) {
@@ -85,7 +86,13 @@ export class ContentService {
   async getContentById(id: string) {
     try {
       const data = await this.db.content.findUnique({
-        select: { rawContent: true, title: true, thumbnail: true, status: true },
+        select: {
+          rawContent: true,
+          title: true,
+          thumbnail: true,
+          status: true,
+          categoryId: true,
+        },
         where: { id },
       });
       return { data, error: null };
@@ -137,6 +144,9 @@ export class ContentService {
           author: {
             select: { username: true },
           },
+          category: {
+            select: { name: true },
+          },
         },
         where: { status: status || 'PUBLIC' },
         orderBy: { createdAt: 'desc' },
@@ -158,6 +168,9 @@ export class ContentService {
           thumbnail: true,
           author: {
             select: { username: true },
+          },
+          category: {
+            select: { name: true },
           },
         },
         where: { slug },

@@ -6,6 +6,7 @@ import { IndexView } from './views/index.view.mjs';
 import { ThemeRoute } from './theme/theme.route.mjs';
 import { SettingsRoute } from './settings/settings.route.mjs';
 import { UploadRoute } from './upload/upload.route.mjs';
+import { CategoryRoute } from './category/category.route.mjs';
 
 export class AppModule {
   private readonly userRoutes;
@@ -15,6 +16,7 @@ export class AppModule {
   private readonly indexView;
   private readonly adminView;
   private readonly settingsRoute;
+  private readonly categoryRoute;
 
   constructor(private readonly app: FastifyInstance) {
     this.indexView = new IndexView(this.app);
@@ -24,6 +26,7 @@ export class AppModule {
     this.themeRoutes = new ThemeRoute(this.app);
     this.settingsRoute = new SettingsRoute(this.app);
     this.uploadRoutes = new UploadRoute(this.app);
+    this.categoryRoute = new CategoryRoute(this.app);
   }
 
   private noRoute() {
@@ -39,6 +42,7 @@ export class AppModule {
     this.themeRoutes.loadRoutes();
     this.settingsRoute.loadRoutes();
     this.uploadRoutes.loadRoutes();
+    this.categoryRoute.loadRoutes();
   }
 
   async loadRoutes() {

@@ -49,6 +49,8 @@ document.addEventListener('alpine:init', async () => {
     title: '',
     contentStatus: [{ value: 'DRAFT' }, { value: 'PRIVATE' }, { value: 'PUBLIC' }],
     selectedStatus: 'DRAFT',
+    categories: [],
+    selectedCategory: '',
     thumbnail: '',
     thumbnailFile: '',
     async getContent(id) {
@@ -59,13 +61,22 @@ document.addEventListener('alpine:init', async () => {
         this.title = res.data?.data?.title;
         this.thumbnail = res.data?.data?.thumbnail;
         this.selectedStatus = res.data?.data?.status;
+        this.selectedCategory = res.data?.data?.categoryId;
         return rawContent;
       } catch (err) {
         console.log(err);
         return {};
       }
     },
-
+    async getCategories() {
+      try {
+        const res = await axiosApiInstance.get('/categories');
+        this.categories = res.data?.data || [];
+      } catch (err) {
+        console.log(err);
+        return {};
+      }
+    },
     async saveContent(rawContent) {
       let saveUrl = `/content/save-content`;
 
@@ -78,12 +89,16 @@ document.addEventListener('alpine:init', async () => {
 
       try {
         let data = {};
+        const category = this.selectedCategory
+          ? { id: this.selectedCategory }
+          : this.categories.find((category) => category.name === 'general');
         if (this.thumbnailFile) {
           const formData = new FormData();
           formData.append('title', title.value);
           formData.append('rawContent', JSON.stringify(rawContent));
           formData.append('status', this.selectedStatus);
           formData.append('description', '');
+          formData.append('categoryId', category?.id);
           formData.append('thumbnail', this.thumbnailFile);
           data = formData;
         } else {
@@ -92,6 +107,7 @@ document.addEventListener('alpine:init', async () => {
             rawContent: JSON.stringify(rawContent),
             status: this.selectedStatus,
             description: '',
+            categoryId: category?.id,
           };
         }
 
@@ -110,14 +126,12 @@ document.addEventListener('alpine:init', async () => {
         }
       }
     },
-
     selectThumbnail(event) {
       Alpine.store('content').fileToDataUrl(event, (src, file) => {
         Alpine.store('content').thumbnail = src;
         Alpine.store('content').thumbnailFile = file;
       });
     },
-
     fileToDataUrl(event, callback) {
       if (!event.target.files.length) return;
 
@@ -130,6 +144,7 @@ document.addEventListener('alpine:init', async () => {
   });
 
   // get id if exists... load data
+  await Alpine.store('content').getCategories();
   const contentID = window.location.pathname.split('/edit/')[1];
   if (contentID) {
     const res = await Alpine.store('content').getContent(contentID);

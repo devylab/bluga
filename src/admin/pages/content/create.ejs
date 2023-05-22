@@ -38,8 +38,21 @@
       </div>
 
       <div class="form-group">
+        <label for="category" class="d-block">Status</label>
+        <select x-model="$store.content.selectedCategory" id="category" class="form-control">
+          <template x-for="category in $store.content.categories">
+            <option
+              :value="category.id"
+              :selected="category.id === $store.content.selectedCategory"
+              x-text="category.name?.toUpperCase()"
+            ></option>
+          </template>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="content-status" class="d-block">Status</label>
-        <select x-model="$store.content.selectedStatus" id="content-status" name="content-status" class="form-control">
+        <select x-model="$store.content.selectedStatus" id="content-status" class="form-control">
           <template x-for="status in $store.content.contentStatus">
             <option
               :value="status.value"
