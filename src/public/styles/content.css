@@ -59,3 +59,7 @@
 .content-thumbnail-input {
   display: none;
 }
+
+.content-desc {
+  resize: none;
+}
