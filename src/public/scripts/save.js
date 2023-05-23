@@ -34,6 +34,7 @@ document.addEventListener('alpine:init', async () => {
       },
       onChange: async (api) => {
         Alpine.debounce(
+          // TODO: RESOLVE DEBOUNCE
           (async () => {
             const rawContent = await api.saver.save();
             Alpine.store('content').saveContent(rawContent);
@@ -47,6 +48,7 @@ document.addEventListener('alpine:init', async () => {
   Alpine.store('content', {
     data: {},
     title: '',
+    description: '',
     contentStatus: [{ value: 'DRAFT' }, { value: 'PRIVATE' }, { value: 'PUBLIC' }],
     selectedStatus: 'DRAFT',
     categories: [],
@@ -59,6 +61,7 @@ document.addEventListener('alpine:init', async () => {
         const rawContent = JSON.parse(res.data?.data?.rawContent || null);
         this.data = rawContent;
         this.title = res.data?.data?.title;
+        this.description = res.data?.data?.description;
         this.thumbnail = res.data?.data?.thumbnail;
         this.selectedStatus = res.data?.data?.status;
         this.selectedCategory = res.data?.data?.categoryId;
@@ -84,7 +87,6 @@ document.addEventListener('alpine:init', async () => {
       const contentID = window.location.pathname.split('/edit/')[1];
       if (contentID) saveUrl += `?content=${contentID}`;
 
-      const title = document.getElementById('contentTitle');
       if (!rawContent) rawContent = await editor.save(); // get content if it doesn't exist
 
       try {
@@ -94,19 +96,19 @@ document.addEventListener('alpine:init', async () => {
           : this.categories.find((category) => category.name === 'general');
         if (this.thumbnailFile) {
           const formData = new FormData();
-          formData.append('title', title.value);
+          formData.append('title', this.title);
           formData.append('rawContent', JSON.stringify(rawContent));
           formData.append('status', this.selectedStatus);
-          formData.append('description', '');
+          formData.append('description', this.description);
           formData.append('categoryId', category?.id);
           formData.append('thumbnail', this.thumbnailFile);
           data = formData;
         } else {
           data = {
-            title: title.value,
+            title: this.title,
             rawContent: JSON.stringify(rawContent),
             status: this.selectedStatus,
-            description: '',
+            description: this.description,
             categoryId: category?.id,
           };
         }

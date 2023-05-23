@@ -85,10 +85,13 @@
                     <a href="<%= appLink %>admin/contents/edit/<%= content.id %>"><%= content.title %></a>
                   </td>
                   <td class="border-dashed border-t border-gray-200 status">
-                    <span class=""><%= content.status %></span>
+                    <span class="text-capitalize"><%= content.status %></span>
+                  </td>
+                  <td class="border-dashed border-t border-gray-200 status">
+                    <span class="text-capitalize"><%= content.category?.name %></span>
                   </td>
                   <td class="border-dashed border-t border-gray-200 createdAt">
-                    <span class=""><%= tools.utils.dateFormatter(content.createdAt) %></span>
+                    <span class="text-capitalize"><%= tools.utils.dateFormatter(content.createdAt) %></span>
                   </td>
                 </tr>
                 <% } %>

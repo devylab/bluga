@@ -92,6 +92,7 @@ export class ContentService {
           thumbnail: true,
           status: true,
           categoryId: true,
+          description: true,
         },
         where: { id },
       });
@@ -102,6 +103,7 @@ export class ContentService {
     }
   }
 
+  // eslint-disable-next-line max-lines-per-function
   async getAdminContents() {
     try {
       const headings = [
@@ -114,12 +116,24 @@ export class ContentService {
           value: 'Status',
         },
         {
+          key: 'category',
+          value: 'Category',
+        },
+        {
           key: 'createdAt',
           value: 'CreatedAt',
         },
       ];
       const contents = await this.db.content.findMany({
-        select: { id: true, title: true, status: true, createdAt: true },
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          createdAt: true,
+          category: {
+            select: { name: true },
+          },
+        },
         orderBy: { createdAt: 'desc' },
       });
       return { data: { contents, headings }, error: null };
