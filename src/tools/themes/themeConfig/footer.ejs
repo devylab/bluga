@@ -1,0 +1,14 @@
+<% 
+  const templatePath = themePath();
+  let footerScripts = "";
+  const globalFooters = Array.isArray(footers) ? footers : []
+  globalFooters?.forEach((footerScript) => {
+    footerScripts += `<script src="${templatePath}/${footerScript}"></script>`;
+  })
+%>
+
+<!-- render scripts -->
+<%- footerScripts %>
+
+</body>
+</html>

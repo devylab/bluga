@@ -18,6 +18,7 @@
   align-items: center;
   justify-content: center;
   color: black;
+  z-index: 1000;
 }
 
 .content-save-btn:hover {
@@ -57,4 +58,8 @@
 
 .content-thumbnail-input {
   display: none;
+}
+
+.content-desc {
+  resize: none;
 }

@@ -31,9 +31,12 @@ model Content {
   description   String          @db.VarChar(255)
   rawContent    Json
   content       String          @db.Text
+  tags          String          @db.Text
   status        ContentStatus   @default(DRAFT)
   author        User            @relation(fields: [authorId], references: [id])
   authorId      String
+  category      Category        @relation(fields: [categoryId], references: [id])
+  categoryId    String
   ContentMeta   ContentMeta[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -63,6 +66,14 @@ model ContentMeta {
   status        ContentStatus   @default(DRAFT)
   content       Content         @relation(fields: [contentId], references: [id], onDelete: Cascade)
   contentId     String          @unique
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Category {
+  id            String          @id
+  name          String          @unique
+  contents      Content[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }

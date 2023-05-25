@@ -2,6 +2,7 @@
   <div class="d-flex flex-column align-items-center justify-content">
     <input
       x-model="$store.content.title"
+      @change="$store.content.title = event.target.value;"
       id="contentTitle"
       type="text"
       name="contentTitle"
@@ -37,10 +38,55 @@
         </label>
       </div>
 
-      <!-- <div>
-        <label for="content-category">Choose Category</label>
+      <div class="form-group">
+        <label for="category" class="d-block">Status</label>
+        <select x-model="$store.content.selectedCategory" id="category" class="form-control">
+          <template x-for="category in $store.content.categories">
+            <option
+              :value="category.id"
+              :selected="category.id === $store.content.selectedCategory"
+              x-text="category.name?.toUpperCase()"
+            ></option>
+          </template>
+        </select>
       </div>
-      <div></div> -->
+
+      <div class="form-group">
+        <label for="content-status" class="d-block">Status</label>
+        <select x-model="$store.content.selectedStatus" id="content-status" class="form-control">
+          <template x-for="status in $store.content.contentStatus">
+            <option
+              :value="status.value"
+              :selected="status.value === $store.content.selectedStatus"
+              x-text="status.value"
+            ></option>
+          </template>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="content-desc" class="d-block">Description</label>
+        <textarea
+          id="content-desc"
+          x-model="$store.content.description"
+          @change="$store.content.description = event.target.value;"
+          class="form-control content-desc"
+          rows="3"
+          placeholder="Description..."
+          resize="none"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="content-tags" class="d-block">Tags</label>
+        <input
+          id="content-tags"
+          type="text"
+          name="tags"
+          class="form-control tagin"
+          data-tagin-placeholder="comma seperated tags"
+        />
+      </div>
 
       <div class="content-drawer-btns">
         <button
@@ -53,10 +99,10 @@
         </button>
         <button
           type="button"
-          @click.prevent="$store.content.saveContent(null, 'PUBLIC')"
+          @click.prevent="$store.content.saveContent(null)"
           class="btn btn-block btn-sm btn-outline-primary"
         >
-          Publish
+          Save
         </button>
       </div>
     </div>

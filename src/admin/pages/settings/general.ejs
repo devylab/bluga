@@ -39,6 +39,30 @@
           >
             <div class="card-body">
               <div class="form-group">
+                <label for="blogName">Blog Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="blogName"
+                  name="blogName"
+                  placeholder="Blog Name"
+                  value="<%= data?.name %>"
+                />
+              </div>
+              <div class="form-group">
+                <label for="blogDescription">Description</label>
+                <textarea
+                  style="resize: none"
+                  id="blogDescription"
+                  name="blogDescription"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Description"
+                >
+<%= data?.description %></textarea
+                >
+              </div>
+              <div class="form-group">
                 <label for="blogFavicon">Favicon</label>
                 <div class="input-group">
                   <div class="">
@@ -67,30 +91,6 @@
                     favicon size can not be greater than 500kb
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="blogName">Blog Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="blogName"
-                  name="blogName"
-                  placeholder="Blog Name"
-                  value="<%= data?.name %>"
-                />
-              </div>
-              <div class="form-group">
-                <label for="blogDescription">Description</label>
-                <textarea
-                  style="resize: none"
-                  id="blogDescription"
-                  name="blogDescription"
-                  class="form-control"
-                  rows="3"
-                  placeholder="Description"
-                >
-<%= data?.description %></textarea
-                >
               </div>
             </div>
             <!-- /.card-body -->

@@ -1,5 +1,5 @@
 /** @type {import('@src/shared/interfaces/adminRoute.interface').AdminMenu[]} */
-const adminMenus = [
+export const adminMenus = [
   {
     id: '1',
     to: '/admin',
@@ -29,12 +29,13 @@ const adminMenus = [
         icon: '',
         path: '/pages/content/create.ejs',
         sidebar: true,
-        header: ['/public/styles/content.css'],
+        header: ['https://unpkg.com/tagin@2.0.2/dist/tagin.min.css', '/public/styles/content.css'],
         footer: [
           'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.26.5',
           'https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0',
           'https://cdn.jsdelivr.net/npm/@editorjs/attaches@1.3.0',
           'https://cdn.jsdelivr.net/npm/@editorjs/code@2.8.0',
+          'https://unpkg.com/tagin@2.0.2/dist/tagin.min.js',
           '/public/scripts/save.min.js',
         ],
       },
@@ -44,12 +45,13 @@ const adminMenus = [
         icon: '',
         path: '/pages/content/create.ejs',
         sidebar: false,
-        header: ['/public/styles/content.css'],
+        header: ['https://unpkg.com/tagin@2.0.2/dist/tagin.min.css', '/public/styles/content.css'],
         footer: [
           'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.26.5',
           'https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0',
           'https://cdn.jsdelivr.net/npm/@editorjs/attaches@1.3.0',
           'https://cdn.jsdelivr.net/npm/@editorjs/code@2.8.0',
+          'https://unpkg.com/tagin@2.0.2/dist/tagin.min.js',
           '/public/scripts/save.min.js',
         ],
       },
@@ -83,6 +85,13 @@ const adminMenus = [
           '/public/scripts/settings.min.js',
         ],
       },
+      {
+        to: '/blog',
+        name: 'Blog Settings',
+        icon: '',
+        path: '/pages/settings/blog.ejs',
+        sidebar: true,
+      },
     ],
   },
   {
@@ -95,4 +104,4 @@ const adminMenus = [
   },
 ];
 
-module.exports = { adminMenus };
+// module.exports = { adminMenus };
