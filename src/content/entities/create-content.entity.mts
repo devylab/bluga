@@ -14,6 +14,7 @@ export type CreateContent = {
   rawContent: string | CreateContentType;
   description: string | CreateContentType;
   categoryId: string | CreateContentType;
+  tags: string | CreateContentType;
 };
 
 export const getKeyValue = (data: string | CreateContentType) => {
