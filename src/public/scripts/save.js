@@ -45,6 +45,12 @@ document.addEventListener('alpine:init', async () => {
     });
   };
 
+  // handle tags
+  const tagin = new Tagin(document.querySelector('.tagin'), {
+    transform: 'input => input.toLowerCase()',
+    enter: true,
+  });
+
   Alpine.store('content', {
     data: {},
     title: '',
@@ -65,6 +71,7 @@ document.addEventListener('alpine:init', async () => {
         this.thumbnail = res.data?.data?.thumbnail;
         this.selectedStatus = res.data?.data?.status;
         this.selectedCategory = res.data?.data?.categoryId;
+        tagin.addTag([res.data?.data?.tags]);
         return rawContent;
       } catch (err) {
         console.log(err);
@@ -91,6 +98,7 @@ document.addEventListener('alpine:init', async () => {
 
       try {
         let data = {};
+        const contentTags = tagin.getTag();
         const category = this.selectedCategory
           ? { id: this.selectedCategory }
           : this.categories.find((category) => category.name === 'general');
@@ -101,6 +109,7 @@ document.addEventListener('alpine:init', async () => {
           formData.append('status', this.selectedStatus);
           formData.append('description', this.description);
           formData.append('categoryId', category?.id);
+          formData.append('tags', contentTags);
           formData.append('thumbnail', this.thumbnailFile);
           data = formData;
         } else {
@@ -110,6 +119,7 @@ document.addEventListener('alpine:init', async () => {
             status: this.selectedStatus,
             description: this.description,
             categoryId: category?.id,
+            tags: contentTags,
           };
         }
 

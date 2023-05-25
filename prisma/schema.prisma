@@ -31,6 +31,7 @@ model Content {
   description   String          @db.VarChar(255)
   rawContent    Json
   content       String          @db.Text
+  tags          String          @db.Text
   status        ContentStatus   @default(DRAFT)
   author        User            @relation(fields: [authorId], references: [id])
   authorId      String

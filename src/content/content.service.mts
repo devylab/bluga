@@ -20,7 +20,7 @@ export class ContentService {
 
   // eslint-disable-next-line max-lines-per-function
   async saveContent(
-    { rawContent, title, description, status, categoryId }: CreateContent,
+    { rawContent, title, description, status, categoryId, tags }: CreateContent,
     authorId: string,
     contentID = '',
     host: string,
@@ -48,6 +48,7 @@ export class ContentService {
         status: getStatusValue(status),
         authorId,
         categoryId: getKeyValue(categoryId) || '',
+        tags: getKeyValue(tags) || '',
       };
 
       if (file) {
@@ -93,6 +94,7 @@ export class ContentService {
           status: true,
           categoryId: true,
           description: true,
+          tags: true,
         },
         where: { id },
       });
@@ -152,6 +154,7 @@ export class ContentService {
           createdAt: true,
           slug: true,
           thumbnail: true,
+          tags: true,
           ContentMeta: {
             select: { views: true, time: true },
           },
@@ -180,6 +183,7 @@ export class ContentService {
           title: true,
           createdAt: true,
           thumbnail: true,
+          tags: true,
           author: {
             select: { username: true },
           },
