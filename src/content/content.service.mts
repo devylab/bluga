@@ -200,6 +200,24 @@ export class ContentService {
     }
   }
 
+  async getContentMetaBySlug(slug: string) {
+    try {
+      const data = await this.db.content.findUnique({
+        select: {
+          title: true,
+          thumbnail: true,
+          description: true,
+          slug: true,
+        },
+        where: { slug },
+      });
+      return { data, error: null };
+    } catch (err) {
+      logger.error(err, 'error while getting content by slug');
+      return { data: null, error: 'error' };
+    }
+  }
+
   async updateContentViews(slug: string) {
     try {
       await this.db.$transaction(async (tx) => {

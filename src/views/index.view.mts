@@ -17,6 +17,17 @@ type ThemeConfig = {
   routes: { route: string; path: string; headers: string[]; footers: string[] }[];
 };
 
+type MetaData = {
+  page: string;
+  slug: string;
+  sitename: string;
+  description: string;
+  title: string;
+  image: string;
+  url: string;
+  currentPageTitle: string;
+};
+
 const { __dirname } = Utils.fileDirPath(import.meta);
 const rootPath = path.join(__dirname, '..', 'tools');
 
@@ -47,6 +58,25 @@ export class IndexView {
     });
   }
 
+  async getMeta({ page, slug, ...rest }: MetaData) {
+    let metadata = { ...rest };
+    if (page === '/:slug') {
+      const { data } = await this.contentService.getContentMetaBySlug(slug);
+      if (data) {
+        metadata = {
+          ...metadata,
+          description: data.description,
+          title: data.title,
+          url: metadata.url + data.slug,
+          image: data.thumbnail,
+          currentPageTitle: `${data.title} - ${metadata.sitename}`,
+        };
+      }
+    }
+
+    return metadata;
+  }
+
   // eslint-disable-next-line max-lines-per-function
   async loadIndexView() {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
@@ -61,22 +91,31 @@ export class IndexView {
 
     for (const route of themeConfig.routes) {
       this.app.get(route.route, async (req, reply) => {
+        const params = req.params as { slug: string };
         const schema = `${req.hostname}${subDirectoryPath}`;
         const headers = themeConfig.headers.concat(route.headers);
         const footers = themeConfig.footers.concat(route.footers);
         const options = {
           themePath: () => hostProtocol + path.join(schema, '/', 'themes', currentTheme),
           app: settings?.name, // TODO: GET PAGE FROM DB
-          description: settings?.description,
           appLink: hostProtocol + schema,
           appFavicon: settings?.favicon,
-          currentPage: '',
           service: {
             content: this.contentService,
           },
-          params: req.params,
+          params,
           headers,
           footers,
+          meta: await this.getMeta({
+            page: route.route,
+            slug: params?.slug,
+            sitename: settings?.name,
+            description: settings?.description,
+            title: settings?.name,
+            image: settings?.favicon,
+            url: hostProtocol + schema,
+            currentPageTitle: settings?.name,
+          }),
         };
 
         const page = currentTheme + '/pages/' + route.path;
