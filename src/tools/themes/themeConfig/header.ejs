@@ -13,18 +13,19 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title><%= currentPage %><%= app %></title>
+  <title><%= meta.currentPageTitle %></title>
   <link rel="icon" type="image/x-icon" href="<%= appFavicon %>">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- <meta property="og:title" content="" />
-  <meta property="og:image" content="" />
-  <meta property="og:url" content="" />
-  <meta property="og:site_name" content="" />
-  <meta property="og:description" content="" />
-  <meta name="twitter:title" content="" />
-  <meta name="twitter:image" content="" />
-  <meta name="twitter:url" content="" />
-  <meta name="twitter:card" content="" /> -->
+  <meta property="og:title" content="<%= meta.title %>" />
+  <meta property="og:image" content="<%= meta.image %>" />
+  <meta property="og:url" content="<%= meta.url %>" />
+  <meta property="og:site_name" content="<%= meta.sitename %>" />
+  <meta property="og:description" content="<%= meta.description %>" />
+  <meta name="twitter:title" content="<%= meta.title %>" />
+  <meta name="twitter:image" content="<%= meta.image %>" />
+  <meta name="twitter:site" content="<%= meta.sitename %>" />
+  <meta name="twitter:url" content="<%= meta.url %>" />
+  <meta name="twitter:card" content="<%= meta.description %>" />
 
   <!-- render head contents -->
   <%- styleLinks %>
