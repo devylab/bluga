@@ -202,7 +202,7 @@ export class ContentService {
 
   async getContentMetaBySlug(slug: string) {
     try {
-      const data = await this.db.content.findUnique({
+      const data = await this.db.content.findUniqueOrThrow({
         select: {
           title: true,
           thumbnail: true,
@@ -213,7 +213,7 @@ export class ContentService {
       });
       return { data, error: null };
     } catch (err) {
-      logger.error(err, 'error while getting content by slug');
+      logger.error(err, 'error while getting content meta by slug');
       return { data: null, error: 'error' };
     }
   }
