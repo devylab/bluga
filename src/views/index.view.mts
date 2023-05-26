@@ -60,8 +60,10 @@ export class IndexView {
 
   async getMeta({ page, slug, ...rest }: MetaData) {
     let metadata = { ...rest };
+    let error = null;
     if (page === '/:slug') {
-      const { data } = await this.contentService.getContentMetaBySlug(slug);
+      const { data, error: dataError } = await this.contentService.getContentMetaBySlug(slug);
+      if (dataError) error = dataError;
       if (data) {
         metadata = {
           ...metadata,
@@ -74,7 +76,7 @@ export class IndexView {
       }
     }
 
-    return metadata;
+    return { metadata, error };
   }
 
   // eslint-disable-next-line max-lines-per-function
@@ -90,35 +92,41 @@ export class IndexView {
     this.app.get('/robots.txt', async (_req, reply) => reply.sendFile('/robots.txt'));
 
     for (const route of themeConfig.routes) {
+      // eslint-disable-next-line max-lines-per-function
       this.app.get(route.route, async (req, reply) => {
         const params = req.params as { slug: string };
         const schema = `${req.hostname}${subDirectoryPath}`;
         const headers = themeConfig.headers.concat(route.headers);
         const footers = themeConfig.footers.concat(route.footers);
+        const { metadata, error: metaError } = await this.getMeta({
+          page: route.route,
+          slug: params?.slug,
+          sitename: settings?.name,
+          description: settings?.description,
+          title: settings?.name,
+          image: settings?.favicon,
+          url: hostProtocol + schema,
+          currentPageTitle: settings?.name,
+        });
         const options = {
           themePath: () => hostProtocol + path.join(schema, '/', 'themes', currentTheme),
           app: settings?.name, // TODO: GET PAGE FROM DB
           appLink: hostProtocol + schema,
           appFavicon: settings?.favicon,
-          service: {
-            content: this.contentService,
-          },
+          service: { content: this.contentService },
           params,
           headers,
           footers,
-          meta: await this.getMeta({
-            page: route.route,
-            slug: params?.slug,
-            sitename: settings?.name,
-            description: settings?.description,
-            title: settings?.name,
-            image: settings?.favicon,
-            url: hostProtocol + schema,
-            currentPageTitle: settings?.name,
-          }),
+          meta: metadata,
         };
 
         const page = currentTheme + '/pages/' + route.path;
+        if (metaError) {
+          return reply.themes(currentTheme + '/pages/404.ejs', options, {
+            layout: '/themeConfig/layout.ejs',
+          });
+        }
+
         return reply.themes(page, options, {
           layout: '/themeConfig/layout.ejs',
         });
