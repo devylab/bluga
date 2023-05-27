@@ -1,10 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import fastifyCookie from '@fastify/cookie';
-import { accessTokenKey, secretTokenKey } from '@shared/constants/index.mjs';
-import { env } from '@shared/constants/env.mjs';
-import { verifyAuthToken } from '@shared/jwt/index.mjs';
-import { logger } from '@shared/logger/index.mjs';
-import database from '@shared/database/index.mjs';
+import { accessTokenKey, secretTokenKey } from '../constants/index.mjs';
+import { env } from '../constants/env.mjs';
+import { verifyAuthToken } from '../jwt/index.mjs';
+import { logger } from '../logger/index.mjs';
+import database from '../database/index.mjs';
 
 export const authGuard = async (request: FastifyRequest, reply: FastifyReply) => {
   try {

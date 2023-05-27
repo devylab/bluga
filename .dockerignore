@@ -6,4 +6,4 @@ docker-entrypoint-initdb.d
 test
 *.config.js
 *.yml
-gruntfile.js
+gruntfile.cjs

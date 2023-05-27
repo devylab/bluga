@@ -6,11 +6,11 @@ services:
     restart: unless-stopped
     ports:
       - '50921:50921'
-    networks:
-      - devy-db
-      - devy-network
-networks:
-  devy-network:
-    name: devylab_devylab-network
-  devy-db:
-    name: devylab_database_devylab-db
+    # networks:
+    #   - devy-db
+    #   - devy-network
+# networks:
+#   devy-network:
+#     name: devylab_devylab-network
+#   devy-db:
+#     name: devylab_database_devylab-db

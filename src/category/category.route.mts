@@ -1,4 +1,4 @@
-import { authGuard } from '@shared/guards/authGuard.mjs';
+import { authGuard } from '../shared/guards/authGuard.mjs';
 import { FastifyInstance } from 'fastify';
 import { CategoryController } from './category.controller.mjs';
 

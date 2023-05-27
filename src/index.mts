@@ -7,11 +7,11 @@ import fastifyHelmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';
 // import fastifyRateLimit from '@fastify/rate-limit';
 import formBody from '@fastify/formbody';
-import { env } from '@shared/constants/env.mjs';
-import { logger } from '@shared/logger/index.mjs';
-import database from '@shared/database/index.mjs';
+import { env } from './shared/constants/env.mjs';
+import { logger } from './shared/logger/index.mjs';
+import database from './shared/database/index.mjs';
+import cache from './shared/cache/index.mjs';
 import { AppModule } from './app.module.mjs';
-import cache from '@shared/cache/index.mjs';
 
 // eslint-disable-next-line max-lines-per-function
 const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {

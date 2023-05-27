@@ -4,12 +4,12 @@ import fastifyStatic from '@fastify/static';
 import path from 'path';
 import EJS from 'ejs';
 import minifier from 'html-minifier';
-import { env } from '@shared/constants/env.mjs';
-import { subDirectoryPath, minifierOpts, hostProtocol } from '@shared/constants/index.mjs';
+import { env } from '../shared/constants/env.mjs';
+import { subDirectoryPath, minifierOpts, hostProtocol } from '../shared/constants/index.mjs';
 import { ContentService } from '../content/content.service.mjs';
 import { ThemeService } from '../theme/theme.service.mjs';
 import { SettingsService } from '../settings/settings.service.mjs';
-import { Utils } from '@shared/utils/index.mjs';
+import { Utils } from '../shared/utils/index.mjs';
 
 type ThemeConfig = {
   headers: string[];
@@ -84,9 +84,9 @@ export class IndexView {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
     const { data: settings } = await this.settingsService.getSettings();
     const currentTheme = `/${activeTheme.name || 'bluga'}`;
-    const themePath = path.join(rootPath, 'themes', currentTheme, 'config.js');
-    const require = Utils.fileRequire();
-    const themeConfig = require(themePath) as ThemeConfig;
+    const themePath = path.join(rootPath, 'themes', currentTheme, 'config.mjs');
+    const importConfig = await import(themePath);
+    const themeConfig = importConfig?.default as ThemeConfig;
 
     this.app.get('/favicon.ico', async (_req, reply) => reply.code(204).send());
     this.app.get('/robots.txt', async (_req, reply) => reply.sendFile('/robots.txt'));

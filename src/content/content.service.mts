@@ -1,10 +1,10 @@
 import { MultipartFile } from '@fastify/multipart';
 import edjsHTML from 'editorjs-html';
-import database from '@shared/database/index.mjs';
-import { logger } from '@shared/logger/index.mjs';
-import { Utils } from '@shared/utils/index.mjs';
+import database from '../shared/database/index.mjs';
+import { logger } from '../shared/logger/index.mjs';
+import { Utils } from '../shared/utils/index.mjs';
 import { CreateContent, StatusType, getKeyValue, getStatusValue } from './entities/create-content.entity.mjs';
-import parsers from '@shared/editorjs/parsers.mjs';
+import parsers from '../shared/editorjs/parsers.mjs';
 import { UploadService } from '../upload/upload.service.mjs';
 
 export class ContentService {

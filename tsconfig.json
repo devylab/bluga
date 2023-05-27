@@ -26,11 +26,7 @@
     "noImplicitAny": true,
     "typeRoots": ["./node_modules/@types", "./typings"],
     "lib": ["esnext", "DOM"],
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["src/shared/*", "build/shared/*"],
-      "@types/*": ["typings/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["src/**/*", "./typings", "*.d.ts"],
   "exclude": ["node_modules", "src/tools", "src/public"]

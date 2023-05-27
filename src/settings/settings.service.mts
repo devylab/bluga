@@ -1,7 +1,7 @@
-import cache from '@shared/cache/index.mjs';
-import { settingsId } from '@shared/constants/index.mjs';
-import database from '@shared/database/index.mjs';
-import { logger } from '@shared/logger/index.mjs';
+import cache from '../shared/cache/index.mjs';
+import { settingsId } from '../shared/constants/index.mjs';
+import database from '../shared/database/index.mjs';
+import { logger } from '../shared/logger/index.mjs';
 import { SettingsEntity } from './entities/settings.entities.mjs';
 import { MultipartFile } from '@fastify/multipart';
 import { UploadService } from '../upload/upload.service.mjs';

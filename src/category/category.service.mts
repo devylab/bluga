@@ -1,7 +1,7 @@
-import database from '@shared/database/index.mjs';
-import { logger } from '@shared/logger/index.mjs';
+import database from '../shared/database/index.mjs';
+import { logger } from '../shared/logger/index.mjs';
 import { CreateCategory } from './entities/create-category.entity.mjs';
-import { Utils } from '@shared/utils/index.mjs';
+import { Utils } from '../shared/utils/index.mjs';
 
 export class CategoryService {
   private readonly db;

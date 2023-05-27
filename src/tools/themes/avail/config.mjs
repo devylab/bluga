@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   headers: ['css/animate.css', 'css/icomoon.css', 'css/bootstrap.css', 'css/style.css', 'js/modernizr-2.6.2.min.js'],
   footers: [
     'js/jquery.min.js',
@@ -22,3 +22,5 @@ module.exports = {
     },
   ],
 };
+
+export default config;

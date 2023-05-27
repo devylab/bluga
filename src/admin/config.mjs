@@ -1,4 +1,3 @@
-/** @type {import('@src/shared/interfaces/adminRoute.interface').AdminMenu[]} */
 export const adminMenus = [
   {
     id: '1',
