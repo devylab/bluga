@@ -28,8 +28,13 @@ export const adminMenus = [
         icon: '',
         path: '/pages/content/create.ejs',
         sidebar: true,
-        header: ['https://unpkg.com/tagin@2.0.2/dist/tagin.min.css', '/public/styles/content.css'],
+        header: [
+          'https://unpkg.com/tagin@2.0.2/dist/tagin.min.css',
+          '/public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
+          '/public/styles/content.css',
+        ],
         footer: [
+          '/public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
           'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.26.5',
           'https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0',
           'https://cdn.jsdelivr.net/npm/@editorjs/attaches@1.3.0',
@@ -44,8 +49,13 @@ export const adminMenus = [
         icon: '',
         path: '/pages/content/create.ejs',
         sidebar: false,
-        header: ['https://unpkg.com/tagin@2.0.2/dist/tagin.min.css', '/public/styles/content.css'],
+        header: [
+          'https://unpkg.com/tagin@2.0.2/dist/tagin.min.css',
+          '/public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css',
+          '/public/styles/content.css',
+        ],
         footer: [
+          '/public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js',
           'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.26.5',
           'https://cdn.jsdelivr.net/npm/@editorjs/image@2.3.0',
           'https://cdn.jsdelivr.net/npm/@editorjs/attaches@1.3.0',

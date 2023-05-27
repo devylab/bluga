@@ -18,10 +18,14 @@ export class SettingsService {
   async saveSettings(body: SettingsEntity, host: string, file?: MultipartFile) {
     try {
       await cache.remove('settings');
-      const data = { name: body.blogName.value?.trim(), description: body.blogDescription.value?.trim(), favicon: '/' };
-      if (file) {
+      const data = {
+        name: body.blogName.value?.trim(),
+        description: body.blogDescription.value?.trim(),
+      } as { name: string; description: string; favicon: string };
+
+      if (file?.filename) {
         const { data: faviconUrl, error } = await this.uploadService.uploadContentImage(host, file);
-        if (error) return { data: null, error: 'error' };
+        if (error) throw error;
 
         data.favicon = faviconUrl || '';
       }
