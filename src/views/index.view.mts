@@ -82,7 +82,6 @@ export class IndexView {
   // eslint-disable-next-line max-lines-per-function
   async loadIndexView() {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
-    const { data: settings } = await this.settingsService.getSettings();
     const currentTheme = `/${activeTheme.name || 'bluga'}`;
     const themePath = path.join(rootPath, 'themes', currentTheme, 'config.mjs');
     const importConfig = await import(themePath);
@@ -94,6 +93,7 @@ export class IndexView {
     for (const route of themeConfig.routes) {
       // eslint-disable-next-line max-lines-per-function
       this.app.get(route.route, async (req, reply) => {
+        const { data: settings } = await this.settingsService.getSettings();
         const params = req.params as { slug: string };
         const schema = `${req.hostname}${subDirectoryPath}`;
         const headers = themeConfig.headers.concat(route.headers);
