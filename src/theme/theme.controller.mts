@@ -1,4 +1,4 @@
-import { subDirectoryPath } from '@shared/constants/index.mjs';
+import { subDirectoryPath } from '../shared/constants/index.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ThemeService } from './theme.service.mjs';
 

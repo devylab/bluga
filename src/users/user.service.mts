@@ -1,9 +1,9 @@
-import { twentyFourHoursInSeconds, sixMonthsInSeconds } from '@shared/constants/index.mjs';
-import { env } from '@shared/constants/env.mjs';
-import database from '@shared/database/index.mjs';
-import { generateAuthToken, verifyAuthToken } from '@shared/jwt/index.mjs';
-import { logger } from '@shared/logger/index.mjs';
-import { Utils } from '@shared/utils/index.mjs';
+import { twentyFourHoursInSeconds, sixMonthsInSeconds } from '../shared/constants/index.mjs';
+import { env } from '../shared/constants/env.mjs';
+import database from '../shared/database/index.mjs';
+import { generateAuthToken, verifyAuthToken } from '../shared/jwt/index.mjs';
+import { logger } from '../shared/logger/index.mjs';
+import { Utils } from '../shared/utils/index.mjs';
 import { CreateUser } from './entities/create-user.entity.mjs';
 
 type returnType = {

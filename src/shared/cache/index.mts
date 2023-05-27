@@ -1,4 +1,4 @@
-import { NodeCache } from '@shared/database/node-cache.mjs';
+import { NodeCache } from '../database/node-cache.mjs';
 
 export class Cache {
   private readonly nodeCache;

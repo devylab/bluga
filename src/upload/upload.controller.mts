@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { UploadService } from './upload.service.mjs';
-import { subDirectoryPath } from '@shared/constants/index.mjs';
+import { subDirectoryPath } from '../shared/constants/index.mjs';
 
 export class UploadController {
   private readonly uploadService;
