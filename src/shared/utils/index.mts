@@ -135,15 +135,21 @@ export class Utils {
     return require;
   }
 
+  static removeDirectory(dir: string) {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+
   static unZipFile(file: Buffer, output: string) {
-    // TODO: remove theme if error
     return new Promise<ThemeConfig>(async (resolve, reject) => {
       const newZip = new AdmZip(file);
       const entries = newZip.getEntries();
       const entry = entries.find((e) => e.entryName.includes('config.js'));
       if (entry) {
         newZip.extractAllToAsync(output, true, false, async (err) => {
-          if (err) reject(err);
+          if (err) {
+            Utils.removeDirectory(output);
+            reject(err);
+          }
 
           const readConfig = await import(output + '/config.js');
           const defaultProperties = ['name', 'url', 'version', 'creator', 'preview', 'routes'];
@@ -154,7 +160,13 @@ export class Utils {
           const routesExist = Array.isArray(config.routes)
             ? config.routes.some((r) => defaultRoutes.includes(r.route))
             : false;
-          routesExist && propertiesExist ? resolve(config) : reject({ message: 'not a valid template' });
+
+          if (routesExist && propertiesExist) {
+            resolve(config);
+          } else {
+            Utils.removeDirectory(output);
+            reject({ message: 'not a valid template' });
+          }
         });
       } else {
         reject({ message: 'not a valid template' });
