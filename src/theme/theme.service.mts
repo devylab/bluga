@@ -86,7 +86,6 @@ export class ThemeService {
         return { data: 'theme uploaded', error: null };
       }
       return { data: null, error: 'unable to upload theme' };
-      // return { data: '', error: null };
     } catch (err) {
       logger.error(err, 'error while uploading theme theme');
       return { data: null, error: 'unable to upload theme' };
