@@ -44,8 +44,9 @@ model Content {
 
 model Theme {
   id            String          @id
-  name          String          @db.VarChar(255)
+  name          String          @db.VarChar(255) @unique
   status        Boolean         @default(false)
+  meta    Json
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }

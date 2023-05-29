@@ -1,4 +1,9 @@
 const config = {
+  name: 'Magazine',
+  url: 'https://freehtml5.co/',
+  version: '1.0.0',
+  creator: 'Cavdy',
+  preview: '/preview.jpg',
   headers: ['css/animate.css', 'css/icomoon.css', 'css/bootstrap.css', 'css/style.css', 'js/modernizr-2.6.2.min.js'],
   footers: [
     'js/jquery.min.js',

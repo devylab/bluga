@@ -1,6 +1,9 @@
+import { MultipartFile } from '@fastify/multipart';
 import cache from '../shared/cache/index.mjs';
 import database from '../shared/database/index.mjs';
 import { logger } from '../shared/logger/index.mjs';
+import { Utils } from '../shared/utils/index.mjs';
+import path from 'path';
 
 export class ThemeService {
   private readonly db;
@@ -55,6 +58,37 @@ export class ThemeService {
     } catch (err) {
       logger.error(err, 'error while setting active theme');
       return { data: null, error: 'error' };
+    }
+  }
+
+  async uploadTheme(file?: MultipartFile) {
+    try {
+      if (file?.filename && file.filename.endsWith('.zip') && file.mimetype === 'application/zip') {
+        const bufferFile = await file.toBuffer();
+        const { __dirname } = Utils.fileDirPath(import.meta);
+        const uploadPath = path.join(__dirname, '..', 'tools', 'themes', file.filename.replace('.zip', ''));
+        const theme = await Utils.unZipFile(bufferFile, uploadPath);
+
+        await this.db.theme.create({
+          data: {
+            id: Utils.uniqueId(10),
+            name: theme.name,
+            status: false,
+            meta: {
+              version: theme.version,
+              url: theme.url,
+              creator: theme.creator,
+              preview: theme.preview,
+            },
+          },
+        });
+
+        return { data: 'theme uploaded', error: null };
+      }
+      return { data: null, error: 'unable to upload theme' };
+    } catch (err) {
+      logger.error(err, 'error while uploading theme theme');
+      return { data: null, error: 'unable to upload theme' };
     }
   }
 }

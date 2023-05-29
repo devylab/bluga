@@ -48,9 +48,20 @@ export class ThemeController {
 
     const { error } = await this.themeService.setActive(body.theme);
     if (error) {
-      return reply.redirect(`${subDirectoryPath}admin/?error=${error}`);
+      return reply.redirect(`${subDirectoryPath}admin/themes?error=${error}`);
     }
 
     return reply.redirect(subDirectoryPath + 'admin/themes');
+  }
+
+  async uploadTheme(req: FastifyRequest, reply: FastifyReply) {
+    const file = await req.file();
+
+    const { data, error } = await this.themeService.uploadTheme(file);
+    if (error) {
+      return reply.redirect(`${subDirectoryPath}admin/themes/upload?error=${error}`);
+    }
+
+    return reply.redirect(`${subDirectoryPath}admin/themes/upload?data=${data}`);
   }
 }

@@ -10,12 +10,7 @@ import { ContentService } from '../content/content.service.mjs';
 import { ThemeService } from '../theme/theme.service.mjs';
 import { SettingsService } from '../settings/settings.service.mjs';
 import { Utils } from '../shared/utils/index.mjs';
-
-type ThemeConfig = {
-  headers: string[];
-  footers: string[];
-  routes: { route: string; path: string; headers: string[]; footers: string[] }[];
-};
+import { ThemeConfig } from '../shared/interfaces/themeConfig.interface.mjs';
 
 type MetaData = {
   page: string;
@@ -82,8 +77,8 @@ export class IndexView {
   // eslint-disable-next-line max-lines-per-function
   async loadIndexView() {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
-    const currentTheme = `/${activeTheme.name || 'bluga'}`;
-    const themePath = path.join(rootPath, 'themes', currentTheme, 'config.mjs');
+    const currentTheme = `/${activeTheme?.name || 'avail'}`;
+    const themePath = path.join(rootPath, 'themes', currentTheme, 'config.js');
     const importConfig = await import(themePath);
     const themeConfig = importConfig?.default as ThemeConfig;
 
@@ -96,8 +91,8 @@ export class IndexView {
         const { data: settings } = await this.settingsService.getSettings();
         const params = req.params as { slug: string };
         const schema = `${req.hostname}${subDirectoryPath}`;
-        const headers = themeConfig.headers.concat(route.headers);
-        const footers = themeConfig.footers.concat(route.footers);
+        const headers = themeConfig?.headers?.concat(route?.headers);
+        const footers = themeConfig?.footers?.concat(route?.footers);
         const { metadata, error: metaError } = await this.getMeta({
           page: route.route,
           slug: params?.slug,

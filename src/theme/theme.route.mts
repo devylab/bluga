@@ -15,5 +15,8 @@ export class ThemeRoute {
     this.server.post('/api/theme/active', { preHandler: [authGuard] }, (req, reply) =>
       this.themeController.setActive(req, reply),
     );
+    this.server.post('/api/theme/upload', { preHandler: [authGuard] }, (req, reply) =>
+      this.themeController.uploadTheme(req, reply),
+    );
   }
 }
