@@ -79,4 +79,13 @@ export class UserController {
       .setCookie(refreshTokenKey, data.refreshToken, options)
       .send({ status: 'success', code: 200, data: 'token refreshed' });
   }
+
+  async logout(req: FastifyRequest, reply: FastifyReply) {
+    req.session.delete();
+    reply
+      .clearCookie(accessTokenKey, { path: '/' })
+      .clearCookie(secretTokenKey, { path: '/' })
+      .clearCookie(refreshTokenKey, { path: '/' })
+      .send({ logout: true });
+  }
 }
