@@ -63,7 +63,6 @@ export class AdminView {
             if (!authUser) return reply.redirect(`${subDirectoryPath}admin/login`);
             user = authUser;
           }
-
           return reply.admin(
             route.path || '',
             {
@@ -74,6 +73,7 @@ export class AdminView {
               footer: route.footer || [],
               user,
               db: this.db,
+              session: req.session.get,
               appLink: schema,
               tools: { utils: GlobalUtils, subDirectory: schema },
             },

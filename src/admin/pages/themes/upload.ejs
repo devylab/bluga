@@ -17,6 +17,8 @@
 </section>
 
 <!-- Main content -->
+<% const notification = await session('theme'); %>
+
 <section class="content">
   <div class="container-fluid">
     <div class="row">
@@ -28,6 +30,14 @@
           </div>
           <button type="submit" class="btn btn-primary">Upload</button>
         </form>
+
+        <% if (notification) { %>
+        <!-- if notification is error-->
+        <% if (notification?.type === 'error') { %>
+        <p class="text-danger mt-3"><%= notification?.message %></p>
+        <% } else if (notification?.type === 'success') { %>
+        <p class="text-success mt-3"><%= notification?.message %></p>
+        <% } %> <% } %>
       </div>
     </div>
   </div>

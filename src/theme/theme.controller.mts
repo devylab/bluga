@@ -59,9 +59,11 @@ export class ThemeController {
 
     const { data, error } = await this.themeService.uploadTheme(file);
     if (error) {
-      return reply.redirect(`${subDirectoryPath}admin/themes/upload?error=${error}`);
+      req.session.set('theme', { type: 'error', message: error });
+      return reply.redirect(`${subDirectoryPath}admin/themes/upload`);
     }
 
-    return reply.redirect(`${subDirectoryPath}admin/themes/upload?data=${data}`);
+    req.session.set('theme', { type: 'success', message: data });
+    return reply.redirect(`${subDirectoryPath}admin/themes/upload`);
   }
 }
