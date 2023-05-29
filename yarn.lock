@@ -207,7 +207,7 @@
     pump "^3.0.0"
     pumpify "^2.0.1"
 
-"@fastify/cookie@^8.3.0":
+"@fastify/cookie@^8.0.0", "@fastify/cookie@^8.3.0":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@fastify/cookie/-/cookie-8.3.0.tgz#7d3304fcf0d11ea64ae8e02d65ae217b01fe1cf4"
   integrity sha512-P9hY9GO11L20TnZ33XN3i0bt+3x0zaT7S0ohAzWO950E9PB2xnNhLYzPFJIGFi5AVN0yr5+/iZhWxeYvR6KCzg==
@@ -291,6 +291,15 @@
   integrity sha512-zq0g0s0r87b0gUOv+11Mi3D9B2NdkTjKX+QM8s5WK3IhmTKLJ5UfMkJXfqYbqeDOgoGfXfSjyxtfkHbTFlDk/Q==
   dependencies:
     fastify "^4.16.3"
+
+"@fastify/secure-session@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@fastify/secure-session/-/secure-session-6.1.0.tgz#cc02885cea2a6b1372c2676521e7a2c627731ed4"
+  integrity sha512-TBg8tNw1SejDOmjnS/wpaDzvXfrEPQ3ZlYekQqqu+lXimWBZYbXyF1yT4EftOBW87PtmVEIAabR5ogBbz12diQ==
+  dependencies:
+    "@fastify/cookie" "^8.0.0"
+    fastify-plugin "^4.0.0"
+    sodium-native "^4.0.0"
 
 "@fastify/static@^6.5.0":
   version "6.5.0"
@@ -2532,6 +2541,11 @@ node-fetch@^2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
+node-gyp-build@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.6.0.tgz#0c52e4cbf54bbd28b709820ef7b6a3c2d6209055"
+  integrity sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==
+
 node-releases@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.6.tgz#8a7088c63a55e493845683ebf3c828d8c51c5503"
@@ -3181,6 +3195,13 @@ slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
+
+sodium-native@^4.0.0:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/sodium-native/-/sodium-native-4.0.3.tgz#b47e3f1024c71db76ef0141343e1e7611df3d4e0"
+  integrity sha512-0zOjNag+0gIRe56O1TkTfltT+b+JhOpGV6u69MVoKy+BTH95viPPJ0exHHnmgRliWKDGyYsyNeyBamfcU7ZlgQ==
+  dependencies:
+    node-gyp-build "^4.6.0"
 
 sonic-boom@^3.1.0:
   version "3.2.0"

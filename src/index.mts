@@ -3,6 +3,7 @@ import { FastifyServerOptions } from 'fastify';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCompress from '@fastify/compress';
 import fastifyCSRF from '@fastify/csrf-protection';
+import fastifySession from '@fastify/secure-session';
 import fastifyHelmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';
 // import fastifyRateLimit from '@fastify/rate-limit';
@@ -12,6 +13,7 @@ import { logger } from './shared/logger/index.mjs';
 import database from './shared/database/index.mjs';
 import cache from './shared/cache/index.mjs';
 import { AppModule } from './app.module.mjs';
+import { Utils } from './shared/utils/index.mjs';
 
 // eslint-disable-next-line max-lines-per-function
 const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
@@ -29,6 +31,18 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
   await app.register(fastifyCompress);
   await app.register(fastifyCookie, { secret: env.cookieSecret });
   await app.register(fastifyCSRF, { cookieOpts: { signed: true } });
+  await app.register(fastifySession, {
+    sessionName: 'session',
+    cookieName: 'pmdqrs',
+    key: Utils.getSessionSecret(),
+    cookie: {
+      path: '/',
+      signed: false,
+      httpOnly: true,
+      secure: env.environment.isProduction,
+      sameSite: true,
+    },
+  });
   await app.register(formBody);
   await app.register(fastifyMultipart);
 

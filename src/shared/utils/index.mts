@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { createRequire } from 'node:module';
-// import fs from 'fs';
+import fs from 'fs';
 import { nanoid } from 'nanoid';
 import argon2 from 'argon2';
 import sanitizeHtml from 'sanitize-html';
@@ -160,5 +160,10 @@ export class Utils {
         reject({ message: 'not a valid template' });
       }
     });
+  }
+
+  static getSessionSecret() {
+    const { __dirname } = Utils.fileDirPath(import.meta);
+    return fs.readFileSync(path.join(__dirname, '..', '..', '..', 'secret_key'));
   }
 }

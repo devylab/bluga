@@ -9,3 +9,4 @@ yarn-error.log
 /src/public/scripts/*.min.js
 /src/public/styles/styles.css
 /src/public/uploads
+secret_key

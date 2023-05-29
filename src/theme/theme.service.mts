@@ -87,6 +87,11 @@ export class ThemeService {
       }
       return { data: null, error: 'unable to upload theme' };
     } catch (err) {
+      const error = err as Error;
+      if (error?.message?.includes('Unique constraint')) {
+        return { data: null, error: 'theme with same name already exist' };
+      }
+
       logger.error(err, 'error while uploading theme theme');
       return { data: null, error: 'unable to upload theme' };
     }

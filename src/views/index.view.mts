@@ -79,7 +79,13 @@ export class IndexView {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
     const currentTheme = `/${activeTheme?.name || 'avail'}`;
     const themePath = path.join(rootPath, 'themes', currentTheme, 'config.js');
-    const importConfig = await import(themePath);
+    let importConfig;
+    try {
+      importConfig = await import(themePath);
+    } catch (err) {
+      importConfig = await import(path.join(rootPath, 'themes', 'avail', 'config.js'));
+    }
+
     const themeConfig = importConfig?.default as ThemeConfig;
 
     this.app.get('/favicon.ico', async (_req, reply) => reply.code(204).send());
