@@ -4,6 +4,7 @@ import database from '../shared/database/index.mjs';
 import { logger } from '../shared/logger/index.mjs';
 import { Utils } from '../shared/utils/index.mjs';
 import path from 'path';
+import { hostProtocol } from '../shared/constants/index.mjs';
 
 export class ThemeService {
   private readonly db;
@@ -15,7 +16,7 @@ export class ThemeService {
   async getThemes() {
     try {
       const data = await this.db.theme.findMany({
-        select: { id: true, name: true, status: true, createdAt: true },
+        select: { id: true, name: true, status: true, createdAt: true, meta: true },
         orderBy: [{ status: 'desc' }, { createdAt: 'desc' }],
       });
 
@@ -61,25 +62,22 @@ export class ThemeService {
     }
   }
 
-  async uploadTheme(file?: MultipartFile) {
+  async uploadTheme(host: string, file?: MultipartFile) {
+    const themeId = Utils.uniqueId(15);
+    const { __dirname } = Utils.fileDirPath(import.meta);
+    const uploadPath = path.join(__dirname, '..', 'tools', 'themes', themeId);
     try {
       if (file?.filename && file.filename.endsWith('.zip') && file.mimetype === 'application/zip') {
         const bufferFile = await file.toBuffer();
-        const { __dirname } = Utils.fileDirPath(import.meta);
-        const uploadPath = path.join(__dirname, '..', 'tools', 'themes', file.filename.replace('.zip', ''));
         const theme = await Utils.unZipFile(bufferFile, uploadPath);
 
+        const previewUrl = hostProtocol + path.join(host, '/', 'themes', themeId, theme.preview);
         await this.db.theme.create({
           data: {
-            id: Utils.uniqueId(10),
+            id: themeId,
             name: theme.name,
             status: false,
-            meta: {
-              version: theme.version,
-              url: theme.url,
-              creator: theme.creator,
-              preview: theme.preview,
-            },
+            meta: { version: theme.version, url: theme.url, creator: theme.creator, preview: previewUrl },
           },
         });
 
@@ -89,11 +87,34 @@ export class ThemeService {
     } catch (err) {
       const error = err as Error;
       if (error?.message?.includes('Unique constraint')) {
+        Utils.removeDirectory(uploadPath);
         return { data: null, error: 'theme with same name already exist' };
       }
 
       logger.error(err, 'error while uploading theme theme');
       return { data: null, error: 'unable to upload theme' };
+    }
+  }
+
+  async removeTheme(id: string) {
+    try {
+      const theme = await this.db.theme.findUniqueOrThrow({
+        where: { id },
+        select: { id: true, status: true },
+      });
+
+      if (theme.status) throw new Error('can not remove active template');
+
+      const { __dirname } = Utils.fileDirPath(import.meta);
+      const uploadPath = path.join(__dirname, '..', 'tools', 'themes', theme.id);
+
+      await this.db.theme.delete({ where: { id } });
+      Utils.removeDirectory(uploadPath);
+
+      return { data: 'theme removed', error: null };
+    } catch (err) {
+      logger.error(err, 'error while removing theme');
+      return { data: null, error: 'error' };
     }
   }
 }

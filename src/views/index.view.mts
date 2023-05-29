@@ -77,7 +77,7 @@ export class IndexView {
   // eslint-disable-next-line max-lines-per-function
   async loadIndexView() {
     const { data: activeTheme } = await this.themeService.getActiveTheme();
-    const currentTheme = `/${activeTheme?.name || 'avail'}`;
+    const currentTheme = `/${activeTheme?.id || 'avail'}`;
     const themePath = path.join(rootPath, 'themes', currentTheme, 'config.js');
     let importConfig;
     try {

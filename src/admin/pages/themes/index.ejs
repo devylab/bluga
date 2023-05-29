@@ -28,12 +28,12 @@
         <% for(let theme of themes.data) { %>
         <div id="<%= theme.id %>" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
           <div class="card bg-light d-flex flex-fill">
-            <div class="card-header text-muted border-bottom-0 text-capitalize">Nicole Pearson</div>
+            <div class="card-header text-muted border-bottom-0 text-capitalize"><%= theme.meta?.creator %></div>
             <div class="card-body pt-0">
               <div class="row">
                 <div class="col-7">
                   <h2 class="lead text-capitalize"><b><%= theme.name %></b></h2>
-                  <p class="text-muted text-sm"><b>Version: </b> 1.0.0</p>
+                  <p class="text-muted text-sm"><b>Version: </b> <%= theme.meta?.version %></p>
                   <p class="text-muted text-sm">
                     <b>Uploaded: </b> <span><%= tools.utils.dateFormatter(theme.createdAt) %></span>
                   </p>
@@ -42,7 +42,7 @@
                     </p> -->
                 </div>
                 <div class="col-5 text-center">
-                  <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid" />
+                  <img src="<%= theme.meta?.preview %>" alt="theme image" width="80px" height="80px" />
                 </div>
               </div>
             </div>
@@ -51,9 +51,14 @@
                 <% if (theme.status) { %>
                 <p>ACTIVE</p>
                 <% } else { %>
-                <form method="post" action="<%= appLink %>api/theme/active">
-                  <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-primary">Activate</button>
-                </form>
+                <div class="d-flex justify-content-end">
+                  <form class="mr-2" method="post" action="<%= appLink %>api/theme/remove">
+                    <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-danger">Remove</button>
+                  </form>
+                  <form method="post" action="<%= appLink %>api/theme/active">
+                    <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-primary">Activate</button>
+                  </form>
+                </div>
                 <% } %>
               </div>
             </div>

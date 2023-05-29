@@ -18,5 +18,8 @@ export class ThemeRoute {
     this.server.post('/api/theme/upload', { preHandler: [authGuard] }, (req, reply) =>
       this.themeController.uploadTheme(req, reply),
     );
+    this.server.post('/api/theme/remove', { preHandler: [authGuard] }, (req, reply) =>
+      this.themeController.removeTheme(req, reply),
+    );
   }
 }
