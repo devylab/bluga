@@ -25,6 +25,7 @@
     "prettier": "prettier --write \"**/*.{ts,tsx}\""
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.0",
     "@types/ejs": "^3.1.1",
     "@types/html-minifier": "^4.0.2",
     "@types/jsonwebtoken": "^9.0.1",
@@ -59,6 +60,7 @@
     "@fastify/static": "^6.5.0",
     "@fastify/view": "^7.1.2",
     "@prisma/client": "^4.14.1",
+    "adm-zip": "^0.5.10",
     "argon2": "^0.30.2",
     "dotenv": "^16.0.3",
     "editorjs-html": "^3.4.2",

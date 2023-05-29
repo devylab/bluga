@@ -1,5 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { createRequire } from 'node:module';
+// import fs from 'fs';
 import { nanoid } from 'nanoid';
 import argon2 from 'argon2';
 import sanitizeHtml from 'sanitize-html';
@@ -7,9 +8,11 @@ import { AdminMenu, Routes } from '../interfaces/adminRoute.interface.mjs';
 import { adminMenus } from '../../admin/config.mjs';
 import { subDirectoryPath } from '../constants/index.mjs';
 import path from 'path';
+import AdmZip from 'adm-zip';
 import striptags from 'striptags';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { ThemeConfig } from '../interfaces/themeConfig.interface.mjs';
 
 export class Utils {
   static renderAdminRoutes() {
@@ -130,5 +133,32 @@ export class Utils {
   static fileRequire() {
     const require = createRequire(import.meta.url);
     return require;
+  }
+
+  static unZipFile(file: Buffer, output: string) {
+    // TODO: remove theme if error
+    return new Promise<ThemeConfig>(async (resolve, reject) => {
+      const newZip = new AdmZip(file);
+      const entries = newZip.getEntries();
+      const entry = entries.find((e) => e.entryName.includes('config.js'));
+      if (entry) {
+        newZip.extractAllToAsync(output, true, false, async (err) => {
+          if (err) reject(err);
+
+          const readConfig = await import(output + '/config.js');
+          const defaultProperties = ['name', 'url', 'version', 'creator', 'preview', 'routes'];
+          const defaultRoutes = ['/', '/:slug'];
+          const config = readConfig.default as ThemeConfig;
+          const properties = Object.keys(config);
+          const propertiesExist = properties.some((property) => defaultProperties.includes(property));
+          const routesExist = Array.isArray(config.routes)
+            ? config.routes.some((r) => defaultRoutes.includes(r.route))
+            : false;
+          routesExist && propertiesExist ? resolve(config) : reject({ message: 'not a valid template' });
+        });
+      } else {
+        reject({ message: 'not a valid template' });
+      }
+    });
   }
 }
