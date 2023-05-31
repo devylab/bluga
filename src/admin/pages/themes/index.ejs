@@ -19,63 +19,101 @@
   <div class="d-flex justify-content-end">
     <a href="/admin/themes/upload" class="btn btn-primary mb-3">Upload Theme</a>
   </div>
-  <!-- Default box -->
-  <div class="card card-solid">
-    <div class="card-body pb-0">
-      <div class="row">
-        <% const themes = await db.themeService.getThemes(); %>
-        <!-- loop through the themes -->
-        <% for(let theme of themes.data) { %>
-        <div id="<%= theme.id %>" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-          <div class="card bg-light d-flex flex-fill">
-            <div class="card-header text-muted border-bottom-0 text-capitalize"><%= theme.meta?.creator %></div>
-            <div class="card-body pt-0">
-              <div class="row">
-                <div class="col-7">
-                  <h2 class="lead text-capitalize"><b><%= theme.name %></b></h2>
-                  <p class="text-muted text-sm"><b>Version: </b> <%= theme.meta?.version %></p>
-                  <p class="text-muted text-sm">
-                    <b>Uploaded: </b> <span><%= tools.utils.dateFormatter(theme.createdAt) %></span>
-                  </p>
-                  <!-- <p class="text-muted text-sm">
+
+  <div class="card card-primary card-outline card-outline-tabs">
+    <div class="card-header p-0 border-bottom-0">
+      <ul class="nav nav-tabs" id="themes-tab-header" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            id="themes-tab-theme-tab"
+            data-toggle="pill"
+            href="#themes-tab-theme"
+            role="tab"
+            aria-controls="themes-tab-theme"
+            aria-selected="true"
+            >Themes</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="themes-tab-marketplace-tab"
+            data-toggle="pill"
+            href="#themes-tab-marketplace"
+            role="tab"
+            aria-controls="themes-tab-marketplace"
+            aria-selected="false"
+            >Marketplace</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <div class="tab-content" id="themes-tab">
+        <div
+          class="tab-pane fade show active"
+          id="themes-tab-theme"
+          role="tabpanel"
+          aria-labelledby="themes-tab-theme-tab"
+        >
+          <div class="row">
+            <% const themes = await db.themeService.getThemes(); %>
+            <!-- loop through the themes -->
+            <% for(let theme of themes.data) { %>
+            <div id="<%= theme.id %>" class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+              <div class="card bg-light d-flex flex-fill">
+                <div class="card-header text-muted border-bottom-0 text-capitalize"><%= theme.meta?.creator %></div>
+                <div class="card-body pt-0">
+                  <div class="row">
+                    <div class="col-7">
+                      <h2 class="lead text-capitalize"><b><%= theme.name %></b></h2>
+                      <p class="text-muted text-sm"><b>Version: </b> <%= theme.meta?.version %></p>
+                      <p class="text-muted text-sm">
+                        <b>Uploaded: </b> <span><%= tools.utils.dateFormatter(theme.createdAt) %></span>
+                      </p>
+                      <% if(!theme.exist) {%>
+                      <p class="text-danger text-sm"><b>File Missing</b></p>
+                      <% } %>
+                      <!-- <p class="text-muted text-sm">
                       <b>Description: </b> Web Designer / UX / Graphic Artist / Coffee Lover
                     </p> -->
+                    </div>
+                    <div class="col-5 text-center">
+                      <img src="<%= theme.meta?.preview %>" alt="theme image" width="80px" height="80px" />
+                    </div>
+                  </div>
                 </div>
-                <div class="col-5 text-center">
-                  <img src="<%= theme.meta?.preview %>" alt="theme image" width="80px" height="80px" />
+                <div class="card-footer">
+                  <div class="text-right">
+                    <% if (theme.status) { %>
+                    <p>ACTIVE</p>
+                    <% } else { %>
+                    <div class="d-flex justify-content-end">
+                      <form class="mr-2" method="post" action="<%= appLink %>api/theme/remove">
+                        <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-danger">Remove</button>
+                      </form>
+                      <form method="post" action="<%= appLink %>api/theme/active">
+                        <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-primary">Activate</button>
+                      </form>
+                    </div>
+                    <% } %>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="card-footer">
-              <div class="text-right">
-                <% if (theme.status) { %>
-                <p>ACTIVE</p>
-                <% } else { %>
-                <div class="d-flex justify-content-end">
-                  <form class="mr-2" method="post" action="<%= appLink %>api/theme/remove">
-                    <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-danger">Remove</button>
-                  </form>
-                  <form method="post" action="<%= appLink %>api/theme/active">
-                    <button name="theme" value="<%= theme.id %>" class="btn btn-sm btn-primary">Activate</button>
-                  </form>
-                </div>
-                <% } %>
-              </div>
-            </div>
+            <% } %>
           </div>
         </div>
-        <% } %>
+        <div
+          class="tab-pane fade"
+          id="themes-tab-marketplace"
+          role="tabpanel"
+          aria-labelledby="themes-tab-marketplace-tab"
+        >
+          Marketplace
+        </div>
       </div>
     </div>
-    <!-- /.card-body -->
-    <div class="card-footer">
-      <nav aria-label="Contacts Page Navigation">
-        <ul class="pagination justify-content-center m-0">
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        </ul>
-      </nav>
-    </div>
-    <!-- /.card-footer -->
   </div>
-  <!-- /.card -->
 </section>
