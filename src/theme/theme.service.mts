@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { MultipartFile } from '@fastify/multipart';
 import cache from '../shared/cache/index.mjs';
 import database from '../shared/database/index.mjs';
@@ -15,11 +16,16 @@ export class ThemeService {
 
   async getThemes() {
     try {
-      const data = await this.db.theme.findMany({
+      const themes = await this.db.theme.findMany({
         select: { id: true, name: true, status: true, createdAt: true, meta: true },
         orderBy: [{ status: 'desc' }, { createdAt: 'desc' }],
       });
 
+      const { __dirname } = Utils.fileDirPath(import.meta);
+      const data = themes.map((theme) => {
+        const uploadPath = path.join(__dirname, '..', 'tools', 'themes', theme.id);
+        return { ...theme, exist: fs.existsSync(uploadPath) };
+      });
       return { data, error: null };
     } catch (err) {
       logger.error(err, 'error while getting themes');

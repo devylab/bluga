@@ -41,6 +41,7 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
       httpOnly: true,
       secure: env.environment.isProduction,
       sameSite: true,
+      // expires: new Date(new Date().getTime() + 1000 * 5),
     },
   });
   await app.register(formBody);
