@@ -15,4 +15,4 @@ COPY . .
 # Run the app
 EXPOSE 50921
 
-CMD ["node", "build/index.mjs"]
+CMD ["yarn", "start"]
