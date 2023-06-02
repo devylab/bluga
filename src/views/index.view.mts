@@ -122,15 +122,12 @@ export class IndexView {
         };
 
         const page = currentTheme + '/pages/' + route.path;
+        const layout = '../../views/themeConfig/layout.ejs';
         if (metaError) {
-          return reply.themes(currentTheme + '/pages/404.ejs', options, {
-            layout: '/themeConfig/layout.ejs',
-          });
+          return reply.themes(currentTheme + '/pages/404.ejs', options, { layout });
         }
 
-        return reply.themes(page, options, {
-          layout: '/themeConfig/layout.ejs',
-        });
+        return reply.themes(page, options, { layout });
       });
     }
   }
