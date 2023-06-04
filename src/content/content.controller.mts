@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import path from 'path';
 import { ContentService } from './content.service.mjs';
 import { CreateContent, getKeyValue } from './entities/create-content.entity.mjs';
+import { SearchContent } from './entities/search-content.entity.mjs';
 
 export class ContentController {
   private readonly contentService;
@@ -62,7 +63,8 @@ export class ContentController {
   }
 
   async getAdminContents(req: FastifyRequest, reply: FastifyReply) {
-    const { data, error } = await this.contentService.getAdminContents();
+    const query = req.query as SearchContent;
+    const { data, error } = await this.contentService.getAdminContents(query);
     if (error) {
       return reply.code(400).send({
         status: 'error',

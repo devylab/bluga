@@ -6,6 +6,7 @@ import { Utils } from '../shared/utils/index.mjs';
 import { CreateContent, StatusType, getKeyValue, getStatusValue } from './entities/create-content.entity.mjs';
 import parsers from '../shared/editorjs/parsers.mjs';
 import { UploadService } from '../upload/upload.service.mjs';
+import { SearchContent } from './entities/search-content.entity.mjs';
 
 export class ContentService {
   private readonly db;
@@ -106,7 +107,7 @@ export class ContentService {
   }
 
   // eslint-disable-next-line max-lines-per-function
-  async getAdminContents() {
+  async getAdminContents({ search, status }: SearchContent) {
     try {
       const headings = [
         {
@@ -126,6 +127,19 @@ export class ContentService {
           value: 'CreatedAt',
         },
       ];
+      let whereQuery = {};
+      if (search) {
+        whereQuery = {
+          OR: [{ category: { name: { search } } }, { title: { search } }],
+        };
+      }
+
+      if (status) {
+        whereQuery = {
+          ...whereQuery,
+          status: status.toUpperCase(),
+        };
+      }
       const contents = await this.db.content.findMany({
         select: {
           id: true,
@@ -137,6 +151,7 @@ export class ContentService {
           },
         },
         orderBy: { createdAt: 'desc' },
+        where: whereQuery,
       });
       return { data: { contents, headings }, error: null };
     } catch (err) {
@@ -165,7 +180,9 @@ export class ContentService {
             select: { name: true },
           },
         },
-        where: { status: status || 'PUBLIC' },
+        where: {
+          status: status || 'PUBLIC',
+        },
         orderBy: { createdAt: 'desc' },
       });
       return { data: contents, error: null };
