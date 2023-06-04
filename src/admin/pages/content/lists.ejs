@@ -30,6 +30,30 @@
             <!-- <h3 class="card-title">Simple Full Width Table</h3> -->
 
             <div class="d-flex align-items-center card-tools">
+              <div class="d-flex align-items-center ml-2">
+                <label for="content-status" style="width: 183px" class="mr-1 mb-0">Filter By status</label>
+                <select
+                  x-model="$store.contentLists.selectedStatus"
+                  @change="$store.contentLists.getContents()"
+                  id="content-status"
+                  class="form-control form-control-sm"
+                >
+                  <template x-for="status in $store.contentLists.contentStatus">
+                    <option :value="status.value" x-text="status?.name || status.value"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="d-flex align-items-center ml-2 mr-2">
+                <label for="content-search" class="mr-1 mb-0">Search</label>
+                <input
+                  id="content-search"
+                  x-model="$store.contentLists.search"
+                  @keydown.debounce.500ms="$store.contentLists.getContents()"
+                  type="text"
+                  class="form-control form-control-sm"
+                  placeholder="Search Content or Category or Status"
+                />
+              </div>
               <button
                 x-bind:disabled="!$store.contentLists.ids.length"
                 type="button"
@@ -49,7 +73,6 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body p-0">
-            <% const contents = await db.contentService.getAdminContents(); %>
             <table class="table">
               <thead>
                 <tr>
@@ -64,41 +87,40 @@
                       <label class="form-check-label"></label>
                     </div>
                   </th>
-                  <!-- loop through the contents heading -->
-                  <% for (let heading of contents.data.headings) { %>
-                  <th><%= heading.value %></th>
-                  <% } %>
+                  <template x-for="heading in $store.contentLists.headings">
+                    <th x-text="heading.value"></th>
+                  </template>
                 </tr>
               </thead>
               <tbody>
                 <!-- loop through the contents -->
-                <% for (let content of contents.data.contents) { %>
-                <tr>
-                  <td>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input content-list-check"
-                        value="<%= content.id %>"
-                        type="checkbox"
-                        x-model="$store.contentLists.ids"
-                      />
-                      <label class="form-check-label"></label>
-                    </div>
-                  </td>
-                  <td>
-                    <a href="<%= appLink %>admin/contents/edit/<%= content.id %>"><%= content.title %></a>
-                  </td>
-                  <td class="border-dashed border-t border-gray-200 status">
-                    <span class="text-capitalize"><%= content.status %></span>
-                  </td>
-                  <td class="border-dashed border-t border-gray-200 status">
-                    <span class="text-capitalize"><%= content.category?.name %></span>
-                  </td>
-                  <td class="border-dashed border-t border-gray-200 createdAt">
-                    <span class="text-capitalize"><%= tools.utils.dateFormatter(content.createdAt) %></span>
-                  </td>
-                </tr>
-                <% } %>
+                <template x-for="content in $store.contentLists.lists">
+                  <tr>
+                    <td>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input content-list-check"
+                          type="checkbox"
+                          :value="content.id"
+                          x-model="$store.contentLists.ids"
+                        />
+                        <label class="form-check-label"></label>
+                      </div>
+                    </td>
+                    <td>
+                      <a x-bind:href="'<%= appLink %>admin/contents/edit/' + content.id" x-text="content.title"></a>
+                    </td>
+                    <td class="border-dashed border-t border-gray-200 status">
+                      <span class="text-capitalize" x-text="content.status"></span>
+                    </td>
+                    <td class="border-dashed border-t border-gray-200 status">
+                      <span class="text-capitalize" x-text="content.category.name"></span>
+                    </td>
+                    <td class="border-dashed border-t border-gray-200 createdAt">
+                      <span class="text-capitalize" x-text="BlugaUtils.dateFormatter(content.createdAt)"></span>
+                    </td>
+                  </tr>
+                </template>
               </tbody>
             </table>
           </div>
