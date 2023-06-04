@@ -12,6 +12,7 @@ import { ThemeService } from '../theme/theme.service.mjs';
 import { ContentService } from '../content/content.service.mjs';
 import { GlobalUtils } from '../shared/utils/global.mjs';
 import { SettingsService } from '../settings/settings.service.mjs';
+import { CategoryService } from '../category/category.service.mjs';
 
 const { __dirname } = Utils.fileDirPath(import.meta);
 
@@ -42,6 +43,7 @@ export class AdminView {
       themeService: new ThemeService(),
       contentService: new ContentService(),
       settingsService: new SettingsService(),
+      categoryService: new CategoryService(),
     };
   }
 

@@ -1,0 +1,132 @@
+<!-- Content Header -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Category</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+          <li class="breadcrumb-item active">Category</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content" x-data>
+  <div class="d-flex justify-content-end">
+    <button
+      class="btn btn-primary mb-3"
+      data-toggle="modal"
+      data-target="#create-category"
+      value="<%= JSON.stringify({id: '', name: ''}) %>"
+      @click="$store.category.setData"
+    >
+      Create Category
+    </button>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="d-flex align-items-center card-tools">
+              <ul class="pagination pagination-sm float-right">
+                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <% const {data: categories} = await db.categoryService.allCategories(); %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>CreatedAt</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- loop through the contents -->
+                <% for (let category of categories) { %>
+                <tr>
+                  <td class="border-dashed border-t border-gray-200 status">
+                    <span class="text-capitalize"><%= category.name %></span>
+                  </td>
+                  <td class="border-dashed border-t border-gray-200 createdAt">
+                    <span class="text-capitalize"><%= tools.utils.dateFormatter(category.createdAt) %></span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button
+                        value="<%= JSON.stringify(category) %>"
+                        @click="$store.category.setData"
+                        data-toggle="modal"
+                        data-target="#create-category"
+                        class="btn btn-info"
+                      >
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button
+                        value="<%= category.id %>"
+                        @click.prevent="$store.category.removeCategory"
+                        class="btn btn-danger"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+
+  <div class="modal fade" id="create-category">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Category</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="categoryName">Category Name</label>
+            <input
+              x-model="$store.category.name"
+              @change="$store.category.name = event.target.value;"
+              type="text"
+              class="form-control"
+              id="categoryName"
+              placeholder="category name"
+            />
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click.prevent="$store.category.saveCategory()">Save</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</section>

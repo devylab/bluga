@@ -15,5 +15,8 @@ export class CategoryRoute {
     this.server.get('/api/categories', { preHandler: [authGuard] }, (req, reply) =>
       this.categoryController.allCategories(req, reply),
     );
+    this.server.delete('/api/category/:id', { preHandler: [authGuard] }, (req, reply) =>
+      this.categoryController.removeCategory(req, reply),
+    );
   }
 }
