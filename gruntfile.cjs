@@ -34,6 +34,7 @@ https: module.exports = function (grunt) {
           { expand: true, cwd: 'src', src: ['**/public/plugins/**'], dest: 'build' },
           { expand: true, cwd: 'src', src: ['**/admin/**'], dest: 'build' },
           { expand: true, cwd: 'src', src: ['**/tools/themes/**'], dest: 'build' },
+          { expand: true, cwd: 'src', src: ['**/views/themeConfig/**'], dest: 'build' },
         ],
       },
     },
