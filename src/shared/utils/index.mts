@@ -178,4 +178,8 @@ export class Utils {
     const { __dirname } = Utils.fileDirPath(import.meta);
     return fs.readFileSync(path.join(__dirname, '..', '..', '..', 'secret_key'));
   }
+
+  static isFileExist(file: string) {
+    return fs.existsSync(file);
+  }
 }

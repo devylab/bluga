@@ -170,6 +170,7 @@ export class ContentService {
           slug: true,
           thumbnail: true,
           tags: true,
+          description: true,
           ContentMeta: {
             select: { views: true, time: true },
           },
@@ -201,6 +202,9 @@ export class ContentService {
           createdAt: true,
           thumbnail: true,
           tags: true,
+          ContentMeta: {
+            select: { views: true, time: true },
+          },
           author: {
             select: { username: true },
           },

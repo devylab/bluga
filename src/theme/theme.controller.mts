@@ -1,5 +1,5 @@
 import { subDirectoryPath } from '../shared/constants/index.mjs';
-import { FastifyReply, FastifyRequest } from 'fastify';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ThemeService } from './theme.service.mjs';
 
 export class ThemeController {
@@ -43,7 +43,7 @@ export class ThemeController {
     });
   }
 
-  async setActive(req: FastifyRequest, reply: FastifyReply) {
+  async setActive(req: FastifyRequest, reply: FastifyReply, app: FastifyInstance) {
     const body = req.body as { theme: string };
 
     const { error } = await this.themeService.setActive(body.theme);
@@ -51,6 +51,7 @@ export class ThemeController {
       return reply.redirect(`${subDirectoryPath}admin/themes?error=${error}`);
     }
 
+    app.restart();
     return reply.redirect(subDirectoryPath + 'admin/themes');
   }
 

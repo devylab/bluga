@@ -45,7 +45,7 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
     },
   });
   await app.register(formBody);
-  await app.register(fastifyMultipart);
+  await app.register(fastifyMultipart, { limits: { fileSize: 3145728 } }); // 3mb
 
   await app.register(
     async (fasti, _, done) => {
