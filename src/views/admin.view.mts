@@ -5,7 +5,7 @@ import path from 'path';
 import EJS from 'ejs';
 import { env } from '../shared/constants/env.mjs';
 import minifier from 'html-minifier';
-import { subDirectoryPath, minifierOpts } from '../shared/constants/index.mjs';
+import { minifierOpts } from '../shared/constants/index.mjs';
 import { Utils } from '../shared/utils/index.mjs';
 import { authGuard } from '../shared/guards/authGuard.mjs';
 import { ThemeService } from '../theme/theme.service.mjs';
@@ -54,15 +54,15 @@ export class AdminView {
       const formattedRoutes = Utils.formatAdminRoutes(routes);
       formattedRoutes.forEach((route) => {
         this.app.get(route.to, async (req, reply) => {
-          const schema = `${env.environment.isProduction ? 'https' : 'http'}://${req.hostname}${subDirectoryPath}`;
-          const notProtected = [path.join(subDirectoryPath, 'admin/', 'login')];
+          const schema = `${env.environment.isProduction ? 'https' : 'http'}://${req.hostname}`;
+          const notProtected = [path.join('/', 'admin/', 'login')];
           const isNotProtected = notProtected.includes(req.routerPath);
 
           let user;
           if (!isNotProtected) {
             req.auth_guard_type = 'inner';
             const authUser = await authGuard(req, reply);
-            if (!authUser) return reply.redirect(`${subDirectoryPath}admin/login`);
+            if (!authUser) return reply.redirect(`/admin/login`);
             user = authUser;
           }
           return reply.admin(

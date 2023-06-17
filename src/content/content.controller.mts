@@ -1,4 +1,3 @@
-import { subDirectoryPath } from '../shared/constants/index.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import path from 'path';
 import { ContentService } from './content.service.mjs';
@@ -13,7 +12,7 @@ export class ContentController {
   }
 
   async createContent(req: FastifyRequest, reply: FastifyReply) {
-    const host = `${req.hostname}${subDirectoryPath}`;
+    const host = req.hostname;
     const query = req.query as { content: string };
     let body = req.body as CreateContent;
     let file = undefined;
@@ -38,7 +37,7 @@ export class ContentController {
       data: {
         title: getKeyValue(body.title),
         status: data?.status,
-        to: path.join(subDirectoryPath, '/admin/contents/edit/', data.id),
+        to: path.join('/admin/contents/edit/', data.id),
       },
     });
   }

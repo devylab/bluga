@@ -1,4 +1,4 @@
-import { accessTokenKey, subDirectoryPath, refreshTokenKey, secretTokenKey } from '../shared/constants/index.mjs';
+import { accessTokenKey, refreshTokenKey, secretTokenKey } from '../shared/constants/index.mjs';
 import { env } from '../shared/constants/env.mjs';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateUser } from './entities/create-user.entity.mjs';
@@ -37,7 +37,7 @@ export class UserController {
 
     const { data, error } = await this.userService.login(body, secret);
     if (error) {
-      return reply.redirect(`${subDirectoryPath}admin/login?error=${error}`);
+      return reply.redirect(`/admin/login?error=${error}`);
     }
 
     const options = {
@@ -51,7 +51,7 @@ export class UserController {
       .setCookie(accessTokenKey, data.accessToken, options)
       .cookie(secretTokenKey, data.secret, options)
       .setCookie(refreshTokenKey, data.refreshToken, options)
-      .redirect(subDirectoryPath + 'admin');
+      .redirect('/admin');
   }
 
   async refreshToken(req: FastifyRequest, reply: FastifyReply) {
@@ -63,7 +63,7 @@ export class UserController {
 
     const { data, error } = await this.userService.refreshToken(secret, unsignedSecretToken, unsignedRefreshToken);
     if (error) {
-      return reply.redirect(`${subDirectoryPath}admin/login?error=${error}`);
+      return reply.redirect(`/admin/login?error=${error}`);
     }
 
     const options = {

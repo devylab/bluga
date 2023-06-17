@@ -74,6 +74,7 @@
     "node-cache": "^5.1.2",
     "rxjs": "^7.5.7",
     "sanitize-html": "^2.7.3",
+    "sitemap": "^7.1.1",
     "striptags": "^3.2.0",
     "tsx": "^3.12.7"
   },

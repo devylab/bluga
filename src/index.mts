@@ -53,7 +53,7 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
       await appModule.loadRoutes();
       done();
     },
-    { prefix: `/${env.subDirectory}` },
+    { prefix: `/` },
   );
 
   app.setErrorHandler(function (error, request, reply) {
@@ -79,7 +79,6 @@ const app = await restartable(createApp, {
 const host = await app.listen({ port: env.port, host: env.host });
 logger.info(`Server listening at ${host}`);
 
-// call restart() if you want to restart
 process.on('SIGUSR1', () => {
   app.restart();
 });
@@ -90,11 +89,3 @@ process.once('SIGINT', async () => {
   await cache.close();
   await app.close();
 });
-
-// const events = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'SIGTERM', 'uncaughtException'];
-// events.forEach((event) => {
-//   process.on(event, async () => {
-//     await app.stopApp();
-//     logger.info(`app stopped because this event: ${event} was triggered`);
-//   });
-// });
