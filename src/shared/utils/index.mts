@@ -6,7 +6,6 @@ import argon2 from 'argon2';
 import sanitizeHtml from 'sanitize-html';
 import { AdminMenu, Routes } from '../interfaces/adminRoute.interface.mjs';
 import { adminMenus } from '../../admin/config.mjs';
-import { subDirectoryPath } from '../constants/index.mjs';
 import path from 'path';
 import AdmZip from 'adm-zip';
 import striptags from 'striptags';
@@ -23,9 +22,9 @@ export class Utils {
       const newRoutes = [...adminRoutes.value];
 
       if (Array.isArray(item)) {
-        newRoutes.concat(item.map((i) => ({ ...i, to: path.join(subDirectoryPath, '/', i.to) })));
+        newRoutes.concat(item.map((i) => ({ ...i, to: path.join('/', i.to) })));
       } else {
-        newRoutes.push({ ...item, to: path.join(subDirectoryPath, '/', item.to) });
+        newRoutes.push({ ...item, to: path.join('/', item.to) });
       }
 
       adminRoutes.next(newRoutes);
@@ -34,7 +33,7 @@ export class Utils {
     return {
       addNewAdminRoute,
       adminRoutes,
-      adminMenus: adminMenus.map((menu) => ({ ...menu, to: path.join(subDirectoryPath, '/', menu.to) })),
+      adminMenus: adminMenus.map((menu) => ({ ...menu, to: path.join('/', menu.to) })),
     };
   }
 

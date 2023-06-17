@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { UploadService } from './upload.service.mjs';
-import { subDirectoryPath } from '../shared/constants/index.mjs';
 
 export class UploadController {
   private readonly uploadService;
@@ -10,7 +9,7 @@ export class UploadController {
   }
 
   async uploadContentImage(req: FastifyRequest, reply: FastifyReply) {
-    const host = `${req.hostname}${subDirectoryPath}`;
+    const host = req.hostname;
     const file = await req.file();
 
     const { data, error } = await this.uploadService.uploadContentImage(host, file);
@@ -34,7 +33,7 @@ export class UploadController {
   }
 
   async uploadContentFile(req: FastifyRequest, reply: FastifyReply) {
-    const host = `${req.hostname}${subDirectoryPath}`;
+    const host = req.hostname;
     const file = await req.file();
 
     const { data, error } = await this.uploadService.uploadContentFile(host, file);

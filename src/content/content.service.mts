@@ -305,4 +305,16 @@ export class ContentService {
       return { data: null, error: 'error' };
     }
   }
+
+  async getContentSitemap() {
+    try {
+      const contents = await this.db.content.findMany({
+        select: { slug: true },
+      });
+      return { data: contents, error: null };
+    } catch (err) {
+      logger.error(err, 'error while removing contents');
+      return { data: [], error: 'error' };
+    }
+  }
 }

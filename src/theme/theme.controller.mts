@@ -1,4 +1,3 @@
-import { subDirectoryPath } from '../shared/constants/index.mjs';
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { ThemeService } from './theme.service.mjs';
 
@@ -48,25 +47,25 @@ export class ThemeController {
 
     const { error } = await this.themeService.setActive(body.theme);
     if (error) {
-      return reply.redirect(`${subDirectoryPath}admin/themes?error=${error}`);
+      return reply.redirect(`/admin/themes?error=${error}`);
     }
 
     app.restart();
-    return reply.redirect(subDirectoryPath + 'admin/themes');
+    return reply.redirect('/admin/themes');
   }
 
   async uploadTheme(req: FastifyRequest, reply: FastifyReply) {
-    const host = `${req.hostname}${subDirectoryPath}`;
+    const host = req.hostname;
     const file = await req.file();
 
     const { data, error } = await this.themeService.uploadTheme(host, file);
     if (error) {
       req.session.set('theme', { type: 'error', message: error });
-      return reply.redirect(`${subDirectoryPath}admin/themes/upload`);
+      return reply.redirect(`/admin/themes/upload`);
     }
 
     req.session.set('theme', { type: 'success', message: data });
-    return reply.redirect(`${subDirectoryPath}admin/themes/upload`);
+    return reply.redirect(`/admin/themes/upload`);
   }
 
   async removeTheme(req: FastifyRequest, reply: FastifyReply) {
@@ -74,9 +73,9 @@ export class ThemeController {
 
     const { error } = await this.themeService.removeTheme(body.theme);
     if (error) {
-      return reply.redirect(`${subDirectoryPath}admin/themes?error=${error}`);
+      return reply.redirect(`/admin/themes?error=${error}`);
     }
 
-    return reply.redirect(subDirectoryPath + 'admin/themes');
+    return reply.redirect('/admin/themes');
   }
 }

@@ -4,8 +4,10 @@ import fastifyStatic from '@fastify/static';
 import path from 'path';
 import EJS from 'ejs';
 import minifier from 'html-minifier';
+import { SitemapStream, streamToPromise } from 'sitemap';
+import { createGzip } from 'zlib';
 import { env } from '../shared/constants/env.mjs';
-import { subDirectoryPath, minifierOpts, hostProtocol } from '../shared/constants/index.mjs';
+import { minifierOpts, hostProtocol } from '../shared/constants/index.mjs';
 import { ContentService } from '../content/content.service.mjs';
 import { ThemeService } from '../theme/theme.service.mjs';
 import { SettingsService } from '../settings/settings.service.mjs';
@@ -27,6 +29,7 @@ const { __dirname } = Utils.fileDirPath(import.meta);
 const rootPath = path.join(__dirname, '..', 'tools');
 
 export class IndexView {
+  private sitemap: Buffer | undefined;
   private readonly contentService;
   private readonly themeService;
   private readonly settingsService;
@@ -89,13 +92,35 @@ export class IndexView {
 
     this.app.get('/favicon.ico', async (_req, reply) => reply.code(204).send());
     this.app.get('/robots.txt', async (_req, reply) => reply.sendFile('/robots.txt'));
+    this.app.get('/sitemap.xml', async (req, reply) => {
+      const replyHead = reply.headers({ 'Content-Encoding': 'gzip', 'Content-Type': 'application/xml' });
+      if (this.sitemap) {
+        return replyHead.send(this.sitemap);
+      }
+
+      const { data } = await this.contentService.getContentSitemap();
+      const smStream = new SitemapStream({ hostname: hostProtocol + req.hostname });
+      const pipeline = smStream.pipe(createGzip());
+      smStream.write({ url: '/', changefreq: 'weekly', priority: 0.6 });
+      data.forEach((content) => {
+        smStream.write({ url: `/${content.slug}`, changefreq: 'daily', priority: 0.8 });
+      });
+
+      streamToPromise(pipeline).then((sm) => (this.sitemap = sm));
+      smStream.end();
+
+      reply.raw.writeHead(200, { 'Content-Encoding': 'gzip', 'Content-Type': 'application/xml' });
+      pipeline.pipe(reply.raw).on('error', (e: Error) => {
+        throw e; // TODO: handle this
+      });
+    });
 
     for (const route of themeConfig.routes) {
       // eslint-disable-next-line max-lines-per-function
       this.app.get(route.route, async (req, reply) => {
         const { data: settings } = await this.settingsService.getSettings();
         const params = req.params as { slug: string };
-        const schema = `${req.hostname}${subDirectoryPath}`;
+        const schema = req.hostname;
         const headers = themeConfig?.headers?.concat(route?.headers);
         const footers = themeConfig?.footers?.concat(route?.footers);
         const { metadata, error: metaError } = await this.getMeta({
