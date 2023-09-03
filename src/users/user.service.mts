@@ -5,6 +5,7 @@ import { generateAuthToken, verifyAuthToken } from '../shared/jwt/index.mjs';
 import { logger } from '../shared/logger/index.mjs';
 import { Utils } from '../shared/utils/index.mjs';
 import { CreateUser } from './entities/create-user.entity.mjs';
+import { EditUser } from './entities/edit-user.entity.mjs';
 
 type returnType = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,6 +85,19 @@ export class UserService {
       return { data: { accessToken, secret, refreshToken }, error: null };
     } catch (err) {
       logger.error(err, 'error while refreshing token');
+      return { data: null, error: 'error' };
+    }
+  }
+
+  async editProfile(id: string, editUser: EditUser) {
+    try {
+      await this.db.user.update({
+        data: editUser,
+        where: { id },
+      });
+      return { data: 'updated user', error: 'error' };
+    } catch (err) {
+      logger.error(err, 'error while editing profile');
       return { data: null, error: 'error' };
     }
   }

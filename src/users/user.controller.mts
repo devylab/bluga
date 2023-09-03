@@ -4,6 +4,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { CreateUser } from './entities/create-user.entity.mjs';
 import { UserService } from './user.service.mjs';
 import fastifyCookie from '@fastify/cookie';
+import { EditUser } from './entities/edit-user.entity.mjs';
 
 export class UserController {
   private readonly userService;
@@ -87,5 +88,36 @@ export class UserController {
       .clearCookie(secretTokenKey, { path: '/' })
       .clearCookie(refreshTokenKey, { path: '/' })
       .send({ logout: true });
+  }
+
+  async editProfile(req: FastifyRequest, reply: FastifyReply) {
+    const body = req.body as EditUser;
+
+    console.log('\n\n\n\n\n REQUEST ORIGIN', req.headers.origin);
+
+    const { error } = await this.userService.editProfile(req.user_id, body);
+    if (error) {
+      return reply.redirect(`/admin/profile?error=${error}`);
+    }
+
+    return reply.redirect('/admin/profile');
+  }
+
+  async getUserById(req: FastifyRequest, reply: FastifyReply) {
+    const { data, error } = await this.userService.getUserById(req.user_id);
+
+    if (error) {
+      return reply.code(400).send({
+        status: 'error',
+        code: 400,
+        error,
+      });
+    }
+
+    return reply.code(200).send({
+      status: 'success',
+      code: 200,
+      data,
+    });
   }
 }
