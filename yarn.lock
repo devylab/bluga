@@ -341,6 +341,14 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@ladjs/graceful@^3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@ladjs/graceful/-/graceful-3.2.2.tgz#1b141a9dc2604df99177d6714dbe4a0bff5e2ddf"
+  integrity sha512-GyL5Cpgh2RlndFW2e4AUHrEDe0tzyXKpAs92wrAQhNKcY0y++qfK8PC+6TOHzN9zvxPY9j1KAU29Gfa9vxWzDg==
+  dependencies:
+    lil-http-terminator "^1.2.2"
+    p-is-promise "3"
+
 "@mapbox/node-pre-gyp@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@mapbox/node-pre-gyp/-/node-pre-gyp-1.0.10.tgz#8e6735ccebbb1581e5a7e652244cadc8a844d03c"
@@ -2362,6 +2370,11 @@ light-my-request@^5.6.1:
     process-warning "^2.0.0"
     set-cookie-parser "^2.4.1"
 
+lil-http-terminator@^1.2.2:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/lil-http-terminator/-/lil-http-terminator-1.2.3.tgz#594ef0f3c2b2f7d43a8f2989b2b3de611bf507eb"
+  integrity sha512-vQcHSwAFq/kTR2cG6peOVS7SjgksGgSPeH0G2lkw+buue33thE/FCHdn10wJXXshc5RswFy0Iaz48qA2Busw5Q==
+
 lines-and-columns@^1.1.6:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
@@ -2681,7 +2694,7 @@ osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
-p-is-promise@^3.0.0:
+p-is-promise@3, p-is-promise@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/p-is-promise/-/p-is-promise-3.0.0.tgz#58e78c7dfe2e163cf2a04ff869e7c1dba64a5971"
   integrity sha512-Wo8VsW4IRQSKVXsJCn7TomUaVtyfjVDn3nUP7kE967BQk0CwFpdbZs0X0uk5sW9mkBa9eNM7hCMaG93WUAwxYQ==
