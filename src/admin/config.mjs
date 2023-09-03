@@ -116,7 +116,7 @@ export const adminMenus = [
         name: 'Blog Settings',
         icon: '',
         path: '/pages/settings/blog.ejs',
-        sidebar: true,
+        sidebar: false,
       },
     ],
   },
@@ -127,6 +127,16 @@ export const adminMenus = [
     icon: '',
     path: '/pages/login.ejs',
     sidebar: false,
+  },
+  {
+    id: '7',
+    to: '/admin/profile',
+    name: 'Profile',
+    icon: '',
+    path: '/pages/profile.ejs',
+    sidebar: false,
+    header: [],
+    footer: ['/public/scripts/profile.min.js'],
   },
 ];
 

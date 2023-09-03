@@ -7,6 +7,10 @@
   "author": "Cavdy <cavdyofficials@gmail.com>",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "npm": ">=9.8.0",
+    "node": ">=18.9.0"
+  },
   "scripts": {
     "prebuild": "rimraf build && yarn find-deadcode",
     "prestart": "yarn migrate:prod",
