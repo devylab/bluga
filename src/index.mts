@@ -8,6 +8,7 @@ import fastifyHelmet from '@fastify/helmet';
 import fastifyMultipart from '@fastify/multipart';
 // import fastifyRateLimit from '@fastify/rate-limit';
 import formBody from '@fastify/formbody';
+import Graceful from '@ladjs/graceful';
 import { env } from './shared/constants/env.mjs';
 import { logger } from './shared/logger/index.mjs';
 import database from './shared/database/index.mjs';
@@ -69,7 +70,6 @@ const createApp = async (fastify: Fastify, opts: FastifyServerOptions) => {
   return app;
 };
 
-// await database.connect();
 const app = await restartable(createApp, {
   ignoreTrailingSlash: true,
   ignoreDuplicateSlashes: true,
@@ -83,9 +83,5 @@ process.on('SIGUSR1', () => {
   app.restart();
 });
 
-process.once('SIGINT', async () => {
-  logger.info('Stopping the server');
-  await database.disconnect();
-  await cache.close();
-  await app.close();
-});
+const graceful = new Graceful({ servers: [app], customHandlers: [database.disconnect, cache.close] });
+graceful.listen();

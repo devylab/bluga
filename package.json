@@ -64,6 +64,7 @@
     "@fastify/secure-session": "^6.1.0",
     "@fastify/static": "^6.5.0",
     "@fastify/view": "^7.1.2",
+    "@ladjs/graceful": "^3.2.2",
     "@prisma/client": "^4.14.1",
     "adm-zip": "^0.5.10",
     "argon2": "^0.30.2",
